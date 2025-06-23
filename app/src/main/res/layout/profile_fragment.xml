@@ -92,7 +92,7 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etNombre"
+                    android:id="@+id/user_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="16dp"
@@ -112,7 +112,7 @@
                     android:textSize="16sp" />
 
                 <Spinner
-                    android:id="@+id/etGenero"
+                    android:id="@+id/user_gender_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="16dp"
@@ -131,7 +131,7 @@
                     android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/etFechaNacimiento"
+                    android:id="@+id/user_birthdate"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginBottom="16dp"
@@ -158,7 +158,7 @@
                     android:layout_marginBottom="16dp">
 
                     <EditText
-                        android:id="@+id/etContrasenaActual"
+                        android:id="@+id/user_password_input"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_edittext"
@@ -196,7 +196,7 @@
                     android:layout_marginBottom="16dp">
 
                     <EditText
-                        android:id="@+id/etNuevaContrasena"
+                        android:id="@+id/user_new_password_input"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_edittext"
@@ -234,7 +234,7 @@
                     android:layout_marginBottom="32dp">
 
                     <EditText
-                        android:id="@+id/etConfirmarContrasena"
+                        android:id="@+id/user_new_password_confirm_input"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_edittext"
@@ -258,7 +258,7 @@
 
                 <!-- Botón Registrar -->
                 <Button
-                    android:id="@+id/btnRegistrar"
+                    android:id="@+id/btn_account_changes"
                     android:layout_width="160dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
@@ -312,7 +312,7 @@
                     android:layout_weight="1" />
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/miSwitch"
+                    android:id="@+id/light_theme_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp" />
@@ -327,6 +327,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="5dp">
 
+            <!-- TODO: Este campo todavia no tiene ID para trabajar con el... -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="65dp"

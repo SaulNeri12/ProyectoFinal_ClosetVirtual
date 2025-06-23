@@ -27,6 +27,8 @@
     <string name="account_save_changes">Guardar</string>
     <string name="light_mode_card_txt">Modo Claro</string>
     <string name="logout_btn_txt">Cerrar Sesión</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
