@@ -7,6 +7,8 @@
     android:background="@color/background_main"
     tools:context=".MainActivity">
 
+
+
     <!-- Header -->
     <LinearLayout
         android:id="@+id/header_layout"
@@ -194,6 +196,11 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+
+
 
     <!-- Bottom Navigation -->
     <com.google.android.material.card.MaterialCardView
