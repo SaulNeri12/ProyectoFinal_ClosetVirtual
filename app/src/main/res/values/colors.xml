@@ -1,10 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- Main background colors -->
+    <color name="background_main">#E5E7EB</color> <!-- Gris claro de fondo general -->
+    <color name="background_dark">#4A5568</color> <!-- Gris oscuro para campos de entrada -->
+
+    <!-- Basic colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Text colors -->
+    <color name="text_primary_white">#FFFFFF</color> <!-- Texto blanco principal -->
+    <color name="text_primary_dark">#1F2937</color> <!-- Texto oscuro principal -->
+    <color name="text_secondary">#6B7280</color> <!-- Texto secundario -->
+    <color name="text_hint">#9CA3AF</color> <!-- Texto de hint -->
+    <color name="text_hint_light">#999999</color> <!-- Hint más claro -->
+    <color name="text_register_link">#8A8A8A</color> <!-- Color del link de registro -->
+
+    <!-- Navigation colors -->
+    <color name="nav_selected">#1F2937</color> <!-- Color para elementos seleccionados -->
+    <color name="nav_unselected">#9CA3AF</color> <!-- Color para elementos no seleccionados -->
+
+    <!-- Button colors -->
+    <color name="button_primary">#374151</color> <!-- Botón principal (gris oscuro) -->
+    <color name="button_register">#4A5568</color> <!-- Botón de registro -->
+    <color name="button_secondary">#E5E7EB</color> <!-- Botón secundario -->
+
+    <!-- Surface colors -->
+    <color name="surface_white">#FFFFFF</color> <!-- Superficie blanca -->
+    <color name="surface_gray">#F9FAFB</color> <!-- Superficie gris clara -->
+    <color name="card_background">#FFFFFF</color> <!-- Fondo de tarjetas -->
+
+    <!-- Input field colors -->
+    <color name="input_background">#4A5568</color> <!-- Fondo de campos de entrada -->
+    <color name="input_text">#FFFFFF</color> <!-- Texto en campos de entrada -->
+
+    <!-- Avatar/Circle colors -->
+    <color name="circle_background">#4A5568</color> <!-- Fondo del avatar circular -->
+    <color name="circle_white_background">#FFFFFF</color> <!-- Fondo blanco circular -->
+
+    <!-- Shadow colors -->
+    <color name="shadow_light">#1A000000</color> <!-- Sombra ligera -->
+    <color name="shadow_medium">#26000000</color> <!-- Sombra media -->
+    <color name="shadow_dark">#33000000</color> <!-- Sombra oscura -->
+
+    <!-- Special colors -->
+    <color name="outfit_card_background">#FFFFFF</color> <!-- Fondo de tarjetas de outfit -->
+    <color name="search_background">#FFFFFF</color> <!-- Fondo del campo de búsqueda -->
+
+    <color name="nav_selected">#374151</color>
+    <color name="nav_unselected">#9CA3AF</color>
+    <color name="primary_blue">#3B82F6</color>
+    <color name="primary_dark">#374151</color>
+    <color name="gray_light">#F9FAFB</color>
+    <color name="gray_medium">#9CA3AF</color>
+    <color name="gray_dark">#374151</color>
 </resources>
