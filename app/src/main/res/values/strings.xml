@@ -41,6 +41,12 @@
     <string name="light_mode_card_txt">Modo Claro</string>
     <string name="logout_btn_txt">Cerrar Sesión</string>
 
+    <string name="garment_category_input_lbl">Categoria</string>
+    <string name="garment_tag_input_hint">Ropa Verano...</string>
+    <string name="garment_has_print_switch">Estampado</string>
+    <string name="garment_add_garment_btn">Agregar</string>
+    <string name="garment_color_input_txt">Color</string>
+
     <string name="garment_registry_placeholder">Registro de Prendas</string>
 
 </resources>
