@@ -3,4 +3,27 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <!-- Labels for the register screen -->
+    <string name="title_register">Registro</string>
+    <string name="name_field_tittle">Nombre</string>
+    <string name="email_field_tittle">Correo Electrónico</string>
+    <string name="date_field_tittle">Fecha de Nacimiento</string>
+    <string name="password_field_tittle">Contraseña</string>
+    <string name="confirm_password_field_tittle">Confirmar contraseña</string>
+    <string name="button_register">Registrar</string>">
+
+    <!-- Labels for the log in screen -->
+    <string name="title_login">Inicio de Sesión</string>
+    <string name="button_login">Iniciar Sesión</string>
+    <string name="login_label"><u>¿No tienes una cuenta?, Haz clic aqui</u></string>
+    <string name="password_field_hint">Type your password</string>
+    <string name="email_field_hint">example@domain.com</string>">
+
+    <!-- Labels for the update profile screen -->
+    <string name="old_password_field_tittle">Contraseña Actual</string>
+    <string name="new_password_field_tittle">Nueva Contraseña</string>
+    <string name="appearence_field_tittle">Appearance</string>
+
+
 </resources>

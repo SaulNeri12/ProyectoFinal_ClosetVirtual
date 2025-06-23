@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inicio de sesión"
+        android:text="@string/title_login"
         android:textColor="@color/text_primary_dark"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -28,7 +28,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email:"
+        android:text="@string/email_field_tittle"
         android:textColor="@color/text_primary_dark"
         android:textSize="16sp"
         android:layout_marginBottom="8dp" />
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/rounded_edittext"
-        android:hint="example@gmail.com"
+        android:hint="@string/email_field_hint"
         android:textColorHint="@color/text_hint_light"
         android:textColor="@color/input_text"
         android:paddingHorizontal="16dp"
@@ -49,7 +49,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Password:"
+        android:text="@string/password_field_tittle"
         android:textColor="@color/text_primary_dark"
         android:textSize="16sp"
         android:layout_marginBottom="8dp" />
@@ -58,8 +58,9 @@
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:autofillHints=""
         android:background="@drawable/rounded_edittext"
-        android:hint="Type your password"
+        android:hint="@string/password_field_hint"
         android:textColorHint="@color/text_hint_light"
         android:textColor="@color/input_text"
         android:paddingHorizontal="16dp"
@@ -71,7 +72,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Iniciar Sesión"
+        android:text="@string/button_login"
         android:textColor="@color/text_primary_white"
         android:background="@drawable/rounded_button"
         android:layout_marginBottom="16dp" />
@@ -80,10 +81,11 @@
     <TextView
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register"
+        android:layout_height="25dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/login_label"
         android:textColor="@color/text_register_link"
-        android:textSize="16sp"
-        android:clickable="true" />
+        android:textSize="16sp" />
 
 </LinearLayout>
