@@ -1,34 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ClosetVirtual</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 
-    <!-- Labels for the register screen -->
+    <string name="title_home">Inicio</string>
+    <string name="title_dashboard">Panel</string>
+    <string name="title_notifications">Notificaciones</string>
+    <string name="button_use">USAR</string>
+    <string name="search_hint">Buscar...</string>
+    <string name="category_dropdown_text">Categoría</string>
+    <string name="new_clothes_nav">New Clothes</string>
+    <string name="calendar_nav">Calendario</string>
+
     <string name="title_register">Registro</string>
-    <string name="name_field_tittle">Nombre</string>
-    <string name="email_field_tittle">Correo Electrónico</string>
-    <string name="date_field_tittle">Fecha de Nacimiento</string>
-    <string name="password_field_tittle">Contraseña</string>
-    <string name="confirm_password_field_tittle">Confirmar contraseña</string>
-    <string name="button_register">Registrar</string>">
+    <string name="name_field_title">Nombre</string>
+    <string name="email_field_title">Correo Electrónico</string>
+    <string name="date_field_title">Fecha de Nacimiento</string>
+    <string name="password_field_title">Contraseña</string>
+    <string name="confirm_password_field_title">Confirmar Contraseña</string>
+    <string name="button_register">Registrar</string>
+    <string name="gender_field_title">Género</string>
+    <string name="select_gender">Seleccionar Género</string>
+    <string-array name="gender_options">
+        <item>Seleccionar Género</item>
+        <item>Masculino</item>
+        <item>Femenino</item>
+        <item>No Binario</item>
+        <item>Prefiero no decir</item>
+    </string-array>
 
-    <!-- Labels for the log in screen -->
     <string name="title_login">Inicio de Sesión</string>
     <string name="button_login">Iniciar Sesión</string>
-    <string name="login_label"><u>¿No tienes una cuenta?, Haz clic aqui</u></string>
-    <string name="password_field_hint">Type your password</string>
-    <string name="email_field_hint">example@domain.com</string>">
+    <string name="login_label"><u>¿No tienes una cuenta? Haz clic aquí</u></string>
+    <string name="password_field_hint_login">Escribe tu contraseña</string>
+    <string name="email_field_hint_login">ejemplo@dominio.com</string>
 
-    <!-- Labels for the update profile screen -->
-    <string name="old_password_field_tittle">Contraseña Actual</string>
-    <string name="new_password_field_tittle">Nueva Contraseña</string>
-    <string name="appearence_field_tittle">Apariencia</string>
+    <string name="old_password_field_title">Contraseña Actual</string>
+    <string name="new_password_field_title">Nueva Contraseña</string>
+    <string name="appearance_field_title">Apariencia</string>
     <string name="account_save_changes">Guardar</string>
     <string name="light_mode_card_txt">Modo Claro</string>
     <string name="logout_btn_txt">Cerrar Sesión</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="garment_registry_placeholder">Registro de Prendas</string>
 
 </resources>

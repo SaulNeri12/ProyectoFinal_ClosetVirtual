@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- PANTALLA 2: REGISTRO (activity_register.xml) -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_main"
@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:padding="32dp">
 
-        <!-- Header con flecha de regreso -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,14 +19,16 @@
 
             <ImageView
                 android:id="@+id/ivBack"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_arrow_back"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:clickable="true"
                 android:focusable="true"
-                />
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                app:tint="@color/text_primary_dark" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,191 +41,248 @@
 
         </RelativeLayout>
 
-        <!-- Avatar con cámara -->
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="32dp">
-
-            <View
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/circle_background" />
+            android:layout_marginBottom="32dp"
+            app:cardCornerRadius="60dp"
+            app:cardElevation="8dp"
+            app:cardBackgroundColor="@color/circle_background"
+            app:cardUseCompatPadding="false">
 
             <ImageView
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_camera"
-                android:layout_centerInParent="true" />
+                android:layout_gravity="center"
+                app:tint="@color/text_primary_white" />
+        </com.google.android.material.card.MaterialCardView>
 
-        </RelativeLayout>
-
-        <!-- Campo Nombre -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name_field_tittle"
+            android:text="@string/name_field_title"
             android:textColor="@color/text_primary_dark"
             android:textSize="16sp"
             android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/etNombre"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_edittext"
-            android:textColor="@color/input_text"
-            android:textColorHint="@color/text_hint_light"
-            android:paddingHorizontal="16dp"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Campo Correo Electrónico -->
-        <TextView
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/email_field_tittle"
-            android:textColor="@color/text_primary_dark"
-            android:textSize="16sp"
-            android:layout_marginBottom="8dp" />
-
-        <EditText
-            android:id="@+id/etCorreo"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_edittext"
-            android:textColor="@color/input_text"
-            android:textColorHint="@color/text_hint_light"
-            android:paddingHorizontal="16dp"
             android:layout_marginBottom="16dp"
-            android:inputType="textEmailAddress" />
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false"
+            android:elevation="4dp">
 
-        <!-- Campo Fecha de Nacimiento -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Nombre"
+                android:textColorHint="@color/text_hint_light"
+                android:textColor="@color/input_text"
+                android:paddingHorizontal="16dp"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/date_field_tittle"
+            android:text="@string/email_field_title"
             android:textColor="@color/text_primary_dark"
             android:textSize="16sp"
             android:layout_marginBottom="8dp" />
 
-        <EditText
-            android:id="@+id/etFechaNacimiento"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_edittext"
-            android:textColor="@color/input_text"
-            android:textColorHint="@color/text_hint_light"
-            android:paddingHorizontal="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:clickable="true"
-            android:focusable="true" />
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false"
+            android:elevation="4dp">
 
-        <!-- Campo para el genero -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Correo Electrónico"
+                android:textColorHint="@color/text_hint_light"
+                android:textColor="@color/input_text"
+                android:paddingHorizontal="16dp"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/date_field_title"
+            android:textColor="@color/text_primary_dark"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false"
+            app:endIconMode="custom" app:endIconDrawable="@drawable/ic_calendar" app:endIconTint="@color/text_hint_light"
+            android:elevation="4dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFechaNacimiento"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Fecha de Nacimiento"
+                android:textColorHint="@color/text_hint_light"
+                android:textColor="@color/input_text"
+                android:paddingHorizontal="16dp"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Genero"
+            android:text="@string/gender_field_title"
             android:textColor="@color/text_primary_dark"
             android:textSize="16sp" />
 
-        <Spinner
-            android:id="@+id/etGenero"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/rounded_edittext"
-            android:paddingHorizontal="16dp"
-            android:textColor="@color/input_text"
-            android:textColorHint="@color/text_hint_light" />
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false"
+            app:endIconMode="dropdown_menu"
+            app:endIconTint="@color/text_hint_light"
+            android:elevation="4dp">
 
-        <!-- Campo Contraseña -->
+            <AutoCompleteTextView
+                android:id="@+id/etGenero"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingHorizontal="16dp"
+                android:hint="@string/select_gender" android:textColorHint="@color/text_hint_light"
+                android:textColor="@color/input_text"
+                android:inputType="none" android:background="@android:color/transparent" /> </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/password_field_tittle"
+            android:text="@string/password_field_title"
             android:textColor="@color/text_primary_dark"
             android:textSize="16sp"
             android:layout_marginBottom="8dp" />
 
-        <RelativeLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="16dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_hint_light"
+            android:elevation="4dp">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etContrasena"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/rounded_edittext"
-                android:textColor="@color/input_text"
+                android:layout_height="50dp"
+                android:hint="Contraseña"
                 android:textColorHint="@color/text_hint_light"
+                android:textColor="@color/input_text"
                 android:paddingHorizontal="16dp"
-                android:paddingEnd="50dp"
                 android:inputType="textPassword" />
 
-            <ImageView
-                android:id="@+id/ivShowPassword1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_eye"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:clickable="true"
-                android:focusable="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        </RelativeLayout>
-
-        <!-- Campo Confirmar Contraseña -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/confirm_password_field_tittle"
+            android:text="@string/confirm_password_field_title"
             android:textColor="@color/text_primary_dark"
             android:textSize="16sp"
             android:layout_marginBottom="8dp" />
 
-        <RelativeLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="32dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@color/input_background"
+            app:boxCornerRadiusTopStart="25dp"
+            app:boxCornerRadiusTopEnd="25dp"
+            app:boxCornerRadiusBottomStart="25dp"
+            app:boxCornerRadiusBottomEnd="25dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_hint_light"
+            android:elevation="4dp">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etConfirmarContrasena"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/rounded_edittext"
-                android:textColor="@color/input_text"
+                android:layout_height="50dp"
+                android:hint="Confirmar Contraseña"
                 android:textColorHint="@color/text_hint_light"
+                android:textColor="@color/input_text"
                 android:paddingHorizontal="16dp"
-                android:paddingEnd="50dp"
                 android:inputType="textPassword" />
 
-            <ImageView
-                android:id="@+id/ivShowPassword2"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_eye"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:clickable="true"
-                android:focusable="true"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        </RelativeLayout>
-
-        <!-- Botón Registrar -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegistrar"
             android:layout_width="160dp"
             android:layout_height="50dp"
             android:text="@string/button_register"
             android:layout_gravity="center"
             android:textColor="@color/text_primary_white"
-            android:background="@drawable/rounded_button" />
-
+            app:backgroundTint="@color/button_register"
+            app:cornerRadius="25dp"
+            android:elevation="6dp" />
     </LinearLayout>
 
 </ScrollView>

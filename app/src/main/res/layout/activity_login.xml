@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- PANTALLA 1: INICIO DE SESIÓN (activity_login.xml) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -17,67 +17,99 @@
         android:textStyle="bold"
         android:layout_marginBottom="48dp" />
 
-    <!-- Avatar circular -->
-    <View
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:background="@drawable/circle_background"
-        android:layout_marginBottom="48dp" />
+        android:layout_marginBottom="48dp"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/circle_background"
+        app:cardUseCompatPadding="false">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_person"
+            android:scaleType="centerInside"
+            app:tint="@color/text_primary_white" />
+    </com.google.android.material.card.MaterialCardView>
 
-    <!-- Campo Email -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/email_field_tittle"
-        android:textColor="@color/text_primary_dark"
+        android:text="@string/email_field_title" android:textColor="@color/text_primary_dark"
         android:textSize="16sp"
         android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/etEmail"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/rounded_edittext"
-        android:hint="@string/email_field_hint"
-        android:textColorHint="@color/text_hint_light"
-        android:textColor="@color/input_text"
-        android:paddingHorizontal="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:inputType="textEmailAddress" />
+        app:boxBackgroundMode="filled"
+        app:boxBackgroundColor="@color/input_background"
+        app:boxCornerRadiusTopStart="25dp"
+        app:boxCornerRadiusTopEnd="25dp"
+        app:boxCornerRadiusBottomStart="25dp"
+        app:boxCornerRadiusBottomEnd="25dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:hintEnabled="false"
+        android:elevation="4dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/email_field_hint_login" android:textColorHint="@color/text_hint_light"
+            android:textColor="@color/input_text"
+            android:paddingHorizontal="16dp"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Campo Password -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/password_field_tittle"
-        android:textColor="@color/text_primary_dark"
+        android:text="@string/password_field_title" android:textColor="@color/text_primary_dark"
         android:textSize="16sp"
         android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/etPassword"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:autofillHints=""
-        android:background="@drawable/rounded_edittext"
-        android:hint="@string/password_field_hint"
-        android:textColorHint="@color/text_hint_light"
-        android:textColor="@color/input_text"
-        android:paddingHorizontal="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:inputType="textPassword" />
+        app:boxBackgroundMode="filled"
+        app:boxBackgroundColor="@color/input_background"
+        app:boxCornerRadiusTopStart="25dp"
+        app:boxCornerRadiusTopEnd="25dp"
+        app:boxCornerRadiusBottomStart="25dp"
+        app:boxCornerRadiusBottomEnd="25dp"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:hintEnabled="false"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/text_hint_light"
+        android:elevation="4dp">
 
-    <!-- Botón Iniciar Sesión -->
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/password_field_hint_login"
+            android:inputType="textPassword"
+            android:paddingHorizontal="16dp"
+            android:textColor="@color/input_text"
+            android:textColorHint="@color/text_hint_light" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/button_login"
         android:textColor="@color/text_primary_white"
-        android:background="@drawable/rounded_button"
-        android:layout_marginBottom="16dp" />
+        app:backgroundTint="@color/button_primary"
+        app:cornerRadius="25dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="6dp" />
 
-    <!-- Link Registrar -->
     <TextView
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
