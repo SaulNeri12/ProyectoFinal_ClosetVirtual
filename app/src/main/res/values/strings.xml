@@ -23,7 +23,10 @@
     <!-- Labels for the update profile screen -->
     <string name="old_password_field_tittle">Contraseña Actual</string>
     <string name="new_password_field_tittle">Nueva Contraseña</string>
-    <string name="appearence_field_tittle">Appearance</string>
+    <string name="appearence_field_tittle">Apariencia</string>
+    <string name="account_save_changes">Guardar</string>
+    <string name="light_mode_card_txt">Modo Claro</string>
+    <string name="logout_btn_txt">Cerrar Sesión</string>
 
 
 </resources>
