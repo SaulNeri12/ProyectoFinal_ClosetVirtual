@@ -161,7 +161,7 @@
                 android:insetBottom="0dp"
                 android:insetLeft="0dp"
                 android:insetRight="0dp"
-                app:backgroundTint="@color/button_primary"
+                app:backgroundTint="@color/background_dark"
                 app:cornerRadius="30dp"
                 android:elevation="4dp"/>
 
@@ -186,7 +186,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:boxBackgroundMode="filled"
-            app:boxBackgroundColor="@color/button_primary"
+            app:boxBackgroundColor="@color/background_dark"
             app:boxCornerRadiusTopStart="25dp"
             app:boxCornerRadiusTopEnd="25dp"
             app:boxCornerRadiusBottomStart="25dp"
@@ -211,7 +211,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:boxBackgroundMode="filled"
-            app:boxBackgroundColor="@color/button_primary"
+            app:boxBackgroundColor="@color/background_dark"
             app:boxCornerRadiusTopStart="25dp"
             app:boxCornerRadiusTopEnd="25dp"
             app:boxCornerRadiusBottomStart="25dp"
