@@ -271,14 +271,15 @@
     <!-- Added MaterialButton here -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_use2"
-        android:layout_width="match_parent"
+        android:layout_width="150sp"
         android:layout_height="48dp"
-        android:layout_marginHorizontal="24dp"
+        android:layout_marginHorizontal="40dp"
         android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
         android:elevation="6dp"
-        android:text="@string/button_use"
+        android:text="nueva prenda"
         android:textColor="@color/text_primary_white"
-        android:textSize="16sp"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:backgroundTint="@color/button_primary"
         app:cornerRadius="24dp" />
