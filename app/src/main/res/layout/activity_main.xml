@@ -4,259 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_main"
     tools:context=".MainActivity">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/header_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        app:cardBackgroundColor="#F5F5F5"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="6dp"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/header_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_menu"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="wrap_content"
-                android:layout_height="37dp"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@color/white"
-                android:elevation="0dp"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                app:cornerRadius="20dp"
-                app:icon="@drawable/ic_menu"
-                app:iconTint="@color/text_hint"
-                app:startIconDrawable="@drawable/circle_white_background" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_profile"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="45dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@color/white"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                app:cornerRadius="20dp"
-                app:icon="@drawable/ic_person"
-                app:iconTint="@color/text_hint"
-                app:startIconDrawable="@drawable/circle_white_background"
-                android:elevation="0dp" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/search_filter_card_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/header_card_view"
-        app:cardBackgroundColor="@color/white"
-        app:cardElevation="6dp"
-        app:cardCornerRadius="25dp">
-
-        <LinearLayout
-            android:id="@+id/search_filter_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="12dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="12dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardElevation="0dp"
-                    app:cardCornerRadius="25dp"
-                    app:cardUseCompatPadding="false">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_search"
-                            app:tint="@color/text_hint"
-                            android:layout_marginEnd="12dp" />
-
-                        <EditText
-                            android:id="@+id/et_search"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:hint="@string/search_hint"
-                            android:textSize="14sp"
-                            android:textColorHint="@color/text_hint"
-                            android:textColor="@color/black"
-                            android:background="@android:color/transparent" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardElevation="0dp"
-                    app:cardCornerRadius="25dp"
-                    app:cardUseCompatPadding="false">
-
-                    <ImageView
-                        android:id="@+id/btn_filter"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_filter"
-                        app:tint="@color/text_hint"
-                        android:scaleType="center"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:background="?attr/selectableItemBackgroundBorderless" />
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/white"
-                app:cardElevation="0dp"
-                app:cardCornerRadius="25dp"
-                app:cardUseCompatPadding="false">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp">
-
-                    <TextView
-                        android:id="@+id/dropdown_category"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="@string/category_dropdown_text"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
-                        android:gravity="center_vertical"
-                        android:background="@android:color/transparent"
-                        android:clickable="true"
-                        android:focusable="true" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_dropdown"
-                        app:tint="@color/text_hint" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <LinearLayout
-        android:id="@+id/carousel_container"
-        android:layout_width="match_parent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment_activity_main"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_marginTop="24dp"
-        android:gravity="center_horizontal"
-        app:layout_constraintTop_toBottomOf="@id/search_filter_card_view"
-        app:layout_constraintBottom_toTopOf="@id/btn_use"
-        app:layout_constraintVertical_bias="0.0">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/viewpager_outfits"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="16dp"
-            android:clipToPadding="false"
-            android:clipChildren="false" />
-
-        <LinearLayout
-            android:id="@+id/indicators_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center" />
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_use"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:text="@string/button_use"
-        android:textColor="@color/text_primary_white"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_marginBottom="24dp"
-        app:cornerRadius="24dp"
-        app:backgroundTint="@color/button_primary"
-        android:elevation="6dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav_card"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/mobile_navigation" />
 
-    <!-- Enhanced Bottom Navigation with Shadow using MaterialCardView -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottom_nav_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="24dp"
-        app:cardElevation="12dp"
-        app:cardCornerRadius="30dp"
         app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="5dp"
             android:background="#FFFFFF"
             android:elevation="0dp"
-            app:menu="@menu/bottom_nav_menu"
+            android:paddingVertical="5dp"
+            app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
             app:itemIconTint="@color/text_register_link"
             app:itemTextColor="@color/nav_selected"
-            app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
-            app:labelVisibilityMode="labeled" />
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
 
     </com.google.android.material.card.MaterialCardView>
 
