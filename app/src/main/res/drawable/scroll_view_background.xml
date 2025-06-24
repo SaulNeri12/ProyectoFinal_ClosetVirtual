@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Drawable que define el degradado de fondo para el ScrollView -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Gradient: Define un degradado lineal de arriba hacia abajo -->
+    <gradient
+        android:startColor="@color/background_main"
+        android:endColor="@android:color/white"
+        android:angle="270"
+        android:type="linear" />
+        <!-- startColor: Color inicial del degradado (parte superior) -->
+        <!-- endColor: Color final del degradado (parte inferior) -->
+        <!-- angle="270": Dirección del degradado (270° = de arriba hacia abajo) -->
+        <!-- type="linear": Tipo de degradado lineal (también puede ser radial o sweep) -->
+</shape>

@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_search"
         android:title="Buscador de outfit" />
 
+    <item
+        android:id="@+id/clothes_selection_fragment"
+        android:icon="@drawable/ic_search"
+        android:title="Seleccion de Prendas" />
+
 </menu>

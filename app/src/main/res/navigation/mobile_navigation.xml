@@ -33,6 +33,12 @@
         android:label="Perfil de Usuario"
         tools:layout="@layout/profile_fragment" />
 
+    <fragment
+        android:id="@+id/clothes_selection_fragment"
+        android:name="equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionFragment"
+        android:label="Seleccion de Prendas"
+        tools:layout="@layout/fragment_clothes_selection" />
+
     <action
         android:id="@+id/action_global_to_profileFragment"
         app:destination="@id/profileFragment" />
