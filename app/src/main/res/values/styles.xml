@@ -20,4 +20,9 @@
         <item name="android:elevation">6dp</item>
         <item name="cornerRadius">25dp</item>
     </style>
+
+    <style name="SwitchTheme">
+        <item name="colorAccent">@color/button_primary</item>
+        <item name="android:colorForeground">@color/button_primary</item>
+    </style>
 </resources>
