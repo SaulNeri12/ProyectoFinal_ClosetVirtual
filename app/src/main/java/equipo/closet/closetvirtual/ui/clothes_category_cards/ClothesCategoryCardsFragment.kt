@@ -24,6 +24,7 @@ class ClothesCategoryCardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         val btnProfile: ImageView = view.findViewById(R.id.btnProfile)
         val btnLogout: ImageView = view.findViewById(R.id.btnLogout)
 
@@ -38,5 +39,6 @@ class ClothesCategoryCardsFragment : Fragment() {
             startActivity(intent)
             requireActivity().finish()
         }
+         */
     }
 }
