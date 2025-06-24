@@ -4,13 +4,13 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
+import java.util.Calendar
 
 class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.profile_fragment)
+        setContentView(R.layout.activity_register)
 
         val ivBack = findViewById<android.widget.ImageView>(R.id.ivBack)
         ivBack.setOnClickListener {
