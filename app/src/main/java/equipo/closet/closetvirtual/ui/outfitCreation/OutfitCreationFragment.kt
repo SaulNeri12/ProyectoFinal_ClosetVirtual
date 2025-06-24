@@ -23,7 +23,7 @@ class OutfitCreationFragment : Fragment() {
         val root: View = binding.root
 
 
-        val categories = resources.getStringArray(R.array.gender_options) // Reutilizamos un array existente, idealmente deberías crear R.array.outfit_categories
+val categories = resources.getStringArray(R.array.outfit_categories)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
         binding.spinnerOutfitCategory.setAdapter(adapter)
 
@@ -39,11 +39,15 @@ class OutfitCreationFragment : Fragment() {
             val outfitTag = binding.etOutfitTag.text.toString()
             val outfitCategory = binding.spinnerOutfitCategory.text.toString()
 
-            if (outfitName.isNotBlank() && outfitCategory.isNotBlank()) {
+if (outfitName.isNotBlank() && outfitCategory.isNotBlank() && outfitName.length <= 20 && outfitTag.length <= 20) {
                 Toast.makeText(requireContext(), "Outfit '$outfitName' saved!", Toast.LENGTH_LONG).show()
 
             } else {
-                Toast.makeText(requireContext(), "Please enter outfit name and select a category.", Toast.LENGTH_LONG).show()
+                var errorMessage = "Please enter outfit name and select a category."
+                if (outfitName.length > 20 || outfitTag.length > 20) {
+                    errorMessage = "Outfit name and tag must be less than 20 characters."
+                }
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG).show()
             }
         }
 

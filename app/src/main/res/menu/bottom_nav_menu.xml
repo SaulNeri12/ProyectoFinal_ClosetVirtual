@@ -11,10 +11,10 @@
         android:icon="@drawable/ic_new_clothes"
         android:title="@string/new_clothes_nav" />
 
-    <item
-        android:id="@+id/navigation_outfit_finder"
-        android:icon="@drawable/ic_search"
-        android:title="Buscador de outfit" />
+<item
+    android:id="@+id/navigation_outfit_finder"
+    android:icon="@drawable/hanger_icon"
+    android:title="Buscador de outfit" />
 
     <item
         android:id="@+id/clothes_selection_fragment"
