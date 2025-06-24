@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Custom Bottom Navigation Indicator Style -->
+    <style name="CustomBottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/bottom_nav_active_background</item>
+        <item name="android:width">80dp</item>
+        <item name="android:height">40dp</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+</resources>

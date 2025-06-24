@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Add these colors to your existing colors.xml file -->
+
+    <!-- Bottom Navigation Colors -->
+    <color name="bottom_nav_active_background">#6B73A3</color> <!-- Purple background for active item -->
+    <color name="bottom_nav_active_text">#FFFFFF</color> <!-- White text for active item -->
+    <color name="bottom_nav_inactive_text">#666666</color> <!-- Gray text for inactive items -->
+    <color name="bottom_nav_inactive_icon">#666666</color> <!-- Gray icons for inactive items -->
 
     <!-- Main background colors -->
     <color name="background_main">#E5E7EB</color> <!-- Gris claro de fondo general -->
@@ -53,10 +60,10 @@
     <color name="gray_light">#F9FAFB</color>
     <color name="gray_medium">#9CA3AF</color>
     <color name="gray_dark">#374151</color>
-        <color name="purple_200">#BB86FC</color>
-        <color name="purple_500">#6200EE</color>
-        <color name="purple_700">#3700B3</color>
-        <color name="teal_200">#03DAC5</color>
-        <color name="teal_700">#018786</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
 
 </resources>

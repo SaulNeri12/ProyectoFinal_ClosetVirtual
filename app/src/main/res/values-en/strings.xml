@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">ClosetVirtual</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- Labels for the register screen -->
+    <string name="title_register">Register</string>
+    <string name="name_field_tittle">Name</string>
+    <string name="email_field_tittle">Email</string>
+    <string name="date_field_tittle">Date of Birth</string>
+    <string name="password_field_tittle">Password</string>
+    <string name="confirm_password_field_tittle">Confirm Password</string>
+    <string name="button_register">Register</string>
+
+    <!-- Labels for the log in screen -->
+    <string name="title_login">Login</string>
+    <string name="button_login">Login</string>
+    <string name="login_label"><u>Don\'t have an account?, Click here</u></string>
+    <string name="password_field_hint">Type your password</string>
+    <string name="email_field_hint">example@domain.com</string>
+
+    <!-- Labels for the update profile screen -->
+    <string name="old_password_field_tittle">Current Password</string>
+    <string name="new_password_field_tittle">New Password</string>
+    <string name="appearence_field_tittle">Appearance</string>
+    <string name="account_save_changes">Save</string>
+    <string name="light_mode_card_txt">Light Mode</string>
+    <string name="logout_btn_txt">Logout</string>
+    <!-- Removed placeholder text -->
+    <string name="hello_blank_fragment">Garment Registry</string>
+</resources>
