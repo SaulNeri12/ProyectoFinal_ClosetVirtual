@@ -29,17 +29,17 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_menu"
                 style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="45dp"
+                android:layout_width="wrap_content"
                 android:layout_height="37dp"
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="@color/white"
+                android:elevation="0dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_menu"
                 app:iconTint="@color/text_hint"
-                app:startIconDrawable="@drawable/circle_white_background"
-                android:elevation="0dp" />
+                app:startIconDrawable="@drawable/circle_white_background" />
 
             <View
                 android:layout_width="0dp"
