@@ -1,15 +1,11 @@
 package equipo.closet.closetvirtual
 
 import android.os.Bundle
-import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.button.MaterialButton
-import equipo.closet.closetvirtual.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,14 +13,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnFilter: MaterialButton = findViewById(R.id.btn_filter)
+        val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
 
-        btnFilter.setOnClickListener {
-            Toast.makeText(
-                this,
-                "Filter button click!!!",
-                Toast.LENGTH_LONG
-            ).show()
-        }
+
+
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+
+        val navController = navHostFragment.navController
+
+        navView.setupWithNavController(navController)
     }
 }

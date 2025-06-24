@@ -5,22 +5,36 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
+
     <fragment
         android:id="@+id/navigation_home"
-        android:name="equipo.closet.closetvirtual.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="equipo.closet.closetvirtual.ui.clothes_category_cards.ClothesCategoryCardsFragment"
+        android:label="Mi Armario"
+        tools:layout="@layout/fragment_clothes_category_cards" />
+
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="equipo.closet.closetvirtual.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_new_clothes"
+        android:name="equipo.closet.closetvirtual.ui.garmentRegistry.GarmentRegistryFragment"
+        android:label="Registrar Prenda"
+        tools:layout="@layout/fragment_garment_registry" />
+
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="equipo.closet.closetvirtual.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_outfit_finder"
+        android:name="equipo.closet.closetvirtual.ui.searchoutfit.SearchOutfitFragment"
+        android:label="Buscador de Outfits"
+        tools:layout="@layout/search_outfit" />
+
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="equipo.closet.closetvirtual.ui.profile.ProfileFragment"
+        android:label="Perfil de Usuario"
+        tools:layout="@layout/profile_fragment" />
+
+    <action
+        android:id="@+id/action_global_to_profileFragment"
+        app:destination="@id/profileFragment" />
 
 </navigation>
