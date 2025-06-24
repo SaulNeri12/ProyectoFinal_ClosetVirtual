@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Estilo para cards con elevación -->
+    <style name="CardWithElevation">
+        <item name="cardElevation">8dp</item>
+        <item name="cardCornerRadius">16dp</item>
+    </style>
+
+    <style name="CircularButton" parent="Widget.Material3.Button.IconButton">
+        <item name="android:background">@drawable/circle_white_background</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="android:elevation">8dp</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="RoundedButton" parent="Widget.Material3.Button">
+        <item name="android:background">@drawable/rounded_white_background</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="android:elevation">6dp</item>
+        <item name="cornerRadius">25dp</item>
+    </style>
+
+    <style name="SwitchTheme">
+        <item name="colorAccent">@color/button_primary</item>
+        <item name="android:colorForeground">@color/button_primary</item>
+    </style>
+</resources>
