@@ -49,4 +49,11 @@
 
     <string name="garment_registry_placeholder">Registro de Prendas</string>
 
+    <string-array name="outfit_categories">
+        <item>Casual</item>
+        <item>Formal</item>
+        <item>Sporty</item>
+        <item>Party</item>
+        <item>Business</item>
+    </string-array>
 </resources>

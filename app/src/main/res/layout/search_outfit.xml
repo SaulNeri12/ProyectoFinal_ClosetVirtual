@@ -232,32 +232,35 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Enhanced Bottom Navigation with Shadow using MaterialCardView -->
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottom_nav_card"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginBottom="24dp"
-        app:cardElevation="12dp"
-        app:cardCornerRadius="30dp"
         app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="5dp"
             android:background="#FFFFFF"
             android:elevation="0dp"
-            app:menu="@menu/bottom_nav_menu"
+            android:paddingVertical="5dp"
+            app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
             app:itemIconTint="@color/text_register_link"
             app:itemTextColor="@color/nav_selected"
-            app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
-            app:labelVisibilityMode="labeled" />
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
 
     </com.google.android.material.card.MaterialCardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

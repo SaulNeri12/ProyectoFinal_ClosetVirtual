@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/navigation_outfit_finder"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_clothes"
         android:title="Buscador de outfit" />
 
     <item

@@ -7,12 +7,13 @@
     android:orientation="vertical"
     tools:context=".ui.clothesSelection.ClothesSelectionFragment">
 
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/search_filter_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/header_card_view"
         app:cardBackgroundColor="@color/white"
         app:cardElevation="6dp"
@@ -95,7 +96,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
@@ -266,6 +268,20 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
-
+    <!-- Added MaterialButton here -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_use2"
+        android:layout_width="150sp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"
+        android:elevation="6dp"
+        android:text="nueva prenda"
+        android:textColor="@color/text_primary_white"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/button_primary"
+        app:cornerRadius="24dp" />
 
 </LinearLayout>
