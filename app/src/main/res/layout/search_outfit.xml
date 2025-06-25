@@ -77,7 +77,7 @@
         <LinearLayout
             android:id="@+id/search_filter_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
 
@@ -147,42 +147,6 @@
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="0dp"
-                app:cardUseCompatPadding="false">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp">
-
-                    <TextView
-                        android:id="@+id/dropdown_category"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@android:color/transparent"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:text="@string/category_dropdown_text"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_dropdown"
-                        app:tint="@color/text_hint" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
