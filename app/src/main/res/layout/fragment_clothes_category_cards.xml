@@ -54,15 +54,15 @@
                             android:id="@+id/btn_back"
                             style="@style/Widget.Material3.Button.IconButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="37dp"
+                            android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:backgroundTint="@color/white"
                             android:elevation="0dp"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            app:cornerRadius="20dp"
+                            app:cornerRadius="60dp"
                             app:icon="@drawable/ic_arrow_back"
-                            app:iconTint="@color/text_hint"
+                            app:iconTint="@color/icon_color"
                             app:startIconDrawable="@drawable/circle_white_background" />
 
                         <View
@@ -73,16 +73,16 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_profile"
                             style="@style/Widget.Material3.Button.IconButton"
-                            android:layout_width="45dp"
+                            android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:backgroundTint="@color/white"
                             android:elevation="0dp"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
-                            app:cornerRadius="20dp"
+                            app:cornerRadius="60dp"
                             app:icon="@drawable/ic_person"
-                            app:iconTint="@color/text_hint"
+                            app:iconTint="@color/icon_color"
                             app:startIconDrawable="@drawable/circle_white_background" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -126,15 +126,15 @@
                                     android:layout_height="50dp"
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal"
-                                    android:paddingStart="16dp"
-                                    android:paddingEnd="16dp">
+                                    android:paddingStart="16dp">
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:clickable="true"
                                         android:layout_marginEnd="12dp"
                                         android:src="@drawable/ic_search"
-                                        app:tint="@color/text_hint" />
+                                        app:tint="@color/icon_color" />
 
                                     <EditText
                                         android:id="@+id/et_search"
@@ -145,7 +145,7 @@
                                         android:hint="@string/search_hint"
                                         android:textColor="@color/black"
                                         android:textColorHint="@color/text_hint"
-                                        android:textSize="16sp" />
+                                        android:textSize="18sp" />
                                 </LinearLayout>
                             </com.google.android.material.card.MaterialCardView>
 
@@ -159,14 +159,16 @@
 
                                 <ImageView
                                     android:id="@+id/btn_filter"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="40dp"
                                     android:layout_height="match_parent"
+                                    android:layout_marginEnd="5dp"
                                     android:background="?attr/selectableItemBackgroundBorderless"
                                     android:clickable="true"
                                     android:focusable="true"
                                     android:scaleType="center"
                                     android:src="@drawable/ic_filter"
-                                    app:tint="@color/text_hint" />
+                                    app:tint="@color/icon_color" />
+
                             </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
                     </LinearLayout>

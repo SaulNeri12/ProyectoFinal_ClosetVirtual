@@ -1,22 +1,35 @@
 package equipo.closet.closetvirtual
 
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.FileProvider
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import java.io.File
 
 class ClothingInformationActivity : AppCompatActivity() {
 
+    private lateinit var imageView: ImageView
     private lateinit var etName: TextInputEditText
     private lateinit var etTag: TextInputEditText
     private lateinit var spinnerCategory: Spinner
     private lateinit var spinnerColor: Spinner
     private lateinit var switchPrint: SwitchCompat
     private lateinit var btnEdit: MaterialButton
+    private lateinit var btnDelete: MaterialButton
+    private lateinit var btnEditPhoto: MaterialButton
+
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private var imageFile: File? = null
+    private var imageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +41,9 @@ class ClothingInformationActivity : AppCompatActivity() {
         spinnerColor = findViewById(R.id.spinner_color)
         switchPrint = findViewById(R.id.switchPrint)
         btnEdit = findViewById(R.id.btn_use)
+        btnDelete = findViewById(R.id.btnDelete)
+        btnEditPhoto = findViewById(R.id.btnEditPhoto)
+        imageView = findViewById(R.id.imageView)
 
         //set the input fields information
         setInfo()
@@ -38,6 +54,44 @@ class ClothingInformationActivity : AppCompatActivity() {
         //set the behavior of the edit button
         setEditButton()
 
+    }
+
+    private fun setUpCamaraBehavior() : Unit {
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && imageFile != null) {
+                // show img
+                imageView.setImageURI(imageUri)
+
+                // pa guardar despues
+                val imagePath = imageFile!!.absolutePath
+
+                //para obtener la imagen
+//                val imagePath = garment.imagePath
+//                val imageFile = File(imagePath)
+//                binding.garmentFormImage.setImageURI(imageFile.toUri())
+            }
+        }
+    }
+
+    private fun openCamera() : Unit {
+        btnEditPhoto.setOnClickListener {
+            imageFile = createImageFile()
+            imageUri = FileProvider.getUriForFile(
+                this,
+                "${this.packageName}.fileprovider",
+                imageFile!!
+            )
+            cameraLauncher.launch(imageUri)
+        }
+    }
+
+    private fun createImageFile(): File {
+        val storageDir = File(this.filesDir, "images")
+        if (!storageDir.exists()) storageDir.mkdirs()
+
+        // Unique name
+        // change this later kevin dont let yourself forget it
+        return File.createTempFile("photo_", ".jpg", storageDir)
     }
 
     private fun setInfo(){

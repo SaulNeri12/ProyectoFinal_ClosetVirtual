@@ -43,15 +43,15 @@
                         android:id="@+id/btn_back"
                         style="@style/Widget.Material3.Button.IconButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="37dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:backgroundTint="@color/white"
                         android:elevation="0dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        app:cornerRadius="20dp"
+                        app:cornerRadius="60dp"
                         app:icon="@drawable/ic_arrow_back"
-                        app:iconTint="@color/text_hint"
+                        app:iconTint="@color/icon_color"
                         app:startIconDrawable="@drawable/circle_white_background" />
 
                     <View
@@ -62,16 +62,16 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_profile"
                         style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_width="45dp"
+                        android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:backgroundTint="@color/white"
                         android:elevation="0dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        app:cornerRadius="20dp"
+                        app:cornerRadius="40dp"
                         app:icon="@drawable/ic_person"
-                        app:iconTint="@color/text_hint"
+                        app:iconTint="@color/icon_color"
                         app:startIconDrawable="@drawable/circle_white_background" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -153,7 +153,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Campo Tag -->
@@ -186,7 +186,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Campo Categoría -->
@@ -301,7 +301,7 @@
                         android:layout_weight="1"
                         android:text="@string/garment_has_print_switch"
                         android:textColor="@color/text_primary_dark"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
