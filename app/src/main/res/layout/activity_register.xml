@@ -46,7 +46,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginBottom="32dp"
-            app:cardCornerRadius="50dp"
+            app:cardCornerRadius="60dp"
             app:cardElevation="8dp"
             app:cardBackgroundColor="@color/circle_background"
             app:cardUseCompatPadding="false">
@@ -228,7 +228,7 @@
             android:textColorHint="@color/text_hint_light"
             android:textColor="@color/black"
             android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -271,8 +271,8 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
-            android:layout_width="160dp"
-            android:layout_height="70dp"
+            android:layout_width="190dp"
+            android:layout_height="60dp"
             android:text="@string/button_register"
             android:layout_gravity="center"
             android:textColor="@color/text_primary_white"
