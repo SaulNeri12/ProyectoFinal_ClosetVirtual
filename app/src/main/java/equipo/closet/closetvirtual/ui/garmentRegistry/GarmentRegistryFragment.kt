@@ -1,5 +1,6 @@
 package equipo.closet.closetvirtual.ui.garmentRegistry
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,11 +17,15 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import java.io.File
 
 class GarmentRegistryFragment : Fragment() {
 
+
+    private lateinit var btnBackGarmentRegistry: MaterialButton
+    private lateinit var btnProfileGarmentRegistry: MaterialButton
     private lateinit var imageView: ImageView
     private lateinit var btnCamera : MaterialButton
     private lateinit var etName : TextInputEditText
@@ -48,6 +53,8 @@ class GarmentRegistryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+            btnBackGarmentRegistry = view.findViewById(R.id.btnBackGarmentRegistry)
+            btnProfileGarmentRegistry = view.findViewById(R.id.btnProfileGarmentRegistry)
             btnCamera = view.findViewById(R.id.btnCameraRegistry)
             etName = view.findViewById(R.id.etNameRegistry)
             etTag = view.findViewById(R.id.etTagRegistry)
@@ -57,8 +64,10 @@ class GarmentRegistryFragment : Fragment() {
             btnRegister = view.findViewById(R.id.btnAdd)
             imageView = view.findViewById(R.id.garmentImageRegistry)
 
-
-            // --- THEN CALL METHODS THAT USE THESE VIEWS ---
+            //set the behavior of the profile button
+            setProfileBehavior()
+            //set the behavior of the back button
+            setBackBehavior()
             //set the behavior of the camera button
             openCamera()
             //set the behavior of the camera launcher
@@ -71,6 +80,21 @@ class GarmentRegistryFragment : Fragment() {
             registerGarment() // You also call this from here, so btnRegister needs to be initialized first.
 
     }
+
+    private fun setBackBehavior() : Unit {
+        btnBackGarmentRegistry.setOnClickListener {
+            @Suppress("DEPRECATION")
+            requireActivity().onBackPressed()
+        }
+    }
+
+    private fun setProfileBehavior() : Unit {
+        btnProfileGarmentRegistry.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
 
     private fun setUpCamaraBehavior() : Unit {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
