@@ -333,12 +333,12 @@
         <!-- Button to confirm edition -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_use"
-            android:layout_width="120dp"
-            android:layout_height="50dp"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
             android:elevation="6dp"
-            android:text="Edit"
+            android:text="Guardar Cambios"
             android:textColor="@color/text_primary_white"
             android:textSize="13sp"
             app:backgroundTint="@color/button_primary"

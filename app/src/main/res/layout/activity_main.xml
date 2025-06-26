@@ -37,11 +37,12 @@
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
             android:elevation="0dp"
-            android:paddingVertical="5dp"
+            android:paddingVertical="8dp"
             app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
-            app:itemIconTint="@color/text_register_link"
-            app:itemTextColor="@color/nav_selected"
-            app:labelVisibilityMode="labeled"
+            app:itemIconTint="@drawable/bottom_nav_icon_selector"
+            app:itemTextColor="@android:color/transparent"
+            app:labelVisibilityMode="unlabeled"
+            app:itemIconSize="24dp"
             app:menu="@menu/bottom_nav_menu" />
 
     </com.google.android.material.card.MaterialCardView>
