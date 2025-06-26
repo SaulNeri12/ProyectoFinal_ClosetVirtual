@@ -6,8 +6,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.repositories.DummyGarmentRepository
+import equipo.closet.closetvirtual.repositories.factories.interfaces.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.Repository
 
 class MainActivity : AppCompatActivity() {
+
+    val clothes: Repository<Garment, Int> = GarmentRepositoryFactory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
