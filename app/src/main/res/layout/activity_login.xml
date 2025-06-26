@@ -103,7 +103,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="190dp"
         android:layout_height="60dp"
-        android:text="@string/button_register"
+        android:text="@string/button_login"
         android:layout_gravity="center"
         android:textColor="@color/text_primary_white"
         app:backgroundTint="@color/button_register"
