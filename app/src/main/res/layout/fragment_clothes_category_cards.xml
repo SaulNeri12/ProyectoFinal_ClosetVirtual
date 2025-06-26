@@ -412,16 +412,17 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-
-
+                
+                <!-- CardView para la categoría "Zapatos" -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="6dp"
-                    android:layout_margin="10dp">
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp">
 
-                    <!-- LinearLayout interno: Organiza el header y la grilla de la categoría Bottom -->
+                    <!-- LinearLayout interno: Organiza el header y la grilla de la categoría Top -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -432,13 +433,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
-                            <!-- Texto del título de la categoría "Bottom" -->
+                            <!-- Texto del título de la categoría "Top" -->
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:text="Zapatos"
+                                android:text="Top"
                                 android:textColor="@color/gray_dark"
-                                android:textSize="18dp"
+                                android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="10dp"
@@ -447,13 +448,13 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent" />
 
-                            <!-- Contador circular que muestra la cantidad de prendas tipo "Bottom" -->
+                            <!-- Contador circular que muestra la cantidad de prendas tipo "Top" -->
                             <com.google.android.material.textview.MaterialTextView
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:text="8"
                                 android:textStyle="bold"
-                                android:textSize="18dp"
+                                android:textSize="18sp"
                                 android:textAlignment="center"
                                 android:gravity="center"
                                 android:backgroundTint="@color/gray_dark"
@@ -461,7 +462,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <!-- GridLayout: Grilla que muestra las prendas de la categoría Bottom en 3 columnas -->
+                        <!-- GridLayout: Grilla que muestra las prendas de la categoría Top en 3 columnas -->
                         <GridLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -478,11 +479,11 @@
                                 app:cardCornerRadius="20dp"
                                 app:cardElevation="6dp">
 
-                                <!-- ImageView: Imagen de la prenda tipo Bottom -->
+                                <!-- ImageView: Imagen de la prenda tipo Top -->
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:src="@mipmap/garment_bottom_test"
+                                    android:src="@mipmap/garment_top_test"
                                     android:layout_gravity="center"
                                     android:layout_margin="10dp" />
 
@@ -492,14 +493,17 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
+
+                <!-- CardView para la categoría "Top" - Parte superior del cuerpo -->
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="6dp"
-                    android:layout_margin="10dp">
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp">
 
-                    <!-- LinearLayout interno: Organiza el header y la grilla de la categoría Bottom -->
+                    <!-- LinearLayout interno: Organiza el header y la grilla de la categoría Top -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -510,13 +514,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
-                            <!-- Texto del título de la categoría "Bottom" -->
+                            <!-- Texto del título de la categoría "Top" -->
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:text="Accesorios"
                                 android:textColor="@color/gray_dark"
-                                android:textSize="18dp"
+                                android:textSize="18sp"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginTop="10dp"
@@ -525,7 +529,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent" />
 
-                            <!-- Contador circular que muestra la cantidad de prendas tipo "Bottom" -->
+                            <!-- Contador circular que muestra la cantidad de prendas tipo "Top" -->
                             <com.google.android.material.textview.MaterialTextView
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
@@ -539,7 +543,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <!-- GridLayout: Grilla que muestra las prendas de la categoría Bottom en 3 columnas -->
+                        <!-- GridLayout: Grilla que muestra las prendas de la categoría Top en 3 columnas -->
                         <GridLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -556,11 +560,11 @@
                                 app:cardCornerRadius="20dp"
                                 app:cardElevation="6dp">
 
-                                <!-- ImageView: Imagen de la prenda tipo Bottom -->
+                                <!-- ImageView: Imagen de la prenda tipo Top -->
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:src="@mipmap/garment_bottom_test"
+                                    android:src="@mipmap/garment_top_test"
                                     android:layout_gravity="center"
                                     android:layout_margin="10dp" />
 

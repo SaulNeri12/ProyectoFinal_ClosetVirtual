@@ -98,10 +98,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:background="@android:color/transparent"
+                    android:hint="Nombre de la prenda"
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:hint="Nombre de la prenda"
                     android:textSize="14sp" />
             </com.google.android.material.card.MaterialCardView>
 
