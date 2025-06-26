@@ -13,6 +13,7 @@
         android:id="@+id/preview_garment_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:tag="0"
         android:contentDescription="Maquina Azul"
         android:src="@mipmap/garment_top_test"
         android:layout_gravity="center"

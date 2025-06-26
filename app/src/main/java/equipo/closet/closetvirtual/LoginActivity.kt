@@ -48,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
 
     private fun register() {
         tvRegister.setOnClickListener {
-
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }

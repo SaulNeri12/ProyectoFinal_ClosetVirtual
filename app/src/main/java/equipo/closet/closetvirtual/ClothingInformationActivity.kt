@@ -11,9 +11,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import java.io.File
+import androidx.core.net.toUri
 
 class ClothingInformationActivity : AppCompatActivity() {
 
@@ -45,6 +47,8 @@ class ClothingInformationActivity : AppCompatActivity() {
         btnEditPhoto = findViewById(R.id.btnEditPhoto)
         imageView = findViewById(R.id.imageView)
 
+        val extras = intent.extras
+
         //set the input fields information
         setInfo()
         //fill the category spinner
@@ -54,6 +58,45 @@ class ClothingInformationActivity : AppCompatActivity() {
         //set the behavior of the edit button
         setEditButton()
 
+        if (extras != null) {
+            val id = extras.getInt("garment_id", -1)
+            val name = extras.getString("garment_name") ?: ""
+            val color = extras.getString("garment_color") ?: ""
+            val tag = extras.getString("garment_tag") ?: ""
+            val category = extras.getString("garment_category") ?: ""
+            val print = extras.getBoolean("garment_print", false)
+            val imageUri = extras.getString("garment_image_uri") ?: ""
+
+            etName.setText(name)
+            etTag.setText(tag)
+            switchPrint.isChecked = print
+
+            /*
+            spinnerColor.setSelection(getIndexOfSpinnerItem(spinnerColor, color))
+            spinnerCategory.setSelection(getIndexOfSpinnerItem(spinnerCategory, category))
+             */
+
+            if (imageUri.isNotEmpty()) {
+                val uri = imageUri.toUri()
+                Glide.with(this)
+                    .load(uri)
+                    .into(imageView)
+            } else {
+                Glide.with(this)
+                    .load(R.mipmap.garment_bottom_test)
+                    .into(imageView)
+            }
+        }
+
+    }
+
+    private fun getIndexOfSpinnerItem(spinner: Spinner, value: String): Int {
+        for (i in 0 until spinner.count) {
+            if (spinner.getItemAtPosition(i).toString().equals(value, ignoreCase = true)) {
+                return i
+            }
+        }
+        return 0
     }
 
     private fun setUpCamaraBehavior() : Unit {
