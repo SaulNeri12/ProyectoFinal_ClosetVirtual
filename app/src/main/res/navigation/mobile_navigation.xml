@@ -5,13 +5,11 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-
     <fragment
         android:id="@+id/navigation_home"
         android:name="equipo.closet.closetvirtual.ui.clothes_category_cards.ClothesCategoryCardsFragment"
         android:label="Mi Armario"
         tools:layout="@layout/fragment_clothes_category_cards" />
-
 
     <fragment
         android:id="@+id/navigation_new_clothes"
@@ -19,13 +17,11 @@
         android:label="Registrar Prenda"
         tools:layout="@layout/fragment_garment_registry" />
 
-
     <fragment
         android:id="@+id/navigation_outfit_finder"
         android:name="equipo.closet.closetvirtual.ui.searchoutfit.SearchOutfitFragment"
         android:label="Buscador de Outfits"
         tools:layout="@layout/search_outfit" />
-
 
     <fragment
         android:id="@+id/profileFragment"
