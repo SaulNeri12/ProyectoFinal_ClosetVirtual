@@ -7,11 +7,11 @@ object DummyGarmentRepository : Repository<Garment, Int> {
     private val garments: MutableList<Garment> = mutableListOf()
     private var idCounter: Int = 1
 
-    override suspend fun getAll(): List<Garment> {
+    override fun getAll(): List<Garment> {
         return garments.toList()
     }
 
-    override suspend fun getByName(name: String): Garment? {
+    override fun getByName(name: String): Garment? {
         for (garment in garments) {
             if (garment.name.equals(name, ignoreCase = true)) {
                 return garment
@@ -20,17 +20,17 @@ object DummyGarmentRepository : Repository<Garment, Int> {
         return null
     }
 
-    override suspend fun getById(id: Int): Garment? {
+    override fun getById(id: Int): Garment? {
         return garments.find { it.id == id }
     }
 
-    override suspend fun insert(item: Garment): Int {
+    override fun insert(item: Garment): Int {
         val newItem = item.copy(id = idCounter++)
         garments.add(newItem)
         return newItem.id
     }
 
-    override suspend fun update(item: Garment): Int {
+    override fun update(item: Garment): Int {
         val index = garments.indexOfFirst { it.id == item.id }
         if (index != -1) {
             garments[index] = item
@@ -40,7 +40,7 @@ object DummyGarmentRepository : Repository<Garment, Int> {
         }
     }
 
-    override suspend fun delete(id: Int): Int {
+    override fun delete(id: Int): Int {
         val index = garments.indexOfFirst { it.id == id }
         if (index != -1) {
             garments.removeAt(index)
