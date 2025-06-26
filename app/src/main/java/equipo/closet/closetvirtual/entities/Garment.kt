@@ -1,7 +1,9 @@
 package equipo.closet.closetvirtual.entities
 
 data class Garment(
-    val id: Int,
-    val name: String,
-    val color: String
+    var id: Int,
+    var name: String,
+    var color: String,
+    var tag: String,
+    var category: String
 )
