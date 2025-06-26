@@ -196,6 +196,9 @@ class GarmentRegistryFragment : Fragment() {
                     print
                 )
 
+                // NOTE: Test message
+                Toast.makeText(requireContext(), "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
+
                 this.clothesRepository.insert(newGarment)
 
                 //succes mesagge
