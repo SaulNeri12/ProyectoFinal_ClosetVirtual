@@ -5,5 +5,6 @@ data class Garment(
     var name: String,
     var color: String,
     var tag: String,
-    var category: String
+    var category: String,
+    var print: Boolean
 )

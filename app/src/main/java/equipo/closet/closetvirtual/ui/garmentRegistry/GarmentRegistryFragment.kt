@@ -17,9 +17,14 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import equipo.closet.closetvirtual.R
+import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import java.io.File
 
 class GarmentRegistryFragment : Fragment() {
+
+    private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
 
     private lateinit var imageView: ImageView
     private lateinit var btnCamera : MaterialButton
@@ -182,11 +187,21 @@ class GarmentRegistryFragment : Fragment() {
                 val print = switchPrint.isChecked
                 val image = imageUri.toString()
 
+                val newGarment = Garment(
+                    0,
+                    name,
+                    color,
+                    tag,
+                    category,
+                    print
+                )
+
+                this.clothesRepository.insert(newGarment)
+
                 //succes mesagge
                 Toast.makeText(requireContext(), "Prenda registrada exitosamente",
                     Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 }

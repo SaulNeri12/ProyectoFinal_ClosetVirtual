@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         // adding some clothes...
-        this.clothes.insert(Garment(0, "Maquina Azul", "Azul", "Formal", "Top"))
-        this.clothes.insert(Garment(0, "Camisa Blanca", "Blanco", "Casual", "Top"))
-        this.clothes.insert(Garment(0, "Blusa Roja", "Rojo", "Elegante", "Top"))
-        this.clothes.insert(Garment(0, "Chaqueta Negra", "Negro", "Urbano", "Top"))
+        this.clothes.insert(Garment(0, "Maquina Azul", "Azul", "Formal", "Top", false))
+        this.clothes.insert(Garment(0, "Camisa Blanca", "Blanco", "Casual", "Top", false))
+        this.clothes.insert(Garment(0, "Blusa Roja", "Rojo", "Elegante", "Top", false))
+        this.clothes.insert(Garment(0, "Chaqueta Negra", "Negro", "Urbano", "Top", false))
 
         navView.setupWithNavController(navController)
     }
