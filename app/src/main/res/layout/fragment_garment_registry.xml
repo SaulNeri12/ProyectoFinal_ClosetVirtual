@@ -96,7 +96,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputName"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="55dp"
                     android:background="@android:color/transparent"
                     android:hint="Nombre de la prenda"
                     android:paddingHorizontal="20dp"
