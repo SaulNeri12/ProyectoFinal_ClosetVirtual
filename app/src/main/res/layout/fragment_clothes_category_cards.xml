@@ -32,8 +32,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/header_card_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -45,11 +44,11 @@
 
                     <LinearLayout
                         android:id="@+id/header_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="374dp"
+                        android:layout_height="68dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="16dp"
-                        android:gravity="center_vertical">
+                        android:padding="16dp">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_back"
@@ -78,13 +77,13 @@
                             android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:backgroundTint="@color/white"
+                            android:elevation="0dp"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
                             app:cornerRadius="20dp"
                             app:icon="@drawable/ic_person"
                             app:iconTint="@color/text_hint"
-                            app:startIconDrawable="@drawable/circle_white_background"
-                            android:elevation="0dp" />
+                            app:startIconDrawable="@drawable/circle_white_background" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
