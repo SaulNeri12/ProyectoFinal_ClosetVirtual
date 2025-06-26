@@ -6,11 +6,19 @@
         <item name="android:background">@drawable/bottom_nav_background</item>
         <item name="android:elevation">16dp</item>
         <item name="android:layout_margin">16dp</item>
-        <item name="itemIconTint">@color/bottom_nav_item_color</item>
-        <item name="itemTextColor">@color/bottom_nav_item_color</item>
+        <item name="itemIconTint">@drawable/bottom_nav_icon_selector</item>
+        <item name="itemTextColor">@android:color/transparent</item>
         <item name="itemActiveIndicatorStyle">@style/CustomBottomNavIndicator</item>
         <item name="itemPaddingTop">8dp</item>
         <item name="itemPaddingBottom">8dp</item>
+        <item name="itemTextAppearanceInactive">@style/HiddenTextAppearance</item>
+        <item name="itemTextAppearanceActive">@style/HiddenTextAppearance</item>
+    </style>
+
+    <!-- Estilo para ocultar texto -->
+    <style name="HiddenTextAppearance">
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">@android:color/transparent</item>
     </style>
 
 </resources>

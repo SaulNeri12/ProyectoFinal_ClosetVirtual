@@ -25,9 +25,6 @@ class GarmentRegistryFragment : Fragment() {
 
 
         val btnProfile: MaterialButton = view.findViewById(R.id.btn_profile)
-        btnProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_global_to_profileFragment)
-        }
 
 
     }

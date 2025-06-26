@@ -24,21 +24,5 @@ class ClothesCategoryCardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
-        val btnProfile: ImageView = view.findViewById(R.id.btnProfile)
-        val btnLogout: ImageView = view.findViewById(R.id.btnLogout)
-
-        btnProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_global_to_profileFragment)
-        }
-
-        btnLogout.setOnClickListener {
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            requireActivity().finish()
-        }
-         */
     }
 }
