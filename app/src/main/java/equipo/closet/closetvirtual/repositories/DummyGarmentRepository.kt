@@ -11,6 +11,15 @@ object DummyGarmentRepository : Repository<Garment, Int> {
         return garments.toList()
     }
 
+    override suspend fun getByName(name: String): Garment? {
+        for (garment in garments) {
+            if (garment.name.equals(name, ignoreCase = true)) {
+                return garment
+            }
+        }
+        return null
+    }
+
     override suspend fun getById(id: Int): Garment? {
         return garments.find { it.id == id }
     }

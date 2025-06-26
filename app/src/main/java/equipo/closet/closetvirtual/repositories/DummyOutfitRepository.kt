@@ -1,7 +1,7 @@
 package equipo.closet.closetvirtual.repositories
 
-import equipo.closet.closetvirtual.entities.Outfit
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import equipo.closet.closetvirtual.entities.Outfit
 
 object DummyOutfitRepository : Repository<Outfit, Int> {
 
@@ -9,7 +9,16 @@ object DummyOutfitRepository : Repository<Outfit, Int> {
     private var idCounter: Int = 1
 
     override suspend fun getAll(): List<Outfit> {
-        return outfits.toList() // copia inmutable
+        return outfits.toList()
+    }
+
+    override suspend fun getByName(name: String): Outfit? {
+        for (outfit in outfits) {
+            if (outfit.name.equals(name, ignoreCase = true)) {
+                return outfit
+            }
+        }
+        return null
     }
 
     override suspend fun getById(id: Int): Outfit? {
