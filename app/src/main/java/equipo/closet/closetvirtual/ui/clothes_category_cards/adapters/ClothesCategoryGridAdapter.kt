@@ -1,12 +1,14 @@
 package equipo.closet.closetvirtual.ui.clothes_category_cards.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.view.LayoutInflater
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import equipo.closet.closetvirtual.ClothingInformationActivity
 
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.R
@@ -44,6 +46,20 @@ class ClothesCategoryGridAdapter(
             Glide.with(context)
                 .load(garment.imageUri)
                 .into(holder.previewImage)
+        }
+
+        holder.previewImage.setOnClickListener {
+            var intent: Intent = Intent(context, ClothingInformationActivity::class.java)
+
+            intent.putExtra("garment_id", garment.id)
+            intent.putExtra("garment_name", garment.name)
+            intent.putExtra("garment_color", garment.color)
+            intent.putExtra("garment_tag", garment.tag)
+            intent.putExtra("garment_category", garment.category)
+            intent.putExtra("garment_print", garment.print)
+            intent.putExtra("garment_image_uri", garment.imageUri)
+
+            context.startActivity(intent)
         }
 
         return view
