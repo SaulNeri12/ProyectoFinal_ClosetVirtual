@@ -112,6 +112,7 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/tvEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="example.com"
@@ -158,7 +159,7 @@
                         app:cardCornerRadius="25dp">
 
                         <EditText
-                            android:id="@+id/user_name_input"
+                            android:id="@+id/etName"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@android:color/transparent"
@@ -191,12 +192,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:paddingHorizontal="20dp">
+                            android:gravity="center_vertical">
 
                             <Spinner
-                                android:id="@+id/user_gender_spinner"
-                                android:layout_width="0dp"
+                                android:id="@+id/spGender"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:background="@android:color/transparent" />
@@ -224,7 +224,7 @@
                         app:cardCornerRadius="25dp">
 
                         <EditText
-                            android:id="@+id/user_birthdate"
+                            android:id="@+id/etBirthDate"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@android:color/transparent"
@@ -260,7 +260,7 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:id="@+id/user_password_input"
+                                android:id="@+id/etCurrentPassword"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/transparent"
@@ -310,7 +310,7 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:id="@+id/user_new_password_input"
+                                android:id="@+id/etNewPassword"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/transparent"
@@ -360,7 +360,7 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:id="@+id/user_new_password_confirm_input"
+                                android:id="@+id/etConfirmPassword"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/transparent"
@@ -389,7 +389,7 @@
 
                     <!-- Save Button -->
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_account_changes"
+                        android:id="@+id/btnEditProfile"
                         android:layout_width="160dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center"
@@ -448,7 +448,7 @@
                         android:textSize="16sp" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/light_theme_switch"
+                        android:id="@+id/scLightMode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 

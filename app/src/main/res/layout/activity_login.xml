@@ -57,7 +57,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:hint="@string/email_field_hint_login" android:textColorHint="@color/text_hint_light"
             android:textColor="@color/input_text"
             android:paddingHorizontal="16dp"
@@ -91,7 +91,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:hint="@string/password_field_hint_login"
             android:inputType="textPassword"
             android:paddingHorizontal="16dp"

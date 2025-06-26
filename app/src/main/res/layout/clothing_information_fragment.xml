@@ -157,7 +157,7 @@
                     app:cardUseCompatPadding="false">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputName"
+                        android:id="@+id/etName"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:background="@android:color/transparent"
