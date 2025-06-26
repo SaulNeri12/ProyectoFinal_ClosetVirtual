@@ -37,9 +37,6 @@ class ClothesCategoryGridAdapter(
 
         val garment = getItem(position)
 
-        // Aquí asigna la imagen que corresponda a la prenda
-        // Si tienes un campo de imagen en Garment usa eso
-        // Por ahora usas un recurso fijo
         holder.previewImage.setImageResource(R.mipmap.garment_bottom_test)
 
         return view
