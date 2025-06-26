@@ -54,6 +54,7 @@
     <!-- Special colors -->
     <color name="outfit_card_background">#FFFFFF</color> <!-- Fondo de tarjetas de outfit -->
     <color name="search_background">#FFFFFF</color> <!-- Fondo del campo de búsqueda -->
+    <color name="icon_color">#525252</color>
 
     <color name="primary_blue">#3B82F6</color>
     <color name="primary_dark">#374151</color>

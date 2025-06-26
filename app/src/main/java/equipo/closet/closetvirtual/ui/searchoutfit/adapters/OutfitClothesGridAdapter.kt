@@ -1,20 +1,19 @@
-package equipo.closet.closetvirtual.ui.clothes_category_cards.adapters
+package equipo.closet.closetvirtual.ui.searchoutfit.adapters
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.view.LayoutInflater
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-
-import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.R
+import equipo.closet.closetvirtual.entities.Garment
 
-class ClothesCategoryGridAdapter(
+class OutfitClothesGridAdapter (
     private val context: Context,
     private val clothes: MutableList<Garment>
-) : BaseAdapter() {
+    ) : BaseAdapter() {
 
     override fun getCount(): Int = clothes.size
 
