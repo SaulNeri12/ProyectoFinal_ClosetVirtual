@@ -39,4 +39,10 @@
         android:id="@+id/action_global_to_profileFragment"
         app:destination="@id/profileFragment" />
 
+    <fragment
+        android:id="@+id/daily_outfit_fragment"
+        android:name="equipo.closet.closetvirtual.ui.dailyOutfit.DailyOutfitFragment"
+        android:label="Daily Outfit"
+        tools:layout="@layout/fragment_daily_outfit" />
+
 </navigation>
