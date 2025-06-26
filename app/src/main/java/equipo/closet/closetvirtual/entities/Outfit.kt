@@ -1,8 +1,8 @@
 package equipo.closet.closetvirtual.entities
 
 data class Outfit(
-    val id: Long,
+    val id: Int,
     val name: String,
-    val clothes_ids: MutableList<Long>,
+    val clothes_ids: MutableList<Int>,
     val clothes: MutableList<Garment>
 )

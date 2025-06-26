@@ -2,13 +2,11 @@ package equipo.closet.closetvirtual
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import equipo.closet.closetvirtual.entities.Garment
-import equipo.closet.closetvirtual.repositories.DummyGarmentRepository
-import equipo.closet.closetvirtual.repositories.factories.interfaces.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 
 class MainActivity : AppCompatActivity() {

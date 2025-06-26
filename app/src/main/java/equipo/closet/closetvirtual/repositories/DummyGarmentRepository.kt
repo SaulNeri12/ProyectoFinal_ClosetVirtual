@@ -8,7 +8,7 @@ object DummyGarmentRepository : Repository<Garment, Int> {
     private var idCounter: Int = 1
 
     override suspend fun getAll(): List<Garment> {
-        return garments.toList() // copia inmutable
+        return garments.toList()
     }
 
     override suspend fun getById(id: Int): Garment? {
