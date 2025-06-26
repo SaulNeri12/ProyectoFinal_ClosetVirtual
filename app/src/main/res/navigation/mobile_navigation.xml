@@ -21,13 +21,13 @@
         android:id="@+id/navigation_outfit_finder"
         android:name="equipo.closet.closetvirtual.ui.searchoutfit.SearchOutfitFragment"
         android:label="Buscador de Outfits"
-        tools:layout="@layout/search_outfit" />
+        tools:layout="@layout/fragment_search_outfit" />
 
     <fragment
         android:id="@+id/profileFragment"
         android:name="equipo.closet.closetvirtual.ui.profile.ProfileFragment"
         android:label="Perfil de Usuario"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/activity_profile" />
 
     <fragment
         android:id="@+id/clothes_selection_fragment"

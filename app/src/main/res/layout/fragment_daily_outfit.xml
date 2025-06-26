@@ -10,10 +10,10 @@
 
 
     <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/header_card_view"
@@ -65,7 +65,7 @@
                     android:insetBottom="0dp"
                     app:cornerRadius="40dp"
                     app:icon="@drawable/ic_person"
-                        app:iconTint="@color/icon_color"
+                    app:iconTint="@color/icon_color"
                     app:startIconDrawable="@drawable/circle_white_background" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -347,10 +347,10 @@
             app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="24dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -417,7 +417,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
 
-        </LinearLayout>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Botón de Registrar -->

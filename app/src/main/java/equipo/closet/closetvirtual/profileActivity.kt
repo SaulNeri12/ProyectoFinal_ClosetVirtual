@@ -1,27 +1,21 @@
-package equipo.closet.closetvirtual.ui.profile
+package equipo.closet.closetvirtual
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
-import equipo.closet.closetvirtual.LoginActivity
-import equipo.closet.closetvirtual.R
 import java.util.Calendar
 
-
-class ProfileFragment : Fragment() {
+class profileActivity : AppCompatActivity() {
 
     private lateinit var btnBack: MaterialButton
     private lateinit var tvEmail: TextView
@@ -35,34 +29,21 @@ class ProfileFragment : Fragment() {
     private lateinit var scLightMode: SwitchCompat
     private lateinit var loyoutLogout: LinearLayout
 
-    /**
-     * Inflate the layout for this fragment do not change
-     */
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
 
-        return inflater.inflate(R.layout.profile_fragment, container, false)
-    }
-
-    /**
-     * Initialize the fragment initialized variables here
-     */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        btnBack = view.findViewById<MaterialButton>(R.id.btn_back)
-        tvEmail = view.findViewById<TextView>(R.id.tvEmail)
-        etName = view.findViewById<EditText>(R.id.etName)
-        spGender = view.findViewById<Spinner>(R.id.spGender)
-        etBirthDate = view.findViewById<EditText>(R.id.etBirthDate)
-        etCurrentPassword = view.findViewById<EditText>(R.id.etCurrentPassword)
-        etNewPassword = view.findViewById<EditText>(R.id.etNewPassword)
-        etConfirmPassword = view.findViewById<EditText>(R.id.etConfirmPassword)
-        btnEditProfile = view.findViewById<MaterialButton>(R.id.btnEditProfile)
-        scLightMode = view.findViewById<SwitchCompat>(R.id.scLightMode)
-        loyoutLogout = view.findViewById<LinearLayout>(R.id.logout_layout)
+        btnBack = findViewById<MaterialButton>(R.id.btn_back)
+        tvEmail = findViewById<TextView>(R.id.tvEmail)
+        etName = findViewById<EditText>(R.id.etName)
+        spGender = findViewById<Spinner>(R.id.spGender)
+        etBirthDate = findViewById<EditText>(R.id.etBirthDate)
+        etCurrentPassword = findViewById<EditText>(R.id.etCurrentPassword)
+        etNewPassword =  findViewById<EditText>(R.id.etNewPassword)
+        etConfirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
+        btnEditProfile = findViewById<MaterialButton>(R.id.btnEditProfile)
+        scLightMode = findViewById<SwitchCompat>(R.id.scLightMode)
+        loyoutLogout = findViewById<LinearLayout>(R.id.logout_layout)
 
         // Set the user information
         setUserInformation()
@@ -100,7 +81,7 @@ class ProfileFragment : Fragment() {
         // List of gender options
         val genderOptions = listOf("Masculino", "Femenino", "Otro")
         // Create an ArrayAdapter using the genderOptions list
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,
             genderOptions)
         // Set the layout resource for the dropdown menu
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -118,7 +99,7 @@ class ProfileFragment : Fragment() {
             val month = calendar.get(Calendar.MONTH)
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-            val datePickerDialog = DatePickerDialog(requireContext(),
+            val datePickerDialog = DatePickerDialog(this,
                 { _, year, monthOfYear, dayOfMonth ->
                     val selectedDate = Calendar.getInstance()
                     selectedDate.set(year, monthOfYear, dayOfMonth)
@@ -127,7 +108,7 @@ class ProfileFragment : Fragment() {
                     val currentDate = Calendar.getInstance()
 
                     if (selectedDate.after(currentDate)) {
-                        Toast.makeText(requireContext(), "Birth date cannot be after current date",
+                        Toast.makeText(this, "Birth date cannot be after current date",
                             Toast.LENGTH_SHORT).show()
                     } else {
                         val dat = "$dayOfMonth-${monthOfYear + 1}-$year"
@@ -156,12 +137,12 @@ class ProfileFragment : Fragment() {
      */
     private fun logout(): Unit {
         loyoutLogout.setOnClickListener {
-            AlertDialog.Builder(requireContext())
+            AlertDialog.Builder(this)
                 .setTitle("Cerrar sesion")
                 .setMessage("¿Estás seguro de que quiere salir de la sesión?")
                 .setPositiveButton("Sí") { dialog, which ->
                     // Go to the login activity
-                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 }
@@ -195,7 +176,7 @@ class ProfileFragment : Fragment() {
             return false
         }
         if (gender.isEmpty()) {
-            Toast.makeText(requireContext(), "Gender is required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Gender is required", Toast.LENGTH_SHORT).show()
             return false
         }
         if (currentPassword.isNotEmpty()) {
@@ -223,25 +204,25 @@ class ProfileFragment : Fragment() {
         //validate empty fields
         if (currentPassword.isEmpty()) {
             etCurrentPassword.error = "Current password is required"
-            Toast.makeText(requireContext(), "Current password is required",
+            Toast.makeText(this, "Current password is required",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (newPassword.isEmpty()) {
             etNewPassword.error = "New password is required"
-            Toast.makeText(requireContext(), "New password is required",
+            Toast.makeText(this, "New password is required",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (confirmPassword.isEmpty()) {
             etConfirmPassword.error = "Confirm password is required"
-            Toast.makeText(requireContext(), "Confirm password is required",
+            Toast.makeText(this, "Confirm password is required",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (newPassword != confirmPassword) {
             etConfirmPassword.error = "Passwords do not match"
-            Toast.makeText(requireContext(), "Passwords do not match",
+            Toast.makeText(this, "Passwords do not match",
                 Toast.LENGTH_SHORT).show()
             return false
         }
@@ -266,13 +247,12 @@ class ProfileFragment : Fragment() {
                 //persist the user new information
 
                 Toast.makeText(
-                    requireContext(), "Profile edited successfully",
+                    this, "Profile edited successfully",
                     Toast.LENGTH_SHORT
                 ).show()
 
             }
         }
     }
-
 
 }
