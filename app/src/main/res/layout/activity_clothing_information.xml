@@ -2,9 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/background_main"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ClothingInformationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +33,7 @@
                 android:insetBottom="0dp"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_arrow_back"
-                app:iconTint="@color/text_hint"
+                app:iconTint="@color/icon_color"
                 app:startIconDrawable="@drawable/ic_arrow_back"
                 android:elevation="0dp" />
 
@@ -42,7 +43,7 @@
                 android:layout_weight="1" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_profile"
+                android:id="@+id/btnDelete"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="45dp"
                 android:layout_height="37dp"
@@ -53,7 +54,7 @@
                 android:insetBottom="0dp"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_delete"
-                app:iconTint="@color/text_hint"
+                app:iconTint="@color/icon_color"
                 app:startIconDrawable="@drawable/circle_white_background" />
         </LinearLayout>
 
@@ -77,7 +78,7 @@
 
                 <!-- Button to select a new image -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_back"
+                    android:id="@+id/btnEditPhoto"
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="45dp"
                     android:layout_height="37dp"
@@ -104,6 +105,7 @@
                         app:cardElevation="0dp">
 
                         <ImageView
+                            android:id="@+id/imageView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -331,12 +333,12 @@
         <!-- Button to confirm edition -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_use"
-            android:layout_width="120dp"
-            android:layout_height="50dp"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginBottom="24dp"
             android:elevation="6dp"
-            android:text="Edit"
+            android:text="Guardar Cambios"
             android:textColor="@color/text_primary_white"
             android:textSize="13sp"
             app:backgroundTint="@color/button_primary"

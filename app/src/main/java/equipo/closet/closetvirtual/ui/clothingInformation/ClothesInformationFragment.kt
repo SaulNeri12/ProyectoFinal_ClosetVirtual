@@ -27,7 +27,7 @@ class ClothesInformationFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
 
-        return inflater.inflate(R.layout.clothing_information_fragment, container, false)
+        return inflater.inflate(R.layout.activity_clothing_information, container, false)
     }
 
     /**

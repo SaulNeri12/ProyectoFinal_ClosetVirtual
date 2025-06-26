@@ -21,13 +21,13 @@
         android:id="@+id/navigation_outfit_finder"
         android:name="equipo.closet.closetvirtual.ui.searchoutfit.SearchOutfitFragment"
         android:label="Buscador de Outfits"
-        tools:layout="@layout/search_outfit" />
+        tools:layout="@layout/fragment_search_outfit" />
 
     <fragment
         android:id="@+id/profileFragment"
         android:name="equipo.closet.closetvirtual.ui.profile.ProfileFragment"
         android:label="Perfil de Usuario"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/activity_profile" />
 
     <fragment
         android:id="@+id/clothes_selection_fragment"
@@ -38,5 +38,11 @@
     <action
         android:id="@+id/action_global_to_profileFragment"
         app:destination="@id/profileFragment" />
+
+    <fragment
+        android:id="@+id/daily_outfit_fragment"
+        android:name="equipo.closet.closetvirtual.ui.dailyOutfit.DailyOutfitFragment"
+        android:label="Daily Outfit"
+        tools:layout="@layout/fragment_daily_outfit" />
 
 </navigation>

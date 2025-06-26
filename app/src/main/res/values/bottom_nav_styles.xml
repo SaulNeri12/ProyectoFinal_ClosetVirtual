@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Custom Bottom Navigation Indicator Style -->
-    <style name="CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="android:background">@drawable/bottom_nav_background</item>
-        <item name="android:elevation">16dp</item>
-        <item name="android:layout_margin">16dp</item>
-        <item name="itemIconTint">@drawable/bottom_nav_icon_selector</item>
-        <item name="itemTextColor">@android:color/transparent</item>
-        <item name="itemActiveIndicatorStyle">@style/CustomBottomNavIndicator</item>
-        <item name="itemPaddingTop">8dp</item>
-        <item name="itemPaddingBottom">8dp</item>
-        <item name="itemTextAppearanceInactive">@style/HiddenTextAppearance</item>
-        <item name="itemTextAppearanceActive">@style/HiddenTextAppearance</item>
-    </style>
 
     <!-- Estilo para ocultar texto -->
     <style name="HiddenTextAppearance">
