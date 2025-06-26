@@ -14,6 +14,7 @@
         android:id="@+id/category_cards_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -23,8 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/scroll_view_background">
-
-
 
             <!-- LinearLayout: Contenedor vertical que organiza las tarjetas de categorías -->
             <LinearLayout
@@ -210,6 +209,7 @@
 
                             <!-- Contador circular que muestra la cantidad de prendas tipo "Top" -->
                             <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/top_clothes_counter_label"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:text="8"
@@ -223,33 +223,13 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <!-- GridLayout: Grilla que muestra las prendas de la categoría Top en 3 columnas -->
-                        <GridLayout
+                        <GridView
+                            android:id="@+id/top_clothes_cards_grid"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:columnCount="3"
-                            android:rowCount="1"
-                            android:orientation="horizontal"
-                            android:padding="15dp">
-
-                            <!-- MaterialCardView: Tarjeta individual para mostrar una prenda -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="96dp"
-                                android:layout_height="96dp"
-                                android:layout_margin="5dp"
-                                app:cardCornerRadius="20dp"
-                                app:cardElevation="6dp">
-
-                                <!-- ImageView: Imagen de la prenda tipo Top -->
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@mipmap/garment_top_test"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp" />
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </GridLayout>
+                            android:numColumns="auto_fit"
+                            android:columnWidth="96dp"
+                            android:padding="15dp"></GridView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -288,6 +268,7 @@
 
                             <!-- Contador circular que muestra la cantidad de prendas tipo "Top" -->
                             <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/bottom_clothes_counter_label"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:text="8"
@@ -301,33 +282,13 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <!-- GridLayout: Grilla que muestra las prendas de la categoría Top en 3 columnas -->
-                        <GridLayout
+                        <GridView
+                            android:id="@+id/bottom_clothes_cards_grid"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:columnCount="3"
-                            android:rowCount="1"
-                            android:orientation="horizontal"
-                            android:padding="15dp">
-
-                            <!-- MaterialCardView: Tarjeta individual para mostrar una prenda -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="96dp"
-                                android:layout_height="96dp"
-                                android:layout_margin="5dp"
-                                app:cardCornerRadius="20dp"
-                                app:cardElevation="6dp">
-
-                                <!-- ImageView: Imagen de la prenda tipo Top -->
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@mipmap/garment_top_test"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp" />
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </GridLayout>
+                            android:numColumns="auto_fit"
+                            android:columnWidth="96dp"
+                            android:padding="15dp"></GridView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -369,6 +330,7 @@
 
                             <!-- Contador circular que muestra la cantidad de prendas tipo "Top" -->
                             <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/bodysuit_clothes_counter_label"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:text="8"
@@ -382,33 +344,14 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <!-- GridLayout: Grilla que muestra las prendas de la categoría Top en 3 columnas -->
-                        <GridLayout
+                        <GridView
+                            android:id="@+id/bodysuit_clothes_cards_grid"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:columnCount="3"
-                            android:rowCount="1"
+                            android:columnCount="1"
+                            android:rowCount="4"
                             android:orientation="horizontal"
-                            android:padding="15dp">
-
-                            <!-- MaterialCardView: Tarjeta individual para mostrar una prenda -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="96dp"
-                                android:layout_height="96dp"
-                                android:layout_margin="5dp"
-                                app:cardCornerRadius="20dp"
-                                app:cardElevation="6dp">
-
-                                <!-- ImageView: Imagen de la prenda tipo Top -->
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@mipmap/garment_top_test"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp" />
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </GridLayout>
+                            android:padding="15dp"></GridView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -437,7 +380,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:text="Top"
+                                android:text="Zapatos"
                                 android:textColor="@color/gray_dark"
                                 android:textSize="18sp"
                                 android:textStyle="bold"
@@ -450,6 +393,7 @@
 
                             <!-- Contador circular que muestra la cantidad de prendas tipo "Top" -->
                             <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/shoes_clothes_counter_label"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:text="8"
@@ -463,36 +407,15 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <!-- GridLayout: Grilla que muestra las prendas de la categoría Top en 3 columnas -->
-                        <GridLayout
+                        <GridView
+                            android:id="@+id/shoes_clothes_cards_grid"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:columnCount="3"
-                            android:rowCount="1"
-                            android:orientation="horizontal"
-                            android:padding="15dp">
-
-                            <!-- MaterialCardView: Tarjeta individual para mostrar una prenda -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="96dp"
-                                android:layout_height="96dp"
-                                android:layout_margin="5dp"
-                                app:cardCornerRadius="20dp"
-                                app:cardElevation="6dp">
-
-                                <!-- ImageView: Imagen de la prenda tipo Top -->
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@mipmap/garment_top_test"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp" />
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </GridLayout>
+                            android:numColumns="auto_fit"
+                            android:columnWidth="96dp"
+                            android:padding="15dp"></GridView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
 
                 <!-- CardView para la categoría "Top" - Parte superior del cuerpo -->
                 <androidx.cardview.widget.CardView
@@ -531,6 +454,7 @@
 
                             <!-- Contador circular que muestra la cantidad de prendas tipo "Top" -->
                             <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/accessories_clothes_counter_label"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:text="8"
@@ -544,39 +468,17 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <!-- GridLayout: Grilla que muestra las prendas de la categoría Top en 3 columnas -->
-                        <GridLayout
+                        <GridView
+                            android:id="@+id/accessories_clothes_cards_grid"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:columnCount="3"
-                            android:rowCount="1"
-                            android:orientation="horizontal"
-                            android:padding="15dp">
-
-                            <!-- MaterialCardView: Tarjeta individual para mostrar una prenda -->
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="96dp"
-                                android:layout_height="96dp"
-                                android:layout_margin="5dp"
-                                app:cardCornerRadius="20dp"
-                                app:cardElevation="6dp">
-
-                                <!-- ImageView: Imagen de la prenda tipo Top -->
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:src="@mipmap/garment_top_test"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="10dp" />
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </GridLayout>
+                            android:numColumns="auto_fit"
+                            android:columnWidth="96dp"
+                            android:padding="15dp"></GridView>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
             </LinearLayout>
         </ScrollView>
-
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
