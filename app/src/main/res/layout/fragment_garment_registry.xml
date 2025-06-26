@@ -43,13 +43,13 @@
                         android:id="@+id/btn_back"
                         style="@style/Widget.Material3.Button.IconButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="37dp"
                         android:layout_gravity="center_vertical"
                         android:backgroundTint="@color/white"
                         android:elevation="0dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        app:cornerRadius="60dp"
+                        app:cornerRadius="20dp"
                         app:icon="@drawable/ic_arrow_back"
                         app:iconTint="@color/icon_color"
                         app:startIconDrawable="@drawable/circle_white_background" />
@@ -62,14 +62,14 @@
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_profile"
                         style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_width="40dp"
+                        android:layout_width="45dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:backgroundTint="@color/white"
                         android:elevation="0dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        app:cornerRadius="40dp"
+                        app:cornerRadius="20dp"
                         app:icon="@drawable/ic_person"
                         app:iconTint="@color/icon_color"
                         app:startIconDrawable="@drawable/circle_white_background" />
@@ -95,7 +95,7 @@
                     android:padding="16dp">
 
                     <ImageView
-                        android:id="@+id/garmentImage"
+                        android:id="@+id/garmentImageRegistry"
                         android:layout_width="match_parent"
                         android:layout_height="240dp"
                         android:background="@color/surface_gray"
@@ -103,7 +103,7 @@
                         android:src="@drawable/rounded_button_light" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCamera"
+                        android:id="@+id/btnCameraRegistry"
                         style="@style/Widget.Material3.Button.IconButton"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
@@ -145,7 +145,7 @@
                 app:cardUseCompatPadding="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etName"
+                    android:id="@+id/etNameRegistry"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:background="@android:color/transparent"
@@ -153,7 +153,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Campo Tag -->
@@ -178,7 +178,7 @@
                 app:cardUseCompatPadding="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTag"
+                    android:id="@+id/etTagRegistry"
                     android:layout_width="384dp"
                     android:layout_height="60dp"
                     android:background="@android:color/transparent"
@@ -186,7 +186,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Campo Categoría -->
@@ -219,7 +219,7 @@
                     android:paddingEnd="20dp">
 
                     <Spinner
-                        android:id="@+id/spCategory"
+                        android:id="@+id/spCategoryRegistry"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -263,7 +263,7 @@
                     android:paddingEnd="20dp">
 
                     <Spinner
-                        android:id="@+id/spColor"
+                        android:id="@+id/spColorRegistry"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -301,11 +301,11 @@
                         android:layout_weight="1"
                         android:text="@string/garment_has_print_switch"
                         android:textColor="@color/text_primary_dark"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/switchPrint"
+                        android:id="@+id/switchPrintRegistry"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:theme="@style/SwitchTheme" />
@@ -314,7 +314,7 @@
 
             <!-- Botón de Registrar -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btRegister"
+                android:id="@+id/btnAdd"
                 android:layout_width="190dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"

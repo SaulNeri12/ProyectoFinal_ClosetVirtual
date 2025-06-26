@@ -48,26 +48,27 @@ class GarmentRegistryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnCamera = view.findViewById(R.id.btnCamera)
-        etName = view.findViewById(R.id.etName)
-        etTag = view.findViewById(R.id.inputTag)
-        spinnerCategory = view.findViewById(R.id.spinner_category)
-        spinnerColor = view.findViewById(R.id.spinner_color)
-        switchPrint = view.findViewById(R.id.switchPrint)
-        btnRegister = view.findViewById(R.id.btnRegister)
-        imageView = view.findViewById(R.id.garmentImage)
+            btnCamera = view.findViewById(R.id.btnCameraRegistry)
+            etName = view.findViewById(R.id.etNameRegistry)
+            etTag = view.findViewById(R.id.etTagRegistry)
+            spinnerCategory = view.findViewById(R.id.spCategoryRegistry)
+            spinnerColor = view.findViewById(R.id.spColorRegistry)
+            switchPrint = view.findViewById(R.id.switchPrintRegistry)
+            btnRegister = view.findViewById(R.id.btnAdd)
+            imageView = view.findViewById(R.id.garmentImageRegistry)
 
 
-
-        //set the behavior of the camera button
-        openCamera()
-        //set the behavior of the camera launcher
-        setUpCamaraBehavior()
-        //fill the category spinner
-        setCategorySpinner()
-        //fill the color spinner
-        setColorSpinner()
-
+            // --- THEN CALL METHODS THAT USE THESE VIEWS ---
+            //set the behavior of the camera button
+            openCamera()
+            //set the behavior of the camera launcher
+            setUpCamaraBehavior()
+            //fill the category spinner
+            setCategorySpinner()
+            //fill the color spinner
+            setColorSpinner()
+            // Set up the register button listener (assuming you want to do this in onViewCreated)
+            registerGarment() // You also call this from here, so btnRegister needs to be initialized first.
 
     }
 

@@ -18,7 +18,7 @@ class SearchOutfitFragment : Fragment() {
         activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.GONE
 
 
-        return inflater.inflate(R.layout.search_outfit, container, false)
+        return inflater.inflate(R.layout.fragment_search_outfit, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
