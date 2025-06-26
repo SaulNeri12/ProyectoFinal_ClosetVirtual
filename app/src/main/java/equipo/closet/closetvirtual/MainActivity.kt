@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
 
         // adding some clothes...
         this.clothes.insert(Garment(0, "Maquina Azul", "Azul", "Formal", "Top", false))
-        this.clothes.insert(Garment(0, "Camisa Blanca", "Blanco", "Casual", "Top", false))
         this.clothes.insert(Garment(0, "Pantalon Versachi", "Negro", "Elegante", "Bottom", false))
         this.clothes.insert(Garment(0, "Chaqueta Negra", "Negro", "Urbano", "Top", false))
         this.clothes.insert(Garment(0, "Zapatos De Guchi", "Negro", "Elegante", "Zapatos", false))

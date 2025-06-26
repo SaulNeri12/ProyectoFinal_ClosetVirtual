@@ -14,6 +14,7 @@ import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactor
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.ui.searchoutfit.adapters.OutfitSearchListAdapter
 
+
 class SearchOutfitFragment : Fragment() {
 
     private val outfitRepository: Repository<Outfit, Int> = OutfitRepositoryFactory.create()

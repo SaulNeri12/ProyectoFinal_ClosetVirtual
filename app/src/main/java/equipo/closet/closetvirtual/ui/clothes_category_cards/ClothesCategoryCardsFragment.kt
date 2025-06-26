@@ -41,7 +41,7 @@ class ClothesCategoryCardsFragment : Fragment() {
 
             // ======[ Category "Top" ]========
             val topClothes = clothes.filter { it.category.lowercase() == "top" }
-            val topClothesCategoryAdapter = ClothesCategoryGridAdapter(requireContext(), clothes) // makes the adapter
+            val topClothesCategoryAdapter = ClothesCategoryGridAdapter(requireContext(), topClothes.toMutableList()) // makes the adapter
             val clothesTopCategoryGridView: GridView = view.findViewById(R.id.top_clothes_cards_grid) // loads the preview clothes cards form category card
             clothesTopCategoryGridView.adapter = topClothesCategoryAdapter // sets the preview cards adapter
             val topClothesCountLabel: MaterialTextView = view.findViewById(R.id.top_clothes_counter_label) // gets the label which contains the count of clothes

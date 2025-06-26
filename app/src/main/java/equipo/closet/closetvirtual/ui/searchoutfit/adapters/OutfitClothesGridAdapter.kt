@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
 
@@ -36,7 +37,13 @@ class OutfitClothesGridAdapter (
 
         val garment = getItem(position)
 
-        holder.previewImage.setImageResource(R.mipmap.garment_bottom_test)
+        if (garment.imageUri.isEmpty() || garment.imageUri.isBlank()) {
+            holder.previewImage.setImageResource(R.mipmap.garment_bottom_test)
+        } else {
+            Glide.with(context)
+                .load(garment.imageUri)
+                .into(holder.previewImage)
+        }
 
         return view
     }

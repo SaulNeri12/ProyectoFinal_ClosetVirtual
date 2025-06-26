@@ -118,7 +118,7 @@ class GarmentRegistryFragment : Fragment() {
 
     private fun setCategorySpinner() : Unit {
         // List of gender options
-        val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapato", "Accesorio")
+        val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapatos", "Accesorios")
         // Create an ArrayAdapter using the genderOptions list
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,
             categoryOptions)
@@ -193,7 +193,8 @@ class GarmentRegistryFragment : Fragment() {
                     color,
                     tag,
                     category,
-                    print
+                    print,
+                    imageUri = if (imageUri != null) imageUri.toString() else ""
                 )
 
                 // NOTE: Test message
