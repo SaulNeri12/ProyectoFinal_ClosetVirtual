@@ -11,11 +11,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import java.io.File
-import androidx.core.net.toUri
 
 class ClothingInformationActivity : AppCompatActivity() {
 
@@ -71,10 +71,10 @@ class ClothingInformationActivity : AppCompatActivity() {
             etTag.setText(tag)
             switchPrint.isChecked = print
 
-            /*
-            spinnerColor.setSelection(getIndexOfSpinnerItem(spinnerColor, color))
-            spinnerCategory.setSelection(getIndexOfSpinnerItem(spinnerCategory, category))
-             */
+
+            spinnerColor.setSelection(getIndex(spinnerColor, color))
+            spinnerCategory.setSelection(getIndex(spinnerCategory, category))
+
 
             if (imageUri.isNotEmpty()) {
                 val uri = imageUri.toUri()
@@ -90,12 +90,13 @@ class ClothingInformationActivity : AppCompatActivity() {
 
     }
 
-    private fun getIndexOfSpinnerItem(spinner: Spinner, value: String): Int {
-        for (i in 0 until spinner.count) {
-            if (spinner.getItemAtPosition(i).toString().equals(value, ignoreCase = true)) {
+    private fun getIndex(spinner: Spinner, myString: String): Int {
+        for (i in 0..<spinner.count) {
+            if (spinner.getItemAtPosition(i).toString().equals(myString, ignoreCase = true)) {
                 return i
             }
         }
+
         return 0
     }
 
