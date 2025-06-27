@@ -154,7 +154,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Campo Tag -->
@@ -187,7 +187,7 @@
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Campo Categoría -->
@@ -227,8 +227,8 @@
                         android:background="@android:color/transparent" />
 
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:src="@drawable/ic_dropdown"
                         app:tint="@color/gray_medium" />
                 </LinearLayout>
@@ -271,8 +271,8 @@
                         android:background="@android:color/transparent" />
 
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:src="@drawable/ic_dropdown"
                         app:tint="@color/gray_medium" />
                 </LinearLayout>
@@ -302,7 +302,7 @@
                         android:layout_weight="1"
                         android:text="@string/garment_has_print_switch"
                         android:textColor="@color/text_primary_dark"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <androidx.appcompat.widget.SwitchCompat

@@ -32,4 +32,14 @@
         <item name="android:height">48dp</item>
         <item name="cornerRadius">24dp</item>
     </style>
+
+    <style name="InputStyle">
+        <item name="colorAccent">@color/gray_medium</item>
+        <item name="android:colorForeground">@color/gray_medium</item>
+    </style>
+
+    <style name="passwordCursorStyle">
+        <item name="android:textCursorDrawable">@drawable/input_cursor</item>
+    </style>
+
 </resources>
