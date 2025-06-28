@@ -19,7 +19,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
-import equipo.closet.closetvirtual.profileActivity
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import java.io.File
@@ -94,7 +94,7 @@ class GarmentRegistryFragment : Fragment() {
 
     private fun setProfileBehavior() : Unit {
         btnProfileGarmentRegistry.setOnClickListener {
-            val intent = Intent(requireContext(), profileActivity::class.java)
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
             startActivity(intent)
         }
     }
