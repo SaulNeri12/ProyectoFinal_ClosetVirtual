@@ -16,12 +16,13 @@ interface UserRepository : Repository<User, String> {
      * @param email The user's email address.
      * @param password The user's password.
      * @throws AuthenticationException if the credentials are invalid or the login fails.
+     * @return User The logged-in user
      */
-    fun login(email: String, password: String)
+    suspend fun login(email: String, password: String): User
 
     /**
      * Registers a new user in the system.
      * @throws RegistrationException if the user could not be created or already exists.
      */
-    fun signUp(user: User)
+    suspend fun signUp(user: User)
 }

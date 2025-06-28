@@ -1,12 +1,14 @@
 package equipo.closet.closetvirtual
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
+import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
@@ -19,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // TODO: TEST
+        Toast.makeText(this, "Email session: ${SessionManager.user.email}", Toast.LENGTH_LONG).show()
 
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
 

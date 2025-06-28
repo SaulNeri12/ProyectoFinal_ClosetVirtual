@@ -9,15 +9,17 @@ object DummyUserRepository : UserRepository {
 
     private val users = mutableListOf<User>()
 
-    override fun login(email: String, password: String) {
+    override suspend fun login(email: String, password: String): User {
         val user = users.find { it.email == email }
 
         if (user == null || user.password != password) {
             throw AuthException("Correo o contraseña incorrectos.")
         }
+
+        return user
     }
 
-    override fun signUp(user: User) {
+    override suspend fun signUp(user: User) {
         if (users.any { it.email == user.email }) {
             throw RegistrationException("Ya existe una cuenta con ese correo.")
         }
