@@ -100,7 +100,6 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="190dp"
                         android:layout_height="190dp"
-                        app:cardBackgroundColor="@color/background_dark"
                         app:cardCornerRadius="20dp"
                         app:cardElevation="0dp">
 
@@ -109,8 +108,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:src="@drawable/ic_camera"
-                            app:tint="@android:color/white" />
+                            android:src="@drawable/ic_camera" />
 
                     </com.google.android.material.card.MaterialCardView>
 
