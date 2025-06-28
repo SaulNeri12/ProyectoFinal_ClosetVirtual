@@ -13,7 +13,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
-import equipo.closet.closetvirtual.profileActivity
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.ui.clothes_category_cards.adapters.ClothesCategoryGridAdapter
@@ -64,48 +64,6 @@ class ClothesCategoryCardsFragment : Fragment() {
             val shoesClothes = clothes.filter { it.category.lowercase() == "zapatos" }
             view.findViewById<GridView>(R.id.shoes_clothes_cards_grid).adapter =
                 ClothesCategoryGridAdapter(requireContext(), shoesClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.shoes_clothes_counter_label).text =
-                formatCategoryClothesCount(shoesClothes.size)
-
-            // === Bodysuit ===
-            val bodysuitClothes = clothes.filter { it.category.lowercase() == "bodysuit" }
-            view.findViewById<GridView>(R.id.bodysuit_clothes_cards_grid).adapter =
-                ClothesCategoryGridAdapter(requireContext(), bodysuitClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.bodysuit_clothes_counter_label).text =
-                formatCategoryClothesCount(bodysuitClothes.size)
-
-            // === Accesorios ===
-            val accessoriesClothes = clothes.filter { it.category.lowercase() == "accesorios" }
-            view.findViewById<GridView>(R.id.accessories_clothes_cards_grid).adapter =
-                ClothesCategoryGridAdapter(requireContext(), accessoriesClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.accessories_clothes_counter_label).text =
-                formatCategoryClothesCount(accessoriesClothes.size)
-        }
-    }
-
-    private fun setProfileButtonClickListener() {
-        btnProfileCategoryCards.setOnClickListener {
-            val intent = Intent(requireContext(), profileActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setBackButtonClickListener() {
-        btnBackCategoryCards.setOnClickListener {
-            @Suppress("DEPRECATION")
-            requireActivity().onBackPressed()
-        }
-    }
-
-    private fun formatCategoryClothesCount(count: Int): String {
-        return when {
-            count <= 0 -> "0"
-            count > 100 -> "100+"
-            else -> count.toString()
-        }
-    }
-}
-
             view.findViewById<MaterialTextView>(R.id.shoes_clothes_counter_label).text =
                 formatCategoryClothesCount(shoesClothes.size)
 
