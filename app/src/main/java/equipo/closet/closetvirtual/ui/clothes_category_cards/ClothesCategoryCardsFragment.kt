@@ -1,3 +1,4 @@
+
 package equipo.closet.closetvirtual.ui.clothes_category_cards
 
 import android.content.Intent
@@ -5,22 +6,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import android.widget.GridView
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
-import equipo.closet.closetvirtual.LoginActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.ui.clothes_category_cards.adapters.ClothesCategoryGridAdapter
 import kotlinx.coroutines.launch
 
 class ClothesCategoryCardsFragment : Fragment() {
+
+    private lateinit var btnBackCategoryCards: MaterialButton
+    private lateinit var btnProfileCategoryCards: MaterialButton
 
     private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
 
@@ -35,69 +37,71 @@ class ClothesCategoryCardsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        btnBackCategoryCards = view.findViewById(R.id.btnBackCategoryCards)
+        btnProfileCategoryCards = view.findViewById(R.id.btnProfileCategoryCards)
+
+        setBackButtonClickListener()
+        setProfileButtonClickListener()
+
         lifecycleScope.launch {
-            // loads all clothes from repository (asynchronus)
             val clothes = clothesRepository.getAll().toMutableList()
 
-            // ======[ Category "Top" ]========
+            // === Top ===
             val topClothes = clothes.filter { it.category.lowercase() == "top" }
-            val topClothesCategoryAdapter = ClothesCategoryGridAdapter(requireContext(), topClothes.toMutableList()) // makes the adapter
-            val clothesTopCategoryGridView: GridView = view.findViewById(R.id.top_clothes_cards_grid) // loads the preview clothes cards form category card
-            clothesTopCategoryGridView.adapter = topClothesCategoryAdapter // sets the preview cards adapter
-            val topClothesCountLabel: MaterialTextView = view.findViewById(R.id.top_clothes_counter_label) // gets the label which contains the count of clothes
-            topClothesCountLabel.text = formatCategoryClothesCount(topClothes.size) // sets the clothes count
+            view.findViewById<GridView>(R.id.top_clothes_cards_grid).adapter =
+                ClothesCategoryGridAdapter(requireContext(), topClothes.toMutableList())
+            view.findViewById<MaterialTextView>(R.id.top_clothes_counter_label).text =
+                formatCategoryClothesCount(topClothes.size)
 
-            ///////////////////////////////////////////////////////////////////////
-
-            // ======[ Category "Bottom" ]========
+            // === Bottom ===
             val bottomClothes = clothes.filter { it.category.lowercase() == "bottom" }
-            val bottomAdapter = ClothesCategoryGridAdapter(requireContext(), bottomClothes.toMutableList())
-            view.findViewById<GridView>(R.id.bottom_clothes_cards_grid).adapter = bottomAdapter
+            view.findViewById<GridView>(R.id.bottom_clothes_cards_grid).adapter =
+                ClothesCategoryGridAdapter(requireContext(), bottomClothes.toMutableList())
             view.findViewById<MaterialTextView>(R.id.bottom_clothes_counter_label).text =
                 formatCategoryClothesCount(bottomClothes.size)
 
-            ///////////////////////////////////////////////////////////////////////
-
-            // ======[ Category "Shoes" ]========
+            // === Zapatos ===
             val shoesClothes = clothes.filter { it.category.lowercase() == "zapatos" }
-            val shoesAdapter = ClothesCategoryGridAdapter(requireContext(), shoesClothes.toMutableList())
-            view.findViewById<GridView>(R.id.shoes_clothes_cards_grid).adapter = shoesAdapter
+            view.findViewById<GridView>(R.id.shoes_clothes_cards_grid).adapter =
+                ClothesCategoryGridAdapter(requireContext(), shoesClothes.toMutableList())
             view.findViewById<MaterialTextView>(R.id.shoes_clothes_counter_label).text =
                 formatCategoryClothesCount(shoesClothes.size)
 
-            ////////////////////////////////////////////////////////////////////////
-
-            // ======[ Category "Bodysuit" ]========
+            // === Bodysuit ===
             val bodysuitClothes = clothes.filter { it.category.lowercase() == "bodysuit" }
-            val bodysuitAdapter = ClothesCategoryGridAdapter(requireContext(), bodysuitClothes.toMutableList())
-            view.findViewById<GridView>(R.id.bodysuit_clothes_cards_grid).adapter = bodysuitAdapter
+            view.findViewById<GridView>(R.id.bodysuit_clothes_cards_grid).adapter =
+                ClothesCategoryGridAdapter(requireContext(), bodysuitClothes.toMutableList())
             view.findViewById<MaterialTextView>(R.id.bodysuit_clothes_counter_label).text =
                 formatCategoryClothesCount(bodysuitClothes.size)
 
-            ////////////////////////////////////////////////////////////////////////
-
-            // ======[ Category "Accessories" ]========
+            // === Accesorios ===
             val accessoriesClothes = clothes.filter { it.category.lowercase() == "accesorios" }
-            val accessoriesAdapter = ClothesCategoryGridAdapter(requireContext(), accessoriesClothes.toMutableList())
-            view.findViewById<GridView>(R.id.accessories_clothes_cards_grid).adapter = accessoriesAdapter
+            view.findViewById<GridView>(R.id.accessories_clothes_cards_grid).adapter =
+                ClothesCategoryGridAdapter(requireContext(), accessoriesClothes.toMutableList())
             view.findViewById<MaterialTextView>(R.id.accessories_clothes_counter_label).text =
                 formatCategoryClothesCount(accessoriesClothes.size)
         }
     }
 
-    /**
-     * Formats the clothes count depending the number
-     */
+    private fun setProfileButtonClickListener() {
+        btnProfileCategoryCards.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setBackButtonClickListener() {
+        btnBackCategoryCards.setOnClickListener {
+            @Suppress("DEPRECATION")
+            requireActivity().onBackPressed()
+        }
+    }
+
     private fun formatCategoryClothesCount(count: Int): String {
-
-        if (count <= 0) {
-            return "0"
+        return when {
+            count <= 0 -> "0"
+            count > 100 -> "100+"
+            else -> count.toString()
         }
-
-        if (count > 100) {
-            return "100+"
-        }
-
-        return count.toString()
     }
 }

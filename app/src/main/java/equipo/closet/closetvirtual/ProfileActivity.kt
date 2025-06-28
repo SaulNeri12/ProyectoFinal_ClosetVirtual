@@ -15,7 +15,7 @@ import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.button.MaterialButton
 import java.util.Calendar
 
-class profileActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
     private lateinit var btnBack: MaterialButton
     private lateinit var tvEmail: TextView
@@ -31,19 +31,19 @@ class profileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        setContentView(R.layout.activity_profile)
 
-        btnBack = findViewById<MaterialButton>(R.id.btn_back)
-        tvEmail = findViewById<TextView>(R.id.tvEmail)
-        etName = findViewById<EditText>(R.id.etName)
-        spGender = findViewById<Spinner>(R.id.spGender)
-        etBirthDate = findViewById<EditText>(R.id.etBirthDate)
-        etCurrentPassword = findViewById<EditText>(R.id.etCurrentPassword)
-        etNewPassword =  findViewById<EditText>(R.id.etNewPassword)
-        etConfirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
+        btnBack = findViewById<MaterialButton>(R.id.btnBackProfile)
+        tvEmail = findViewById<TextView>(R.id.tvEmailProfile)
+        etName = findViewById<EditText>(R.id.etNameProfile)
+        spGender = findViewById<Spinner>(R.id.spGenderProfile)
+        etBirthDate = findViewById<EditText>(R.id.etBirthDateProfile)
+        etCurrentPassword = findViewById<EditText>(R.id.etCurrentPasswordProfile)
+        etNewPassword =  findViewById<EditText>(R.id.etNewPasswordProfile)
+        etConfirmPassword = findViewById<EditText>(R.id.etConfirmPasswordProfile)
         btnEditProfile = findViewById<MaterialButton>(R.id.btnEditProfile)
-        scLightMode = findViewById<SwitchCompat>(R.id.scLightMode)
-        loyoutLogout = findViewById<LinearLayout>(R.id.logout_layout)
+        scLightMode = findViewById<SwitchCompat>(R.id.scLightModeProfile)
+        loyoutLogout = findViewById<LinearLayout>(R.id.logoutLayoutProfile)
 
         // Set the user information
         setUserInformation()
@@ -57,6 +57,8 @@ class profileActivity : AppCompatActivity() {
         logout()
         // Edit profile
         editProfile()
+        // Set the back button behavior
+        setBackBehavior()
 
     }
 
@@ -72,6 +74,13 @@ class profileActivity : AppCompatActivity() {
         spGender.setSelection(1)
         // Set the user birth date
         etBirthDate.setText("01/01/2000")
+    }
+
+    private fun setBackBehavior() : Unit {
+        btnBack.setOnClickListener {
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     /**

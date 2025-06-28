@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_main"
-    tools:context=".profileActivity">
+    tools:context=".ProfileActivity">
 
     <!-- Header Layout -->
     <LinearLayout
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_back"
+            android:id="@+id/btnBackProfile"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="45dp"
             android:layout_height="37dp"
@@ -112,7 +112,7 @@
                     </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tvEmail"
+                        android:id="@+id/tvEmailProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="example.com"
@@ -159,7 +159,7 @@
                         app:cardCornerRadius="25dp">
 
                         <EditText
-                            android:id="@+id/etName"
+                            android:id="@+id/etNameProfile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@android:color/transparent"
@@ -195,7 +195,7 @@
                             android:gravity="center_vertical">
 
                             <Spinner
-                                android:id="@+id/spGender"
+                                android:id="@+id/spGenderProfile"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -224,7 +224,7 @@
                         app:cardCornerRadius="25dp">
 
                         <EditText
-                            android:id="@+id/etBirthDate"
+                            android:id="@+id/etBirthDateProfile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@android:color/transparent"
@@ -260,7 +260,7 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:id="@+id/etCurrentPassword"
+                                android:id="@+id/etCurrentPasswordProfile"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/transparent"
@@ -310,7 +310,7 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:id="@+id/etNewPassword"
+                                android:id="@+id/etNewPasswordProfile"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/transparent"
@@ -360,7 +360,7 @@
                             android:layout_height="match_parent">
 
                             <EditText
-                                android:id="@+id/etConfirmPassword"
+                                android:id="@+id/etConfirmPasswordProfile"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:background="@android:color/transparent"
@@ -448,7 +448,7 @@
                         android:textSize="16sp" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/scLightMode"
+                        android:id="@+id/scLightModeProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -467,7 +467,7 @@
                 app:cardUseCompatPadding="false">
 
                 <LinearLayout
-                    android:id="@+id/logout_layout"
+                    android:id="@+id/logoutLayoutProfile"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal"
