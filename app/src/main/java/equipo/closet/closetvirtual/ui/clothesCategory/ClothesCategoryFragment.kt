@@ -1,12 +1,17 @@
 
-package equipo.closet.closetvirtual.ui.clothes_category_cards
+package equipo.closet.closetvirtual.ui.clothesCategory
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.GridView
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
@@ -16,13 +21,15 @@ import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
-import equipo.closet.closetvirtual.ui.clothes_category_cards.adapters.ClothesCategoryGridAdapter
+import equipo.closet.closetvirtual.ui.clothesCategory.adapters.ClothesCategoryGridAdapter
 import kotlinx.coroutines.launch
 
-class ClothesCategoryCardsFragment : Fragment() {
+class ClothesCategoryFragment : Fragment() {
 
     private lateinit var btnBackCategoryCards: MaterialButton
     private lateinit var btnProfileCategoryCards: MaterialButton
+    private lateinit var btnSearch: ImageView
+    private lateinit var btnFilter: ImageView
 
     private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
 
@@ -31,7 +38,7 @@ class ClothesCategoryCardsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.VISIBLE
-        return inflater.inflate(R.layout.fragment_clothes_category_cards, container, false)
+        return inflater.inflate(R.layout.fragment_clothes_category, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,9 +46,17 @@ class ClothesCategoryCardsFragment : Fragment() {
 
         btnBackCategoryCards = view.findViewById(R.id.btnBackCategoryCards)
         btnProfileCategoryCards = view.findViewById(R.id.btnProfileCategoryCards)
+        btnSearch = view.findViewById(R.id.btnSearchClothesCategory)
+        btnFilter = view.findViewById(R.id.btnFilterClothesCategory)
 
+        // Back button behavior
         setBackButtonClickListener()
+        // Search button behavior
+        setSearchButtonBehavior()
+        // Profile button behavior
         setProfileButtonClickListener()
+        // Filter button behavior
+        setFilterButtonBehavior()
 
         lifecycleScope.launch {
             val clothes = clothesRepository.getAll().toMutableList()
@@ -94,6 +109,40 @@ class ClothesCategoryCardsFragment : Fragment() {
         btnBackCategoryCards.setOnClickListener {
             @Suppress("DEPRECATION")
             requireActivity().onBackPressed()
+        }
+    }
+
+    private fun setSearchButtonBehavior() {
+        btnSearch.setOnClickListener {
+            TODO("Not yet implemented")
+        }
+    }
+
+    private fun setFilterButtonBehavior() {
+        btnFilter.setOnClickListener {
+            val editText = EditText(requireContext()).apply {
+                hint = "Escribe la etiqueta"
+                setPadding(32, 24, 32, 24)
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.text_primary_dark))
+                setHintTextColor(ContextCompat.getColor(requireContext(), R.color.gray_medium))
+            }
+
+            AlertDialog.Builder(requireContext())
+                .setTitle("Filtrar por etiqueta")
+                .setView(editText)
+                .setPositiveButton("Filtrar") { dialog, _ ->
+                    val tag = editText.text.toString().trim()
+                    if (tag.isNotEmpty()) {
+                        TODO("Not yet implemented")
+                    } else {
+                        Toast.makeText(requireContext(), "Ingrese una etiqueta válida", Toast.LENGTH_SHORT).show()
+                    }
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancelar") { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
         }
     }
 

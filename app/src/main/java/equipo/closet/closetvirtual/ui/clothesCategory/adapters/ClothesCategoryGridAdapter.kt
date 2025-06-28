@@ -1,4 +1,4 @@
-package equipo.closet.closetvirtual.ui.clothes_category_cards.adapters
+package equipo.closet.closetvirtual.ui.clothesCategory.adapters
 
 import android.content.Context
 import android.content.Intent
