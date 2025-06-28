@@ -85,7 +85,8 @@
                 android:paddingHorizontal="20dp"
                 android:textColor="@color/text_primary_dark"
                 android:textColorHint="@color/gray_medium"
-                android:textSize="16sp" />
+                android:textSize="17sp"
+                android:theme="@style/InputStyle"/>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -114,7 +115,8 @@
                 android:paddingHorizontal="20dp"
                 android:textColor="@color/text_primary_dark"
                 android:textColorHint="@color/gray_medium"
-                android:textSize="16sp" />
+                android:textSize="17sp"
+                android:theme="@style/InputStyle"/>
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -126,6 +128,7 @@
             android:layout_marginBottom="8dp" />
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/birthDateContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -150,7 +153,7 @@
                     android:focusable="false"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="16sp" />
+                    android:textSize="17sp"/>
 
                 <ImageView
                     android:id="@+id/ivCalendar"
@@ -159,7 +162,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_calendar"
-                    app:tint="@color/text_hint_light"
+                    app:tint="@color/icon_color"
                     android:contentDescription="Calendario" />
 
             </RelativeLayout>
@@ -183,14 +186,14 @@
             app:cardCornerRadius="25dp"
             app:cardUseCompatPadding="false">
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/etGender"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:dropDownVerticalOffset="56dp"
                 android:paddingHorizontal="16dp"
-                android:hint="@string/select_gender" android:textColorHint="@color/text_hint_light"
-                android:textColor="@color/input_text"
-                android:inputType="none" android:background="@android:color/transparent" />
+                android:gravity="center_vertical"
+                android:spinnerMode="dropdown" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -201,38 +204,52 @@
             android:textSize="16sp"
             android:layout_marginBottom="8dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:hintEnabled="false"
-            app:boxBackgroundMode="filled"
-            app:boxBackgroundColor="@android:color/white"
-            app:boxCornerRadiusTopStart="25dp"
-            app:boxCornerRadiusTopEnd="25dp"
-            app:boxCornerRadiusBottomStart="25dp"
-            app:boxCornerRadiusBottomEnd="25dp"
-            app:boxStrokeColor="@android:color/transparent"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_hint_light">
+            app:cardBackgroundColor="@android:color/white"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="25dp"
+            app:cardUseCompatPadding="false">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:hint="Contraseña"
-            android:paddingHorizontal="16dp"
-            android:textSize="16sp"
-            android:textColorHint="@color/text_hint_light"
-            android:textColor="@color/black"
-            android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/SwitchTheme"
+                app:boxBackgroundMode="filled"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@android:color/white"
+                app:boxCornerRadiusTopStart="25dp"
+                app:boxCornerRadiusTopEnd="25dp"
+                app:boxCornerRadiusBottomStart="25dp"
+                app:boxCornerRadiusBottomEnd="25dp"
+                app:boxStrokeColor="@android:color/transparent"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/icon_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60dp"
+                    android:hint="Contraseña"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:textSize="17sp"
+                    android:textColorHint="@color/gray_medium"
+                    android:textColor="@color/text_primary_dark"
+                    android:inputType="textPassword"
+                    style="@style/passwordCursorStyle"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
 
 
-    <TextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/confirm_password_field_title"
@@ -240,34 +257,48 @@
             android:textSize="16sp"
             android:layout_marginBottom="8dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:hintEnabled="false"
-            app:boxBackgroundMode="filled"
-            app:boxBackgroundColor="@android:color/white"
-            app:boxCornerRadiusTopStart="25dp"
-            app:boxCornerRadiusTopEnd="25dp"
-            app:boxCornerRadiusBottomStart="25dp"
-            app:boxCornerRadiusBottomEnd="25dp"
-            app:boxStrokeColor="@android:color/transparent"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_hint_light">
+            app:cardBackgroundColor="@android:color/white"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="25dp"
+            app:cardUseCompatPadding="false">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etConfirmPassword"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:hint="Confirmar contraseña"
-                android:paddingHorizontal="16dp"
-                android:textSize="16sp"
-                android:textColorHint="@color/text_hint_light"
-                android:textColor="@color/black"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:theme="@style/SwitchTheme"
+                app:boxBackgroundMode="filled"
+                app:hintEnabled="false"
+                app:boxBackgroundColor="@android:color/white"
+                app:boxCornerRadiusTopStart="25dp"
+                app:boxCornerRadiusTopEnd="25dp"
+                app:boxCornerRadiusBottomStart="25dp"
+                app:boxCornerRadiusBottomEnd="25dp"
+                app:boxStrokeColor="@android:color/transparent"
+                app:boxStrokeWidth="0dp"
+                app:boxStrokeWidthFocused="0dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/icon_color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60dp"
+                    android:hint="Confirmar contraseña"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:textSize="17sp"
+                    android:textColorHint="@color/gray_medium"
+                    android:textColor="@color/text_primary_dark"
+                    android:inputType="textPassword"
+                    style="@style/passwordCursorStyle"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"

@@ -8,7 +8,13 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatSpinner
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -16,10 +22,11 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etName: EditText
     private lateinit var etMail: EditText
     private lateinit var etBirthDate: EditText
-    private lateinit var etGender: Spinner
+    private lateinit var etGender: AppCompatSpinner
     private lateinit var etPassword: EditText
     private lateinit var etConfirmPassword: EditText
     private lateinit var btnRegister: android.widget.Button
+    private lateinit var birthDateContainer: MaterialCardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +40,7 @@ class RegisterActivity : AppCompatActivity() {
         etPassword = findViewById(R.id.etPassword)
         etConfirmPassword = findViewById(R.id.etConfirmPassword)
         btnRegister = findViewById(R.id.btnRegister)
+        birthDateContainer = findViewById(R.id.birthDateContainer)
 
         //fill the gender spinner
         fillGenderSpinner()
@@ -49,30 +57,30 @@ class RegisterActivity : AppCompatActivity() {
      * Set the behavior of the birth date field
      */
     private fun setBirthDateFieldBehavior() {
+        birthDateContainer.setOnClickListener {
+            showDatePicker()
+        }
         etBirthDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            val datePickerDialog = DatePickerDialog(this,
-                { _, year, monthOfYear, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, monthOfYear, dayOfMonth)
-
-                    // Get current date
-                    val currentDate = Calendar.getInstance()
-
-                    if (selectedDate.after(currentDate)) {
-                        Toast.makeText(this, "Birth date cannot be after current date", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val dat = "$dayOfMonth-${monthOfYear + 1}-$year"
-                        etBirthDate.setText(dat)
-                    }
-                }, year, month, day)
-            datePickerDialog.show()
+            showDatePicker()
         }
     }
+
+    private fun showDatePicker() {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Selecciona tu fecha de nacimiento")
+            .setTheme(R.style.CustomDatePickerTheme)
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selectedDateInMillis ->
+            val selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                .format(Date(selectedDateInMillis))
+
+            etBirthDate.setText(selectedDate)
+        }
+
+        datePicker.show(this.supportFragmentManager, "DATE_PICKER")
+    }
+
 
     /**
      * Set the behavior of the back button
@@ -88,13 +96,14 @@ class RegisterActivity : AppCompatActivity() {
      */
     private fun fillGenderSpinner() {
         // List of gender options
-        val genderOptions = listOf("Masculino", "Femenino", "Otro")
+        val genderOptions = listOf("Masculino", "Femenino", "Indefinido")
         // Create an ArrayAdapter using the genderOptions list
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
         // Set the layout resource for the dropdown menu
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set the adapter to the genderSpinner
         etGender.adapter = adapter
+        etGender.setSelection(genderOptions.size - 1)
     }
 
     /**

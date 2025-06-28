@@ -19,7 +19,6 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var btnLogin: Button
     private lateinit var tvRegister: TextView
-
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
 
@@ -46,23 +45,23 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         btnLogin.setOnClickListener {
             if (validateInputFields()) {
-                val email = etEmail.text.toString()
-                val password = etPassword.text.toString()
-
-                lifecycleScope.launch {
-                    try {
-                        val user = userRepository.login(email, password)
-
-                        SessionManager.user = user;
+//                val email = etEmail.text.toString()
+//                val password = etPassword.text.toString()
+//
+//                lifecycleScope.launch {
+//                    try {
+//                        val user = userRepository.login(email, password)
+//
+//                        SessionManager.user = user;
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
 
-                    } catch (e: AuthException) {
-                        Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
-                    }
-                }
+//                    } catch (e: AuthException) {
+//                        Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
+//                    }
+//                }
             }
         }
     }
@@ -78,14 +77,12 @@ class LoginActivity : AppCompatActivity() {
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
 
-        // TODO: EMAIL REGEX VALIDATION IS NOT NEEDED
         if (email.isEmpty()) {
             etEmail.error = "Email is required"
             Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show()
             return false
         }
 
-        // TODO: VALIDATE PASSWORD WITH REGULAR EXPRESIONS (REGEX)
         if (password.isEmpty()) {
             etPassword.error = "Password is required"
             Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show()
