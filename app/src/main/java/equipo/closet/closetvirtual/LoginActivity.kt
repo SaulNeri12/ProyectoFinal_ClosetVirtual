@@ -7,6 +7,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import equipo.closet.closetvirtual.objects.SessionManager
+import equipo.closet.closetvirtual.repositories.exceptions.AuthException
+import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
+import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
@@ -16,6 +22,8 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
+
+    private val userRepository: UserRepository = UserRepositoryFactory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +46,23 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         btnLogin.setOnClickListener {
             if (validateInputFields()) {
-                //start the main activity
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
+                val email = etEmail.text.toString()
+                val password = etPassword.text.toString()
+
+                lifecycleScope.launch {
+                    try {
+                        val user = userRepository.login(email, password)
+
+                        SessionManager.user = user;
+
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+
+                    } catch (e: AuthException) {
+                        Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }
@@ -57,11 +78,14 @@ class LoginActivity : AppCompatActivity() {
         val email = etEmail.text.toString()
         val password = etPassword.text.toString()
 
+        // TODO: EMAIL REGEX VALIDATION IS NOT NEEDED
         if (email.isEmpty()) {
             etEmail.error = "Email is required"
             Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show()
             return false
         }
+
+        // TODO: VALIDATE PASSWORD WITH REGULAR EXPRESIONS (REGEX)
         if (password.isEmpty()) {
             etPassword.error = "Password is required"
             Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show()

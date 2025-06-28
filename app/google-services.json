@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "914130063664",
+    "project_id": "closetvirtual-34c5d",
+    "storage_bucket": "closetvirtual-34c5d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914130063664:android:f8bb3b86779390ea16b8f5",
+        "android_client_info": {
+          "package_name": "equipo.closet.closetvirtual"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlVSaJpryVwDmn7luP7jMY2dBCyux1P8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
