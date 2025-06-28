@@ -13,21 +13,26 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.button.MaterialButton
+import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import java.util.Calendar
 
 class ProfileActivity : AppCompatActivity() {
 
+    private lateinit var btnEditProfile: MaterialButton
+    private lateinit var etConfirmPassword: EditText
+    private lateinit var etCurrentPassword: EditText
     private lateinit var btnBack: MaterialButton
+    private lateinit var etNewPassword: EditText
+    private lateinit var etBirthDate: EditText
+    private lateinit var spGender: Spinner
     private lateinit var tvEmail: TextView
     private lateinit var etName: EditText
-    private lateinit var spGender: Spinner
-    private lateinit var etBirthDate: EditText
-    private lateinit var etCurrentPassword: EditText
-    private lateinit var etNewPassword: EditText
-    private lateinit var etConfirmPassword: EditText
-    private lateinit var btnEditProfile: MaterialButton
+
     private lateinit var scLightMode: SwitchCompat
     private lateinit var loyoutLogout: LinearLayout
+
+    private val userRepository: UserRepository = UserRepositoryFactory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,7 +122,7 @@ class ProfileActivity : AppCompatActivity() {
                     val currentDate = Calendar.getInstance()
 
                     if (selectedDate.after(currentDate)) {
-                        Toast.makeText(this, "Birth date cannot be after current date",
+                        Toast.makeText(this, "La fecha de nacimiento no puede ser posterior a la fecha actual",
                             Toast.LENGTH_SHORT).show()
                     } else {
                         val dat = "$dayOfMonth-${monthOfYear + 1}-$year"
@@ -177,15 +182,15 @@ class ProfileActivity : AppCompatActivity() {
 
         //validate empty fields
         if (name.isEmpty()) {
-            etName.error = "Name is required"
+            etName.error = "El nombre es obligatorio"
             return false
         }
         if (birthDate.isEmpty()) {
-            etBirthDate.error = "Birth date is required"
+            etBirthDate.error = "Fecha de nacimiento obligatoria"
             return false
         }
         if (gender.isEmpty()) {
-            Toast.makeText(this, "Gender is required", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "El genero es obligatorio", Toast.LENGTH_SHORT).show()
             return false
         }
         if (currentPassword.isNotEmpty()) {
@@ -212,26 +217,26 @@ class ProfileActivity : AppCompatActivity() {
 
         //validate empty fields
         if (currentPassword.isEmpty()) {
-            etCurrentPassword.error = "Current password is required"
-            Toast.makeText(this, "Current password is required",
+            etCurrentPassword.error = "La contraseña actual es requerida"
+            Toast.makeText(this, "La contraseña actual es requerida",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (newPassword.isEmpty()) {
-            etNewPassword.error = "New password is required"
-            Toast.makeText(this, "New password is required",
+            etNewPassword.error = "La nueva contraseña es requerida"
+            Toast.makeText(this, "La nueva contraseña es requerida",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (confirmPassword.isEmpty()) {
-            etConfirmPassword.error = "Confirm password is required"
-            Toast.makeText(this, "Confirm password is required",
+            etConfirmPassword.error = "La contrasena de confirmación es requerida"
+            Toast.makeText(this, "La contrasena de confirmación es requerida",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (newPassword != confirmPassword) {
-            etConfirmPassword.error = "Passwords do not match"
-            Toast.makeText(this, "Passwords do not match",
+            etConfirmPassword.error = "Las contraseñas no coinciden"
+            Toast.makeText(this, "Las contraseñas no coinciden",
                 Toast.LENGTH_SHORT).show()
             return false
         }
@@ -256,7 +261,7 @@ class ProfileActivity : AppCompatActivity() {
                 //persist the user new information
 
                 Toast.makeText(
-                    this, "Profile edited successfully",
+                    this, "Se actualizó la información del perfil",
                     Toast.LENGTH_SHORT
                 ).show()
 

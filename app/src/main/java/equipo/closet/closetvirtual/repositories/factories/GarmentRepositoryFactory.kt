@@ -10,6 +10,7 @@ object GarmentRepositoryFactory : Factory<Repository<Garment, Int>> {
     private var debug: Boolean = true
 
     override fun create(): Repository<Garment, Int> {
+
         /*
         if (debug) {
             return DummyGarmentRepository

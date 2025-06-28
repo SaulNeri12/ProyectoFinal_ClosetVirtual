@@ -1,7 +1,7 @@
 package equipo.closet.closetvirtual.repositories
 
-import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import equipo.closet.closetvirtual.entities.Garment
 
 object DummyGarmentRepository : Repository<Garment, Int> {
     private val garments: MutableList<Garment> = mutableListOf()
