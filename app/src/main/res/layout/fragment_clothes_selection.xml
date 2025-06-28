@@ -33,7 +33,7 @@
                 android:padding="16dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_back"
+                    android:id="@+id/btnBackClothesSelection"
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="wrap_content"
                     android:layout_height="37dp"
@@ -53,7 +53,7 @@
                     android:layout_weight="1" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_profile"
+                    android:id="@+id/btnProfileClothesSelection"
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="45dp"
                     android:layout_height="40dp"
@@ -146,7 +146,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/add_outfit_button"
+                android:id="@+id/mcOpenClothesRegistry"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="5dp"

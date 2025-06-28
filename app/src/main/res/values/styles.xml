@@ -34,6 +34,15 @@
         <item name="cornerRadius">16dp</item>
     </style>
 
+  <style name="InputStyle">
+        <item name="colorAccent">@color/gray_medium</item>
+        <item name="android:colorForeground">@color/gray_medium</item>
+    </style>
+
+    <style name="passwordCursorStyle">
+        <item name="android:textCursorDrawable">@drawable/input_cursor</item>
+    </style>
+
     <!-- Estilo personalizado para BottomNavigationView -->
     <style name="CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="android:background">@color/white</item>

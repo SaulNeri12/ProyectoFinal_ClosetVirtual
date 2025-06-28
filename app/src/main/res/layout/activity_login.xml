@@ -60,7 +60,8 @@
             android:paddingHorizontal="20dp"
             android:textColor="@color/text_primary_dark"
             android:textColorHint="@color/gray_medium"
-            android:textSize="16sp" />
+            android:textSize="17sp"
+            android:theme="@style/InputStyle"/>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
@@ -74,8 +75,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:hintEnabled="false"
+        android:theme="@style/SwitchTheme"
         app:boxBackgroundMode="filled"
+        app:hintEnabled="false"
         app:boxBackgroundColor="@android:color/white"
         app:boxCornerRadiusTopStart="25dp"
         app:boxCornerRadiusTopEnd="25dp"
@@ -85,19 +87,24 @@
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:endIconMode="password_toggle"
-        app:endIconTint="@color/text_hint_light">
+        app:endIconTint="@color/icon_color">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
+            android:minHeight="60dp"
             android:hint="Contraseña"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:paddingHorizontal="16dp"
-            android:textSize="16sp"
-            android:textColorHint="@color/text_hint_light"
-            android:textColor="@color/black"
-            android:inputType="textPassword" />
+            android:textSize="17sp"
+            android:textColorHint="@color/gray_medium"
+            android:textColor="@color/text_primary_dark"
+            android:inputType="textPassword"
+            style="@style/passwordCursorStyle"/>
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin"
