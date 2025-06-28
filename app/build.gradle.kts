@@ -39,6 +39,8 @@ android {
 }
 
 dependencies {
+    // glide image loader library
+    implementation("com.github.bumptech.glide:glide:4.15.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

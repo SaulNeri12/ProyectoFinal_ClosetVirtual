@@ -17,15 +17,17 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
+import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.profileActivity
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import java.io.File
 
 class GarmentRegistryFragment : Fragment() {
 
+    private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
 
-    private lateinit var btnBackGarmentRegistry: MaterialButton
-    private lateinit var btnProfileGarmentRegistry: MaterialButton
     private lateinit var imageView: ImageView
     private lateinit var btnCamera : MaterialButton
     private lateinit var etName : TextInputEditText
@@ -38,6 +40,9 @@ class GarmentRegistryFragment : Fragment() {
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private var imageFile: File? = null
     private var imageUri: Uri? = null
+
+    private lateinit var btnBackGarmentRegistry: MaterialButton
+    private lateinit var btnProfileGarmentRegistry: MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +60,7 @@ class GarmentRegistryFragment : Fragment() {
 
             btnBackGarmentRegistry = view.findViewById(R.id.btnBackGarmentRegistry)
             btnProfileGarmentRegistry = view.findViewById(R.id.btnProfileGarmentRegistry)
+
             btnCamera = view.findViewById(R.id.btnCameraRegistry)
             etName = view.findViewById(R.id.etNameRegistry)
             etTag = view.findViewById(R.id.etTagRegistry)
@@ -64,10 +70,8 @@ class GarmentRegistryFragment : Fragment() {
             btnRegister = view.findViewById(R.id.btnAdd)
             imageView = view.findViewById(R.id.garmentImageRegistry)
 
-            //set the behavior of the profile button
-            setProfileBehavior()
-            //set the behavior of the back button
-            setBackBehavior()
+
+            // --- THEN CALL METHODS THAT USE THESE VIEWS ---
             //set the behavior of the camera button
             openCamera()
             //set the behavior of the camera launcher
@@ -90,11 +94,10 @@ class GarmentRegistryFragment : Fragment() {
 
     private fun setProfileBehavior() : Unit {
         btnProfileGarmentRegistry.setOnClickListener {
-            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            val intent = Intent(requireContext(), profileActivity::class.java)
             startActivity(intent)
         }
     }
-
 
     private fun setUpCamaraBehavior() : Unit {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
@@ -137,7 +140,7 @@ class GarmentRegistryFragment : Fragment() {
 
     private fun setCategorySpinner() : Unit {
         // List of gender options
-        val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapato", "Accesorio")
+        val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapatos", "Accesorios")
         // Create an ArrayAdapter using the genderOptions list
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,
             categoryOptions)
@@ -206,11 +209,25 @@ class GarmentRegistryFragment : Fragment() {
                 val print = switchPrint.isChecked
                 val image = imageUri.toString()
 
+                val newGarment = Garment(
+                    0,
+                    name,
+                    color,
+                    tag,
+                    category,
+                    print,
+                    imageUri = if (imageUri != null) imageUri.toString() else ""
+                )
+
+                // NOTE: Test message
+                Toast.makeText(requireContext(), "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
+
+                this.clothesRepository.insert(newGarment)
+
                 //succes mesagge
                 Toast.makeText(requireContext(), "Prenda registrada exitosamente",
                     Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 }

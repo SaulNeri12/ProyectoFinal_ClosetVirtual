@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_main"
-    tools:context=".MainActivity">
+    tools:context=".ui.searchoutfit.SearchOutfitFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/header_card_view"
@@ -178,8 +178,7 @@
             android:id="@+id/outfit_cards_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            >
+            android:layout_marginHorizontal="16dp">
             <!--[ TODO: Aqui iran las cartas de outfit ]-->
         </ListView>
 
