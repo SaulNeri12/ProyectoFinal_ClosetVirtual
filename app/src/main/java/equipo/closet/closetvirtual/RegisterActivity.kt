@@ -1,3 +1,4 @@
+
 package equipo.closet.closetvirtual
 
 import android.app.DatePickerDialog
@@ -8,152 +9,145 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatSpinner
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.datepicker.MaterialDatePicker
-import equipo.closet.closetvirtual.databinding.ActivityLoginBinding
-import equipo.closet.closetvirtual.databinding.ActivityRegisterBinding
-import java.text.SimpleDateFormat
+import androidx.lifecycle.lifecycleScope
+import equipo.closet.closetvirtual.entities.User
+import equipo.closet.closetvirtual.repositories.exceptions.RegistrationException
+import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat 
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRegisterBinding
+    private val userRepository: UserRepository = UserRepositoryFactory.create()
+
+    private lateinit var ivBack: android.widget.ImageView
+    private lateinit var etName: EditText
+    private lateinit var etMail: EditText
+    private lateinit var etBirthDate: EditText
+    private lateinit var etGender: Spinner
+    private lateinit var etPassword: EditText
+    private lateinit var etConfirmPassword: EditText
+    private lateinit var btnRegister: android.widget.Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_register)
 
-        //fill the gender spinner
+        ivBack = findViewById<android.widget.ImageView>(R.id.ivBack)
+        etName = findViewById(R.id.etName)
+        etMail = findViewById(R.id.etMail)
+        etBirthDate = findViewById(R.id.etBirthDate)
+        etGender = findViewById(R.id.etGender)
+        etPassword = findViewById(R.id.etPassword)
+        etConfirmPassword = findViewById(R.id.etConfirmPassword)
+        btnRegister = findViewById(R.id.btnRegister)
+
         fillGenderSpinner()
-        //declare the behavior of the back button
         setBackButtonBehavior()
-        //declare the behavior of the birth date field
         setBirthDateFieldBehavior()
-        //declare the behavior of the register button
         register()
-
     }
 
-    /**
-     * Set the behavior of the birth date field
-     */
-    private fun setBirthDateFieldBehavior() {
-        binding.birthDateContainer.setOnClickListener {
-            showDatePicker()
-        }
-        binding.etBirthDate.setOnClickListener {
-            showDatePicker()
-        }
-    }
-
-    private fun showDatePicker() {
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Selecciona tu fecha de nacimiento")
-            .setTheme(R.style.CustomDatePickerTheme)
-            .build()
-
-        datePicker.addOnPositiveButtonClickListener { selectedDateInMillis ->
-            val selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                .format(Date(selectedDateInMillis))
-
-            binding.etBirthDate.setText(selectedDate)
-        }
-
-        datePicker.show(this.supportFragmentManager, "DATE_PICKER")
-    }
-
-
-    /**
-     * Set the behavior of the back button
-     */
-    private fun setBackButtonBehavior() {
-        binding.ivBack.setOnClickListener{
-            finish()
-        }
-    }
-
-    /**
-     * Fill the gender spinner with the gender options
-     */
-    private fun fillGenderSpinner() {
-        // List of gender options
-        val genderOptions = listOf("Masculino", "Femenino", "Indefinido")
-        // Create an ArrayAdapter using the genderOptions list
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
-        // Set the layout resource for the dropdown menu
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set the adapter to the genderSpinner
-        binding.etGender.adapter = adapter
-        binding.etGender.setSelection(genderOptions.size - 1)
-    }
-
-    /**
-     * Validate the input fields and return true if they are valid, false otherwise
-     */
-    private fun validateInputFields(): Boolean {
-        //get the input fields
-        val name = binding.etName.text.toString()
-        val mail = binding.etMail.text.toString()
-        val birthDate = binding.etBirthDate.text.toString()
-        val gender = binding.etGender.selectedItem.toString()
-        val password = binding.etPassword.text.toString()
-        val confirmPassword = binding.etConfirmPassword.text.toString()
-
-        //validate empty fields
-        if (name.isEmpty()) {
-            binding.etName.error = "Name is required"
-            Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (mail.isEmpty()) {
-            binding.etMail.error = "Email is required"
-            Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (birthDate.isEmpty()) {
-            binding.etBirthDate.error = "Birth date is required"
-            Toast.makeText(this, "Birth date is required", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (gender.isEmpty()) {
-            Toast.makeText(this, "Gender is required", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (password.isEmpty()) {
-            binding.etPassword.error = "Password is required"
-            Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (confirmPassword.isEmpty()) {
-            binding.etConfirmPassword.error = "Confirm password is required"
-            Toast.makeText(this, "Confirm password is required", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if (password != confirmPassword) {
-            binding.etConfirmPassword.error = "Passwords do not match"
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        //Default case
-        return true
-    }
-
-    /**
-     * Set the behavior of the register button
-     */
     private fun register() {
-        binding.btnRegister.setOnClickListener {
+        btnRegister.setOnClickListener {
             if (validateInputFields()) {
-                //start the login activity
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
+
+                // 1. Convertir el String de la fecha a un objeto Date
+                val dateString = etBirthDate.text.toString().trim()
+                val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
+                val birthDateObject = dateFormat.parse(dateString)!!
+
+                // 2. Crear el objeto User con los nombres y tipos correctos
+                val user = User(
+                    name = etName.text.toString().trim(),
+                    email = etMail.text.toString().trim(),
+                    birthdate = birthDateObject,
+                    gender = etGender.selectedItem.toString(),
+                    password = etPassword.text.toString()
+                )
+
+
+                lifecycleScope.launch {
+                    try {
+                        userRepository.signUp(user)
+                        Toast.makeText(this@RegisterActivity, "Registro exitoso", Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+
+                    } catch (e: RegistrationException) {
+                        Toast.makeText(this@RegisterActivity, "Error en el registro: ${e.message}", Toast.LENGTH_LONG).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@RegisterActivity, "Ocurrió un error inesperado: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }
 
+
+
+    private fun setBirthDateFieldBehavior() {
+        etBirthDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val datePickerDialog = DatePickerDialog(this,
+                { _, year, monthOfYear, dayOfMonth ->
+                    val selectedDate = Calendar.getInstance()
+                    selectedDate.set(year, monthOfYear, dayOfMonth)
+                    val currentDate = Calendar.getInstance()
+                    if (selectedDate.after(currentDate)) {
+                        Toast.makeText(this, "La fecha de nacimiento no puede ser futura", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // El formato aquí "d-M-yyyy"
+                        val dat = "$dayOfMonth-${monthOfYear + 1}-$year"
+                        etBirthDate.setText(dat)
+                    }
+                }, year, month, day)
+            datePickerDialog.show()
+        }
+    }
+
+    private fun setBackButtonBehavior() {
+        ivBack.setOnClickListener{
+            finish()
+        }
+    }
+
+    private fun fillGenderSpinner() {
+        val genderOptions = listOf("Masculino", "Femenino", "Otro")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        etGender.adapter = adapter
+    }
+
+    private fun validateInputFields(): Boolean {
+        if (etName.text.toString().trim().isEmpty()) {
+            etName.error = "El nombre es requerido"
+            return false
+        }
+        if (etMail.text.toString().trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(etMail.text.toString().trim()).matches()) {
+            etMail.error = "Introduce un email válido"
+            return false
+        }
+        if (etBirthDate.text.toString().trim().isEmpty()) {
+            etBirthDate.error = "La fecha de nacimiento es requerida"
+            return false
+        }
+        if (etPassword.text.toString().trim().length < 6) {
+            etPassword.error = "La contraseña debe tener al menos 6 caracteres"
+            return false
+        }
+        if (etPassword.text.toString().trim() != etConfirmPassword.text.toString().trim()) {
+            etConfirmPassword.error = "Las contraseñas no coinciden"
+            return false
+        }
+        return true
+    }
 }
