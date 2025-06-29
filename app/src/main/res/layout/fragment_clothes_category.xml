@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_main"
-    tools:context=".ui.clothes_category_cards.ClothesCategoryCardsFragment">
+    tools:context=".ui.clothesCategory.ClothesCategoryFragment">
 
 
     <!-- FrameLayout: Contenedor que permite superponer elementos, aquí contiene el ScrollView con degradado -->
@@ -50,40 +50,63 @@
                         android:paddingHorizontal="16dp"
                         android:orientation="horizontal">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnBackCategoryCards"
-                            style="@style/Widget.Material3.Button.IconButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
-                            android:backgroundTint="@color/white"
-                            android:elevation="6dp"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            app:cornerRadius="60dp"
-                            app:icon="@drawable/ic_arrow_back"
-                            app:iconTint="@color/icon_color"
-                            app:startIconDrawable="@drawable/circle_white_background" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_margin="4dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="25dp"
+                            app:cardElevation="6dp"
+                            app:cardUseCompatPadding="false">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnBackCategoryCards"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:insetLeft="0dp"
+                                android:insetRight="0dp"
+                                android:backgroundTint="@color/white"
+                                app:cornerRadius="25dp"
+                                app:icon="@drawable/ic_arrow_back"
+                                app:iconTint="@color/icon_color"
+                                app:iconSize="24dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                style="@style/Widget.Material3.Button.IconButton" />
+                        </com.google.android.material.card.MaterialCardView>
+
 
                         <View
                             android:layout_width="0dp"
                             android:layout_height="1dp"
                             android:layout_weight="1" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnProfileCategoryCards"
-                            style="@style/Widget.Material3.Button.IconButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
-                            android:backgroundTint="@color/white"
-                            android:elevation="6dp"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            app:cornerRadius="60dp"
-                            app:icon="@drawable/ic_person"
-                            app:iconTint="@color/icon_color"
-                            app:startIconDrawable="@drawable/circle_white_background" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_margin="4dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="25dp"
+                            app:cardElevation="6dp"
+                            app:cardUseCompatPadding="false">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnProfileCategoryCards"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                android:insetLeft="0dp"
+                                android:insetRight="0dp"
+                                android:backgroundTint="@color/white"
+                                app:cornerRadius="25dp"
+                                app:icon="@drawable/ic_person"
+                                app:iconTint="@color/icon_color"
+                                app:iconSize="24dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                style="@style/Widget.Material3.Button.IconButton" />
+                        </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -128,13 +151,28 @@
                                     android:orientation="horizontal"
                                     android:paddingStart="16dp">
 
-                                    <ImageView
-                                        android:layout_width="30dp"
-                                        android:layout_height="30dp"
-                                        android:clickable="true"
-                                        android:layout_marginEnd="12dp"
-                                        android:src="@drawable/ic_search"
-                                        app:tint="@color/icon_color" />
+                                    <com.google.android.material.card.MaterialCardView
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_marginEnd="5dp"
+                                        app:cardBackgroundColor="@color/white"
+                                        app:cardCornerRadius="25dp"
+                                        app:cardElevation="0dp"
+                                        app:cardUseCompatPadding="false">
+
+                                        <ImageView
+                                            android:id="@+id/btnSearchClothesCategory"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="?attr/selectableItemBackgroundBorderless"
+                                            android:clickable="true"
+                                            android:focusable="true"
+                                            android:scaleType="center"
+                                            android:src="@drawable/ic_search"
+                                            app:tint="@color/icon_color" />
+
+                                    </com.google.android.material.card.MaterialCardView>
+
 
                                     <EditText
                                         android:id="@+id/et_search"
@@ -145,7 +183,9 @@
                                         android:hint="@string/search_hint"
                                         android:textColor="@color/black"
                                         android:textColorHint="@color/text_hint"
-                                        android:textSize="18sp" />
+                                        android:textSize="18sp"
+                                        android:theme="@style/InputStyle"/>
+
                                 </LinearLayout>
                             </com.google.android.material.card.MaterialCardView>
 
@@ -159,7 +199,7 @@
                                 app:cardUseCompatPadding="false">
 
                                 <ImageView
-                                    android:id="@+id/btn_filter"
+                                    android:id="@+id/btnFilterClothesCategory"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -423,10 +463,11 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="6dp"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="12dp">
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="60dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="6dp">
 
                     <!-- LinearLayout interno: Organiza el header y la grilla de la categoría Top -->
                     <LinearLayout
