@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.datepicker.MaterialDatePicker
+import equipo.closet.closetvirtual.databinding.ActivityLoginBinding
+import equipo.closet.closetvirtual.databinding.ActivityRegisterBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -18,29 +20,12 @@ import java.util.Locale
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var ivBack: android.widget.ImageView
-    private lateinit var etName: EditText
-    private lateinit var etMail: EditText
-    private lateinit var etBirthDate: EditText
-    private lateinit var etGender: AppCompatSpinner
-    private lateinit var etPassword: EditText
-    private lateinit var etConfirmPassword: EditText
-    private lateinit var btnRegister: android.widget.Button
-    private lateinit var birthDateContainer: MaterialCardView
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-
-        ivBack = findViewById<android.widget.ImageView>(R.id.ivBack)
-        etName = findViewById(R.id.etName)
-        etMail = findViewById(R.id.etMail)
-        etBirthDate = findViewById(R.id.etBirthDate)
-        etGender = findViewById(R.id.etGender)
-        etPassword = findViewById(R.id.etPassword)
-        etConfirmPassword = findViewById(R.id.etConfirmPassword)
-        btnRegister = findViewById(R.id.btnRegister)
-        birthDateContainer = findViewById(R.id.birthDateContainer)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //fill the gender spinner
         fillGenderSpinner()
@@ -57,10 +42,10 @@ class RegisterActivity : AppCompatActivity() {
      * Set the behavior of the birth date field
      */
     private fun setBirthDateFieldBehavior() {
-        birthDateContainer.setOnClickListener {
+        binding.birthDateContainer.setOnClickListener {
             showDatePicker()
         }
-        etBirthDate.setOnClickListener {
+        binding.etBirthDate.setOnClickListener {
             showDatePicker()
         }
     }
@@ -75,7 +60,7 @@ class RegisterActivity : AppCompatActivity() {
             val selectedDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 .format(Date(selectedDateInMillis))
 
-            etBirthDate.setText(selectedDate)
+            binding.etBirthDate.setText(selectedDate)
         }
 
         datePicker.show(this.supportFragmentManager, "DATE_PICKER")
@@ -86,7 +71,7 @@ class RegisterActivity : AppCompatActivity() {
      * Set the behavior of the back button
      */
     private fun setBackButtonBehavior() {
-        ivBack.setOnClickListener{
+        binding.ivBack.setOnClickListener{
             finish()
         }
     }
@@ -102,8 +87,8 @@ class RegisterActivity : AppCompatActivity() {
         // Set the layout resource for the dropdown menu
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set the adapter to the genderSpinner
-        etGender.adapter = adapter
-        etGender.setSelection(genderOptions.size - 1)
+        binding.etGender.adapter = adapter
+        binding.etGender.setSelection(genderOptions.size - 1)
     }
 
     /**
@@ -111,26 +96,26 @@ class RegisterActivity : AppCompatActivity() {
      */
     private fun validateInputFields(): Boolean {
         //get the input fields
-        val name = etName.text.toString()
-        val mail = etMail.text.toString()
-        val birthDate = etBirthDate.text.toString()
-        val gender = etGender.selectedItem.toString()
-        val password = etPassword.text.toString()
-        val confirmPassword = etConfirmPassword.text.toString()
+        val name = binding.etName.text.toString()
+        val mail = binding.etMail.text.toString()
+        val birthDate = binding.etBirthDate.text.toString()
+        val gender = binding.etGender.selectedItem.toString()
+        val password = binding.etPassword.text.toString()
+        val confirmPassword = binding.etConfirmPassword.text.toString()
 
         //validate empty fields
         if (name.isEmpty()) {
-            etName.error = "Name is required"
+            binding.etName.error = "Name is required"
             Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
             return false
         }
         if (mail.isEmpty()) {
-            etMail.error = "Email is required"
+            binding.etMail.error = "Email is required"
             Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show()
             return false
         }
         if (birthDate.isEmpty()) {
-            etBirthDate.error = "Birth date is required"
+            binding.etBirthDate.error = "Birth date is required"
             Toast.makeText(this, "Birth date is required", Toast.LENGTH_SHORT).show()
             return false
         }
@@ -139,17 +124,17 @@ class RegisterActivity : AppCompatActivity() {
             return false
         }
         if (password.isEmpty()) {
-            etPassword.error = "Password is required"
+            binding.etPassword.error = "Password is required"
             Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show()
             return false
         }
         if (confirmPassword.isEmpty()) {
-            etConfirmPassword.error = "Confirm password is required"
+            binding.etConfirmPassword.error = "Confirm password is required"
             Toast.makeText(this, "Confirm password is required", Toast.LENGTH_SHORT).show()
             return false
         }
         if (password != confirmPassword) {
-            etConfirmPassword.error = "Passwords do not match"
+            binding.etConfirmPassword.error = "Passwords do not match"
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
             return false
         }
@@ -161,7 +146,7 @@ class RegisterActivity : AppCompatActivity() {
      * Set the behavior of the register button
      */
     private fun register() {
-        btnRegister.setOnClickListener {
+        binding.btnRegister.setOnClickListener {
             if (validateInputFields()) {
                 //start the login activity
                 val intent = Intent(this, LoginActivity::class.java)

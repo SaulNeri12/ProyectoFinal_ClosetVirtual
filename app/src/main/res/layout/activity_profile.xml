@@ -17,19 +17,31 @@
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBackProfile"
-            style="@style/Widget.Material3.Button.IconButton"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="45dp"
-            android:layout_height="37dp"
-            android:layout_gravity="center_vertical"
-            android:backgroundTint="@android:color/white"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            app:cornerRadius="20dp"
-            app:icon="@drawable/ic_arrow_back"
-            app:iconTint="#9CA3AF"
-            android:elevation="4dp" />
+            android:layout_height="45dp"
+            android:layout_margin="4dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="6dp"
+            app:cardUseCompatPadding="false">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBack"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:insetLeft="0dp"
+                android:insetRight="0dp"
+                android:backgroundTint="@color/white"
+                app:cornerRadius="25dp"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconTint="@color/icon_color"
+                app:iconSize="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                style="@style/Widget.Material3.Button.IconButton" />
+        </com.google.android.material.card.MaterialCardView>
 
         <View
             android:layout_width="0dp"
@@ -41,7 +53,7 @@
             android:layout_height="wrap_content"
             android:text="Perfil"
             android:textColor="@color/text_primary_dark"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <View
@@ -75,6 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
+                android:layout_marginTop="10dp"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardElevation="4dp"
                 app:cardCornerRadius="20dp"
@@ -101,10 +114,10 @@
                             app:cardCornerRadius="60dp">
 
                             <ImageView
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="80dp"
+                                android:layout_height="80dp"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_camera"
+                                android:src="@drawable/ic_person"
                                 app:tint="@android:color/white" />
 
                         </com.google.android.material.card.MaterialCardView>
@@ -112,7 +125,7 @@
                     </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tvEmailProfile"
+                        android:id="@+id/tvEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="example.com"
@@ -152,22 +165,24 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        app:cardBackgroundColor="@color/surface_gray"
-                        app:cardElevation="0dp"
-                        app:cardCornerRadius="25dp">
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardUseCompatPadding="false">
 
-                        <EditText
-                            android:id="@+id/etNameProfile"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etName"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="60dp"
                             android:background="@android:color/transparent"
+                            android:hint="Nombre completo"
                             android:paddingHorizontal="20dp"
                             android:textColor="@color/text_primary_dark"
-                            android:textColorHint="@color/text_hint"
-                            android:textSize="14sp" />
-
+                            android:textColorHint="@color/gray_medium"
+                            android:textSize="17sp"
+                            android:theme="@style/InputStyle"/>
                     </com.google.android.material.card.MaterialCardView>
 
                     <!-- Gender Field -->
@@ -182,27 +197,21 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        app:cardBackgroundColor="@color/surface_gray"
-                        app:cardElevation="0dp"
-                        app:cardCornerRadius="25dp">
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardUseCompatPadding="false">
 
-                        <LinearLayout
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spGender"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <Spinner
-                                android:id="@+id/spGenderProfile"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@android:color/transparent" />
-
-                        </LinearLayout>
-
+                            android:layout_height="60dp"
+                            android:dropDownVerticalOffset="56dp"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="16dp"
+                            android:spinnerMode="dropdown" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <!-- Birth Date Field -->
@@ -216,26 +225,88 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/birthDateContainer"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        app:cardBackgroundColor="@color/surface_gray"
-                        app:cardElevation="0dp"
-                        app:cardCornerRadius="25dp">
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardUseCompatPadding="false">
 
-                        <EditText
-                            android:id="@+id/etBirthDateProfile"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
-                            android:clickable="true"
-                            android:focusable="true"
+                            android:layout_height="60dp"
                             android:paddingHorizontal="20dp"
-                            android:textColor="@color/text_primary_dark"
-                            android:textColorHint="@color/text_hint"
-                            android:textSize="14sp" />
+                            android:gravity="center_vertical">
 
+                            <EditText
+                                android:id="@+id/etBirthDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toStartOf="@id/ivCalendar"
+                                android:background="@android:color/transparent"
+                                android:hint="Fecha de nacimiento"
+                                android:focusable="false"
+                                android:textColor="@color/text_primary_dark"
+                                android:textColorHint="@color/gray_medium"
+                                android:textSize="17sp"/>
+
+                            <ImageView
+                                android:id="@+id/ivCalendar"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_calendar"
+                                app:tint="@color/icon_color"
+                                android:contentDescription="Calendario" />
+
+                        </RelativeLayout>
                     </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Update Password Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnUpdateProfileInfo"
+                        android:layout_width="170dp"
+                        android:layout_height="60dp"
+                        android:text="Actualizar"
+                        android:layout_gravity="center"
+                        android:textColor="@color/text_primary_white"
+                        app:backgroundTint="@color/button_register"
+                        android:layout_marginTop="16dp"
+                        app:cornerRadius="25dp"
+                        android:elevation="6dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Security Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Seguridad"
+                android:textColor="@color/text_primary_dark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardElevation="4dp"
+                app:cardCornerRadius="20dp"
+                app:cardUseCompatPadding="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+                    >
 
                     <!-- Current Password Field -->
                     <TextView
@@ -249,41 +320,44 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        app:cardBackgroundColor="@color/surface_gray"
-                        app:cardElevation="0dp"
-                        app:cardCornerRadius="25dp">
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardUseCompatPadding="false">
 
-                        <RelativeLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:theme="@style/SwitchTheme"
+                            app:boxBackgroundMode="filled"
+                            app:hintEnabled="false"
+                            app:boxBackgroundColor="@android:color/white"
+                            app:boxCornerRadiusTopStart="25dp"
+                            app:boxCornerRadiusTopEnd="25dp"
+                            app:boxCornerRadiusBottomStart="25dp"
+                            app:boxCornerRadiusBottomEnd="25dp"
+                            app:boxStrokeColor="@android:color/transparent"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:endIconMode="password_toggle"
+                            app:endIconTint="@color/icon_color">
 
-                            <EditText
-                                android:id="@+id/etCurrentPasswordProfile"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCurrentPassword"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@android:color/transparent"
-                                android:inputType="textPassword"
-                                android:paddingHorizontal="20dp"
-                                android:paddingEnd="50dp"
+                                android:layout_height="wrap_content"
+                                android:minHeight="60dp"
+                                android:hint="Contraseña"
+                                android:paddingTop="16dp"
+                                android:paddingBottom="16dp"
+                                android:textSize="17sp"
+                                android:textColorHint="@color/gray_medium"
                                 android:textColor="@color/text_primary_dark"
-                                android:textColorHint="@color/text_hint"
-                                android:textSize="14sp" />
-
-                            <ImageView
-                                android:id="@+id/ivShowPassword1"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="20dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:src="@drawable/ic_eye"
-                                app:tint="@color/text_hint" />
-
-                        </RelativeLayout>
+                                android:inputType="textPassword"
+                                style="@style/passwordCursorStyle"/>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -299,41 +373,44 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        app:cardBackgroundColor="@color/surface_gray"
-                        app:cardElevation="0dp"
-                        app:cardCornerRadius="25dp">
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardUseCompatPadding="false">
 
-                        <RelativeLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:theme="@style/SwitchTheme"
+                            app:boxBackgroundMode="filled"
+                            app:hintEnabled="false"
+                            app:boxBackgroundColor="@android:color/white"
+                            app:boxCornerRadiusTopStart="25dp"
+                            app:boxCornerRadiusTopEnd="25dp"
+                            app:boxCornerRadiusBottomStart="25dp"
+                            app:boxCornerRadiusBottomEnd="25dp"
+                            app:boxStrokeColor="@android:color/transparent"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:endIconMode="password_toggle"
+                            app:endIconTint="@color/icon_color">
 
-                            <EditText
-                                android:id="@+id/etNewPasswordProfile"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etNewPassword"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@android:color/transparent"
-                                android:inputType="textPassword"
-                                android:paddingHorizontal="20dp"
-                                android:paddingEnd="50dp"
+                                android:layout_height="wrap_content"
+                                android:minHeight="60dp"
+                                android:hint="Nueva contraseña"
+                                android:paddingTop="16dp"
+                                android:paddingBottom="16dp"
+                                android:textSize="17sp"
+                                android:textColorHint="@color/gray_medium"
                                 android:textColor="@color/text_primary_dark"
-                                android:textColorHint="@color/text_hint"
-                                android:textSize="14sp" />
-
-                            <ImageView
-                                android:id="@+id/ivShowPassword2"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="20dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:src="@drawable/ic_eye"
-                                app:tint="@color/text_hint" />
-
-                        </RelativeLayout>
+                                android:inputType="textPassword"
+                                style="@style/passwordCursorStyle"/>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </com.google.android.material.card.MaterialCardView>
 
@@ -349,57 +426,59 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginBottom="24dp"
-                        app:cardBackgroundColor="@color/surface_gray"
-                        app:cardElevation="0dp"
-                        app:cardCornerRadius="25dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:cardBackgroundColor="@android:color/white"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        app:cardUseCompatPadding="false">
 
-                        <RelativeLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content"
+                            android:theme="@style/SwitchTheme"
+                            app:boxBackgroundMode="filled"
+                            app:hintEnabled="false"
+                            app:boxBackgroundColor="@android:color/white"
+                            app:boxCornerRadiusTopStart="25dp"
+                            app:boxCornerRadiusTopEnd="25dp"
+                            app:boxCornerRadiusBottomStart="25dp"
+                            app:boxCornerRadiusBottomEnd="25dp"
+                            app:boxStrokeColor="@android:color/transparent"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:endIconMode="password_toggle"
+                            app:endIconTint="@color/icon_color">
 
-                            <EditText
-                                android:id="@+id/etConfirmPasswordProfile"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etConfirmNewPassword"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@android:color/transparent"
-                                android:inputType="textPassword"
-                                android:paddingHorizontal="20dp"
-                                android:paddingEnd="50dp"
+                                android:layout_height="wrap_content"
+                                android:minHeight="60dp"
+                                android:hint="Confirmar contraseña"
+                                android:paddingTop="16dp"
+                                android:paddingBottom="16dp"
+                                android:textSize="17sp"
+                                android:textColorHint="@color/gray_medium"
                                 android:textColor="@color/text_primary_dark"
-                                android:textColorHint="@color/text_hint"
-                                android:textSize="14sp" />
-
-                            <ImageView
-                                android:id="@+id/ivShowPassword3"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="20dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:src="@drawable/ic_eye"
-                                app:tint="@color/text_hint" />
-
-                        </RelativeLayout>
+                                android:inputType="textPassword"
+                                style="@style/passwordCursorStyle"/>
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Save Button -->
+                    <!-- Update Password Button -->
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnEditProfile"
-                        android:layout_width="160dp"
-                        android:layout_height="48dp"
+                        android:id="@+id/btnUpdateProfilePassword"
+                        android:layout_width="170dp"
+                        android:layout_height="60dp"
+                        android:text="Actualizar"
                         android:layout_gravity="center"
-                        android:text="@string/account_save_changes"
-                        android:textColor="@android:color/white"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        app:cornerRadius="24dp"
-                        app:backgroundTint="@color/button_primary"
-                        android:elevation="2dp" />
+                        android:textColor="@color/text_primary_white"
+                        app:backgroundTint="@color/button_register"
+                        android:layout_marginTop="16dp"
+                        app:cornerRadius="25dp"
+                        android:elevation="6dp" />
 
                 </LinearLayout>
 
@@ -448,9 +527,10 @@
                         android:textSize="16sp" />
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/scLightModeProfile"
+                        android:id="@+id/scThemeMode"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:theme="@style/SwitchTheme" />
 
                 </LinearLayout>
 
@@ -467,7 +547,7 @@
                 app:cardUseCompatPadding="false">
 
                 <LinearLayout
-                    android:id="@+id/logoutLayoutProfile"
+                    android:id="@+id/layoutLogout"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:orientation="horizontal"

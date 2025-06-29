@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import equipo.closet.closetvirtual.databinding.ActivityLoginBinding
 import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.exceptions.AuthException
 import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
@@ -17,24 +18,15 @@ import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var btnLogin: Button
-    private lateinit var tvRegister: TextView
-    private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
+    private lateinit var binding: ActivityLoginBinding
+
 
     private val userRepository: UserRepository = UserRepositoryFactory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
-
-        //initialize the variables
-        tvRegister = findViewById(R.id.tvRegister)
-        btnLogin = findViewById(R.id.btnLogin)
-
-        //initialize the input fields
-        etEmail = findViewById(R.id.etEmail)
-        etPassword = findViewById(R.id.etPassword)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //declare the function login
         login();
@@ -43,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        btnLogin.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             if (validateInputFields()) {
 //                val email = etEmail.text.toString()
 //                val password = etPassword.text.toString()
@@ -67,24 +59,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun register() {
-        tvRegister.setOnClickListener {
+        binding.tvRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
     }
 
     fun validateInputFields(): Boolean{
-        val email = etEmail.text.toString()
-        val password = etPassword.text.toString()
+        val email = binding.etEmail.text.toString()
+        val password = binding.etPassword.text.toString()
 
         if (email.isEmpty()) {
-            etEmail.error = "Email is required"
+            binding.etEmail.error = "Email is required"
             Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show()
             return false
         }
 
         if (password.isEmpty()) {
-            etPassword.error = "Password is required"
+            binding.etPassword.error = "Password is required"
             Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show()
             return false
         }
