@@ -23,6 +23,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private val userRepository: UserRepository = UserRepositoryFactory.create()
 
+    private lateinit var btnRegister: android.widget.Button
     private lateinit var ivBack: android.widget.ImageView
     private lateinit var etName: EditText
     private lateinit var etMail: EditText
@@ -30,7 +31,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var etGender: Spinner
     private lateinit var etPassword: EditText
     private lateinit var etConfirmPassword: EditText
-    private lateinit var btnRegister: android.widget.Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,12 +56,19 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.setOnClickListener {
             if (validateInputFields()) {
 
-                // 1. Convertir el String de la fecha a un objeto Date
                 val dateString = etBirthDate.text.toString().trim()
                 val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
-                val birthDateObject = dateFormat.parse(dateString)!!
+                val birthDateObject = try {
+                    dateFormat.parse(dateString)
+                } catch (e: Exception) {
+                    null
+                }
 
-                // 2. Crear el objeto User con los nombres y tipos correctos
+                if (birthDateObject == null) {
+                    Toast.makeText(this, "Fecha inválida, use formato d-M-yyyy", Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
+
                 val user = User(
                     name = etName.text.toString().trim(),
                     email = etMail.text.toString().trim(),
@@ -69,10 +77,12 @@ class RegisterActivity : AppCompatActivity() {
                     password = etPassword.text.toString()
                 )
 
-
                 lifecycleScope.launch {
+                    btnRegister.isEnabled = false
                     try {
+                        //Log.d("Register", "Intentando registrar usuario: ${user.email}")
                         userRepository.signUp(user)
+
                         Toast.makeText(this@RegisterActivity, "Registro exitoso", Toast.LENGTH_LONG).show()
                         val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -82,13 +92,13 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.makeText(this@RegisterActivity, "Error en el registro: ${e.message}", Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
                         Toast.makeText(this@RegisterActivity, "Ocurrió un error inesperado: ${e.message}", Toast.LENGTH_LONG).show()
+                    } finally {
+                        btnRegister.isEnabled = true
                     }
                 }
             }
         }
     }
-
-
 
     private fun setBirthDateFieldBehavior() {
         etBirthDate.setOnClickListener {

@@ -4,10 +4,11 @@ import java.util.Date
 
 data class User(
     var uid: String = "",
-    var name: String = "",
+    var name: String? = "",
     var email: String = "",
-    var gender: String = "",
-    var birthdate: Date = Date(),
+    var gender: String? = "",
+    var birthdate: Date? = Date(),
     var password: String = "",
-    var profileImgUrl: String = ""
+    var profileImgUrl: String? = "",
+    var fireAuthUID: String = "" // used for data-linking
 )

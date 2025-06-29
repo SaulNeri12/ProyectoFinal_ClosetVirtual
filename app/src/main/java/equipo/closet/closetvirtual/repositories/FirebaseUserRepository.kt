@@ -1,26 +1,31 @@
 package equipo.closet.closetvirtual.repositories
 
-import com.google.firebase.auth.FirebaseAuth
-import equipo.closet.closetvirtual.entities.User
-import equipo.closet.closetvirtual.repositories.exceptions.AuthException
+import android.annotation.SuppressLint
 import equipo.closet.closetvirtual.repositories.exceptions.RegistrationException
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
+import equipo.closet.closetvirtual.repositories.exceptions.AuthException
+import com.google.firebase.firestore.FirebaseFirestore
+import equipo.closet.closetvirtual.entities.User
+import com.google.firebase.auth.FirebaseAuth
+import equipo.closet.closetvirtual.objects.SessionManager
 import kotlinx.coroutines.tasks.await
+import java.security.MessageDigest
 
 object FirebaseUserRepository : UserRepository {
 
-    private var firebaseInitialized: Boolean = false
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private fun initializeFirebase() {
-        if (!firebaseInitialized) {
-            auth = FirebaseAuth.getInstance()
-            firebaseInitialized = true
-        }
+    private val USER_COLLECTION_NAME = "users"
+
+    fun hashSHA256(text: String): String {
+        val bytes = text.toByteArray()
+        val digest = MessageDigest.getInstance("SHA-256").digest(bytes)
+        return digest.joinToString("") { "%02x".format(it) }
     }
 
     override suspend fun login(email: String, password: String): User {
-        initializeFirebase()
+
+        val db = FirebaseFirestore.getInstance()
 
         try {
             auth.signInWithEmailAndPassword(email, password).await()
@@ -28,12 +33,27 @@ object FirebaseUserRepository : UserRepository {
             val firebaseUser = auth.currentUser
                 ?: throw AuthException("El correo o contraseña son invalidos, ingrese los datos correctos.")
 
-            return User(
+            val queryResult = db.collection(USER_COLLECTION_NAME)
+                .document(firebaseUser.uid)
+                .get().await() ?: throw AuthException("No se pudo obtener la información necesaria del usuario.")
+
+            if (!queryResult.exists()) {
+                throw AuthException("No se encontró información del usuario en la base de datos.")
+            }
+
+            val userInfo = queryResult
+
+            val user = User(
                 uid = firebaseUser.uid,
-                name = "not-provided",
-                email = firebaseUser.email ?: ""
-                // TODO: must get the remaning values
+                name = userInfo.getString("name"),
+                email = firebaseUser.email ?: "",
+                birthdate = userInfo.getDate("birthdate"),
+                gender = userInfo.getString("gender"),
+                profileImgUrl = userInfo.getString("profileImgUrl"),
+                fireAuthUID = firebaseUser.uid
             )
+
+            return user
 
         } catch (e: Exception) {
             throw AuthException(
@@ -43,7 +63,8 @@ object FirebaseUserRepository : UserRepository {
     }
 
     override suspend fun signUp(user: User) {
-        initializeFirebase()
+
+        val db = FirebaseFirestore.getInstance()
 
         try {
             auth.createUserWithEmailAndPassword(user.email, user.password).await()
@@ -51,7 +72,21 @@ object FirebaseUserRepository : UserRepository {
             val firebaseUser = auth.currentUser
                 ?: throw RegistrationException("No se pudo registrar al usuario. Intente nuevamente.")
 
-            // TODO: Load that information in a User database collection
+            user.fireAuthUID = firebaseUser.uid
+            user.password = hashSHA256(user.password)
+
+            val userDocRef = db.collection(USER_COLLECTION_NAME).document(firebaseUser.uid)
+            userDocRef.set(user).await()
+
+            val snapshot = userDocRef.get().await()
+            val userData = snapshot.toObject(User::class.java)
+                ?: throw RegistrationException("No se pudo cargar la información del usuario. Intente mas tarde.")
+
+            user.name = userData.name
+            user.birthdate = userData.birthdate
+            user.gender = userData.gender
+            user.profileImgUrl = userData.profileImgUrl
+            user.uid = firebaseUser.uid
 
         } catch (e: Exception) {
             throw RegistrationException(

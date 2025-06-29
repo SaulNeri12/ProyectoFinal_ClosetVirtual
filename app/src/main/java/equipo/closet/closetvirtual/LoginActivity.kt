@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
                     try {
                         val user = userRepository.login(email, password)
 
-                        SessionManager.user = user;
+                        SessionManager.user = user
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
