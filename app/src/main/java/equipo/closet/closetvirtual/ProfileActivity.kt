@@ -13,42 +13,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.google.android.material.button.MaterialButton
+import equipo.closet.closetvirtual.databinding.ActivityProfileBinding
 import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import java.util.Calendar
 
 class ProfileActivity : AppCompatActivity() {
 
-    private lateinit var btnEditProfile: MaterialButton
-    private lateinit var etConfirmPassword: EditText
-    private lateinit var etCurrentPassword: EditText
-    private lateinit var btnBack: MaterialButton
-    private lateinit var etNewPassword: EditText
-    private lateinit var etBirthDate: EditText
-    private lateinit var spGender: Spinner
-    private lateinit var tvEmail: TextView
-    private lateinit var etName: EditText
-
-    private lateinit var scLightMode: SwitchCompat
-    private lateinit var loyoutLogout: LinearLayout
+    private lateinit var binding : ActivityProfileBinding
 
     private val userRepository: UserRepository = UserRepositoryFactory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-
-        btnBack = findViewById<MaterialButton>(R.id.btnBackProfile)
-        tvEmail = findViewById<TextView>(R.id.tvEmailProfile)
-        etName = findViewById<EditText>(R.id.etNameProfile)
-        spGender = findViewById<Spinner>(R.id.spGenderProfile)
-        etBirthDate = findViewById<EditText>(R.id.etBirthDateProfile)
-        etCurrentPassword = findViewById<EditText>(R.id.etCurrentPasswordProfile)
-        etNewPassword =  findViewById<EditText>(R.id.etNewPasswordProfile)
-        etConfirmPassword = findViewById<EditText>(R.id.etConfirmPasswordProfile)
-        btnEditProfile = findViewById<MaterialButton>(R.id.btnEditProfile)
-        scLightMode = findViewById<SwitchCompat>(R.id.scLightModeProfile)
-        loyoutLogout = findViewById<LinearLayout>(R.id.logoutLayoutProfile)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Set the user information
         setUserInformation()
@@ -61,7 +40,9 @@ class ProfileActivity : AppCompatActivity() {
         // Logout
         logout()
         // Edit profile
-        editProfile()
+        editProfileInformation()
+        // Update password
+        updatePassword()
         // Set the back button behavior
         setBackBehavior()
 
@@ -72,19 +53,16 @@ class ProfileActivity : AppCompatActivity() {
      */
     private fun setUserInformation() : Unit{
         // Set the user email
-        tvEmail.text = "example.com"
+        binding.tvEmail.text = "example.com"
         // Set the user name
-        etName.setText("John Doe")
-        // Set the user gender
-        spGender.setSelection(1)
+        binding.etName.setText("John Doe")
         // Set the user birth date
-        etBirthDate.setText("01/01/2000")
+        binding.etBirthDate.setText("01/01/2000")
     }
 
     private fun setBackBehavior() : Unit {
-        btnBack.setOnClickListener {
-            intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+        binding.btnBack.setOnClickListener {
+            finish()
         }
     }
 
@@ -93,21 +71,21 @@ class ProfileActivity : AppCompatActivity() {
      */
     private fun fillGenderSpinner() : Unit {
         // List of gender options
-        val genderOptions = listOf("Masculino", "Femenino", "Otro")
+        val genderOptions = listOf("Masculino", "Femenino", "Indefinido")
         // Create an ArrayAdapter using the genderOptions list
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,
-            genderOptions)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
         // Set the layout resource for the dropdown menu
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set the adapter to the genderSpinner
-        spGender.adapter = adapter
+        binding.spGender.adapter = adapter
+        binding.spGender.setSelection(genderOptions.size - 1)
     }
 
     /**
      * Set the behavior of the birth date field
      */
     private fun setBirthDateFieldBehavior() : Unit {
-        etBirthDate.setOnClickListener {
+        binding.etBirthDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
@@ -126,7 +104,7 @@ class ProfileActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT).show()
                     } else {
                         val dat = "$dayOfMonth-${monthOfYear + 1}-$year"
-                        etBirthDate.setText(dat)
+                        binding.etBirthDate.setText(dat)
                     }
                 }, year, month, day)
             datePickerDialog.show()
@@ -137,7 +115,7 @@ class ProfileActivity : AppCompatActivity() {
      * Switch light mode
      */
     private fun switchLightMode(): Unit {
-        scLightMode.setOnCheckedChangeListener { _, isChecked ->
+        binding.scThemeMode.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 // Switch to light mode
             } else {
@@ -150,7 +128,7 @@ class ProfileActivity : AppCompatActivity() {
      * Set the behavior of the logout button
      */
     private fun logout(): Unit {
-        loyoutLogout.setOnClickListener {
+        binding.layoutLogout.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Cerrar sesion")
                 .setMessage("¿Estás seguro de que quiere salir de la sesión?")
@@ -175,18 +153,18 @@ class ProfileActivity : AppCompatActivity() {
      */
     private fun validateInputFields(): Boolean {
         //get the input fields
-        val name = etName.text.toString()
-        val birthDate = etBirthDate.text.toString()
-        val gender = spGender.selectedItem.toString()
-        val currentPassword = etCurrentPassword.text.toString()
+        val name = binding.etName.text.toString()
+        val birthDate = binding.etBirthDate.text.toString()
+        val gender = binding.spGender.selectedItem.toString()
+        val currentPassword = binding.etCurrentPassword.text.toString()
 
         //validate empty fields
         if (name.isEmpty()) {
-            etName.error = "El nombre es obligatorio"
+            binding.etName.error = "El nombre es obligatorio"
             return false
         }
         if (birthDate.isEmpty()) {
-            etBirthDate.error = "Fecha de nacimiento obligatoria"
+            binding.etBirthDate.error = "Fecha de nacimiento obligatoria"
             return false
         }
         if (gender.isEmpty()) {
@@ -205,9 +183,9 @@ class ProfileActivity : AppCompatActivity() {
      */
     private fun validatePasswordChange(): Boolean {
         //get the input fields
-        val currentPassword = etCurrentPassword.text.toString()
-        val newPassword = etNewPassword.text.toString()
-        val confirmPassword = etConfirmPassword.text.toString()
+        val currentPassword = binding.etCurrentPassword.text.toString()
+        val newPassword = binding.etNewPassword.text.toString()
+        val confirmPassword = binding.etConfirmNewPassword.text.toString()
 
         //if the thre password fields are so we infer that there is no
         //password change
@@ -217,25 +195,25 @@ class ProfileActivity : AppCompatActivity() {
 
         //validate empty fields
         if (currentPassword.isEmpty()) {
-            etCurrentPassword.error = "La contraseña actual es requerida"
+            binding.etCurrentPassword.error = "La contraseña actual es requerida"
             Toast.makeText(this, "La contraseña actual es requerida",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (newPassword.isEmpty()) {
-            etNewPassword.error = "La nueva contraseña es requerida"
+            binding.etNewPassword.error = "La nueva contraseña es requerida"
             Toast.makeText(this, "La nueva contraseña es requerida",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (confirmPassword.isEmpty()) {
-            etConfirmPassword.error = "La contrasena de confirmación es requerida"
+            binding.etConfirmNewPassword.error = "La contrasena de confirmación es requerida"
             Toast.makeText(this, "La contrasena de confirmación es requerida",
                 Toast.LENGTH_SHORT).show()
             return false
         }
         if (newPassword != confirmPassword) {
-            etConfirmPassword.error = "Las contraseñas no coinciden"
+            binding.etConfirmNewPassword.error = "Las contraseñas no coinciden"
             Toast.makeText(this, "Las contraseñas no coinciden",
                 Toast.LENGTH_SHORT).show()
             return false
@@ -247,16 +225,12 @@ class ProfileActivity : AppCompatActivity() {
     /**
      * Define the behavior of the edit profile button
      */
-    private fun editProfile() : Unit {
-        btnEditProfile.setOnClickListener {
+    private fun editProfileInformation() : Unit {
+        binding.btnUpdateProfileInfo.setOnClickListener {
             if (validateInputFields()) {
-                val name = etName.text.toString()
-                val birthDate = etBirthDate.text.toString()
-                val gender = spGender.selectedItem.toString()
-                val currentPassword = if (etCurrentPassword.toString().isEmpty() &&
-                    etNewPassword.toString().isEmpty() &&
-                    etConfirmPassword.toString().isEmpty()) etCurrentPassword.text.toString()
-                else etNewPassword.text.toString()
+                val name = binding.etName.text.toString()
+                val birthDate = binding.etBirthDate.text.toString()
+                val gender = binding.spGender.selectedItem.toString()
 
                 //persist the user new information
 
@@ -266,6 +240,12 @@ class ProfileActivity : AppCompatActivity() {
                 ).show()
 
             }
+        }
+    }
+
+    private fun updatePassword() : Unit {
+        binding.btnUpdateProfilePassword.setOnClickListener {
+            TODO("Not yet implemented")
         }
     }
 
