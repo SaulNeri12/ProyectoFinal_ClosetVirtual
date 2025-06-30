@@ -37,23 +37,23 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         binding.btnLogin.setOnClickListener {
             if (validateInputFields()) {
-//                val email = etEmail.text.toString()
-//                val password = etPassword.text.toString()
-//
-//                lifecycleScope.launch {
-//                    try {
-//                        val user = userRepository.login(email, password)
-//
-//                        SessionManager.user = user;
+                val email = binding.etEmail.text.toString()
+                val password = binding.etPassword.text.toString()
+
+                lifecycleScope.launch {
+                    try {
+                        val user = userRepository.login(email, password)
+
+                        SessionManager.user = user
 
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
 
-//                    } catch (e: AuthException) {
-//                        Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
-//                    }
-//                }
+                    } catch (e: AuthException) {
+                        Toast.makeText(this@LoginActivity, e.message, Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }
