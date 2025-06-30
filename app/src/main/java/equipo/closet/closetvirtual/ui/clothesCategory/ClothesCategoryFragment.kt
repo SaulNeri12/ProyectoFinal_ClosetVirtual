@@ -1,22 +1,15 @@
 
 package equipo.closet.closetvirtual.ui.clothesCategory
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.GridView
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.ProfileActivity
@@ -116,7 +109,7 @@ class ClothesCategoryFragment : Fragment() {
 
     private fun setSearchButtonBehavior() {
         binding.btnSearchClothesCategory.setOnClickListener {
-            TODO("Not yet implemented")
+            Toast.makeText(requireContext(), "Search button clicked", Toast.LENGTH_SHORT).show()
         }
     }
 

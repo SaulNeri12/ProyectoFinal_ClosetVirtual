@@ -1,4 +1,4 @@
-package equipo.closet.closetvirtual.ui.searchoutfit.adapters
+package equipo.closet.closetvirtual.ui.searchOutfit.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
