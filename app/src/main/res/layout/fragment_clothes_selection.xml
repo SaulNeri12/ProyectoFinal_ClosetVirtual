@@ -27,45 +27,69 @@
             <LinearLayout
                 android:id="@+id/header_layout"
                 android:layout_width="match_parent"
-                android:layout_height="68dp"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="16dp"
+                android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnBackClothesSelection"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="37dp"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@color/white"
-                    android:elevation="0dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    app:cornerRadius="20dp"
-                    app:icon="@drawable/ic_arrow_back"
-                    app:iconTint="@color/icon_color"
-                    app:startIconDrawable="@drawable/circle_white_background" />
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_margin="4dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="6dp"
+                    app:cardUseCompatPadding="false">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp"
+                        android:backgroundTint="@color/white"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/ic_arrow_back"
+                        app:iconTint="@color/icon_color"
+                        app:iconSize="24dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        style="@style/Widget.Material3.Button.IconButton" />
+                </com.google.android.material.card.MaterialCardView>
+
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnProfileClothesSelection"
-                    style="@style/Widget.Material3.Button.IconButton"
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="45dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    android:backgroundTint="@color/white"
-                    android:elevation="0dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    app:cornerRadius="20dp"
-                    app:icon="@drawable/ic_person"
-                    app:iconTint="@color/icon_color"
-                    app:startIconDrawable="@drawable/circle_white_background" />
+                    android:layout_height="45dp"
+                    android:layout_margin="4dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="6dp"
+                    app:cardUseCompatPadding="false">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:insetLeft="0dp"
+                        android:insetRight="0dp"
+                        android:backgroundTint="@color/white"
+                        app:cornerRadius="25dp"
+                        app:icon="@drawable/ic_person"
+                        app:iconTint="@color/icon_color"
+                        app:iconSize="24dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        style="@style/Widget.Material3.Button.IconButton" />
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -92,43 +116,54 @@
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@android:color/white">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
                     <!-- Campo de texto -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="25dp"
+                        app:cardElevation="0dp"
+                        app:cardUseCompatPadding="false">
+
+                        <!-- Ícono de búsqueda -->
+                        <ImageView
+                            android:id="@+id/btnSearchClothesCategory"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_search"
+                            app:tint="@color/icon_color" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
                     <EditText
                         android:id="@+id/filtered_garment_search_input"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentStart="true"
-                        android:layout_toStartOf="@id/search_icon"
-                        android:hint="Nombre de la prenda"
                         android:background="@android:color/transparent"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="48dp"
+                        android:hint="Nombre de la prenda"
+                        android:inputType="text"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
                         android:textColor="@color/text_primary_dark"
                         android:textColorHint="@color/gray_medium"
-                        android:textSize="14sp"
-                        android:inputType="text" />
+                        android:textSize="15sp"
+                        android:theme="@style/InputStyle"/>
 
-                    <!-- Ícono de búsqueda -->
-                    <ImageView
-                        android:id="@+id/search_icon"
-                        android:layout_width="27dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="13dp"
-                        android:contentDescription="Buscar"
-                        android:src="@drawable/ic_search"
-                        app:tint="@color/icon_color" />
-                </RelativeLayout>
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/btn_filter"
+                android:id="@+id/btnFilter"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="4dp"
@@ -146,7 +181,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mcOpenClothesRegistry"
+                android:id="@+id/btnOpenClothesRegistry"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="5dp"
@@ -164,7 +199,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/ic_add"
                     app:tint="@android:color/white"
-                    android:contentDescription="Agregar outfit" />
+                    android:contentDescription="Add outfit" />
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
