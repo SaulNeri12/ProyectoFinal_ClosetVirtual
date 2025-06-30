@@ -191,7 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:dropDownVerticalOffset="56dp"
-                android:paddingHorizontal="16dp"
+                android:paddingHorizontal="15dp"
                 android:gravity="center_vertical"
                 android:spinnerMode="dropdown" />
         </com.google.android.material.card.MaterialCardView>
@@ -217,6 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/SwitchTheme"
+                android:paddingHorizontal="5dp"
                 app:boxBackgroundMode="filled"
                 app:hintEnabled="false"
                 app:boxBackgroundColor="@android:color/white"
@@ -270,6 +271,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/SwitchTheme"
+                android:paddingHorizontal="5dp"
                 app:boxBackgroundMode="filled"
                 app:hintEnabled="false"
                 app:boxBackgroundColor="@android:color/white"

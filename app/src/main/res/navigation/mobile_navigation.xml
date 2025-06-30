@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_outfit_finder"
-        android:name="equipo.closet.closetvirtual.ui.searchoutfit.SearchOutfitFragment"
+        android:name="equipo.closet.closetvirtual.ui.searchOutfit.SearchOutfitFragment"
         android:label="Buscador de Outfits"
         tools:layout="@layout/fragment_search_outfit" />
 
