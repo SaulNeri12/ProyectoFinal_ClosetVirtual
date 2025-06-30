@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // TODO: TEST
-        Toast.makeText(this, "Email session: ${SessionManager.user.email}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Email session: ${SessionManager.user.email}, Name: ${SessionManager.user.name}", Toast.LENGTH_LONG).show()
 
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
 
