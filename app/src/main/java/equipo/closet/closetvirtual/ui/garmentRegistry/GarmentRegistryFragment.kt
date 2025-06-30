@@ -62,7 +62,11 @@ class GarmentRegistryFragment : Fragment() {
             //fill the color spinner
             setColorSpinner()
             // Set up the register button listener (assuming you want to do this in onViewCreated)
-            registerGarment() // You also call this from here, so btnRegister needs to be initialized first.
+            registerGarment()
+            //set the behavior of the back button
+            setBackBehavior()
+            //set the behavior of the profile button
+            setProfileBehavior()
 
     }
 

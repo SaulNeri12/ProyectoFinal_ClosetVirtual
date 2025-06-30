@@ -30,8 +30,8 @@ class ClothingInformationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_clothing_information)
-
+        binding = ActivityClothingInformationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val extras = intent.extras
 
