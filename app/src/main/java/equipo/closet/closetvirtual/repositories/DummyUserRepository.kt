@@ -1,23 +1,73 @@
+@file:Suppress("DEPRECATION")
+
 package equipo.closet.closetvirtual.repositories
 
 import equipo.closet.closetvirtual.repositories.exceptions.RegistrationException
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import equipo.closet.closetvirtual.repositories.exceptions.AuthException
 import equipo.closet.closetvirtual.entities.User
+import java.util.Date
 
 object DummyUserRepository : UserRepository {
 
     private val users = mutableListOf<User>()
 
-    override fun login(email: String, password: String) {
+    private var initializedUsers: Boolean = false
+
+    fun initialize() {
+        if (initializedUsers) {
+            return
+        }
+
+        val user1 = User(
+            uid = "user_001",
+            name = "Alice López",
+            email = "alice@example.com",
+            gender = "Femenino",
+            birthdate = Date(95, 5, 24), // 24 junio 1995
+            password = "password123",
+            profileImgUrl = null,
+            fireAuthUID = "auth_001"
+        )
+
+        val user2 = User(
+            uid = "user_002",
+            name = "Bruno Martínez",
+            email = "bruno@example.com",
+            gender = "Masculino",
+            birthdate = Date(98, 10, 3), // 3 noviembre 1998
+            password = "brunopass456",
+            profileImgUrl = null,
+            fireAuthUID = "auth_002"
+        )
+
+        val user3 = User(
+            uid = "user_003",
+            name = "Camila Rivera",
+            email = "camila@example.com",
+            gender = "Femenino",
+            birthdate = Date(2000 - 1900, 1, 14), // 14 febrero 2000
+            password = "cami_secure",
+            profileImgUrl = null,
+            fireAuthUID = "auth_003"
+        )
+
+        users.addAll(listOf(user1, user2, user3))
+
+        initializedUsers = true
+    }
+
+    override suspend fun login(email: String, password: String): User {
         val user = users.find { it.email == email }
 
         if (user == null || user.password != password) {
             throw AuthException("Correo o contraseña incorrectos.")
         }
+
+        return user
     }
 
-    override fun signUp(user: User) {
+    override suspend fun signUp(user: User) {
         if (users.any { it.email == user.email }) {
             throw RegistrationException("Ya existe una cuenta con ese correo.")
         }

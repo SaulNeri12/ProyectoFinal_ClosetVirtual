@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="equipo.closet.closetvirtual.ui.clothes_category_cards.ClothesCategoryCardsFragment"
+        android:name="equipo.closet.closetvirtual.ui.clothesCategory.ClothesCategoryFragment"
         android:label="Mi Armario"
-        tools:layout="@layout/fragment_clothes_category_cards" />
+        tools:layout="@layout/fragment_clothes_category" />
 
     <fragment
         android:id="@+id/navigation_new_clothes"
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_outfit_finder"
-        android:name="equipo.closet.closetvirtual.ui.searchoutfit.SearchOutfitFragment"
+        android:name="equipo.closet.closetvirtual.ui.searchOutfit.SearchOutfitFragment"
         android:label="Buscador de Outfits"
         tools:layout="@layout/fragment_search_outfit" />
 

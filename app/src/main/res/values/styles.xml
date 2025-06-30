@@ -43,6 +43,23 @@
         <item name="android:textCursorDrawable">@drawable/input_cursor</item>
     </style>
 
+    <style name="CustomDatePickerTheme" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/gray_medium</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/text_primary_dark</item>
+        <item name="materialCalendarStyle">@style/CustomCalendarStyle</item>
+    </style>
+
+    <style name="CustomCalendarStyle" parent="Widget.MaterialComponents.MaterialCalendar">
+        <item name="daySelectedStyle">@style/CustomDaySelectedStyle</item>
+    </style>
+
+    <style name="CustomDaySelectedStyle" parent="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
+        <item name="itemFillColor">@color/gray_medium</item>
+        <item name="itemTextColor">@android:color/white</item>
+    </style>
+
     <!-- Estilo personalizado para BottomNavigationView -->
     <style name="CustomBottomNavigationView" parent="Widget.Material3.BottomNavigationView">
         <item name="android:background">@color/white</item>
@@ -52,6 +69,11 @@
         <item name="itemTextColor">@android:color/transparent</item>
         <item name="labelVisibilityMode">unlabeled</item>
         <item name="itemIconSize">24dp</item>
+    </style>
+
+    <style name="Theme.ClosetVirtual.SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+        <item name="android:statusBarColor">@color/background_main</item>
     </style>
 
 </resources>

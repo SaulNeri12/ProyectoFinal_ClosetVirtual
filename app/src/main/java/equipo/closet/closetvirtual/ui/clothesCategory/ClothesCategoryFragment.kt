@@ -1,99 +1,121 @@
 
-package equipo.closet.closetvirtual.ui.clothes_category_cards
+package equipo.closet.closetvirtual.ui.clothesCategory
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.ProfileActivity
+import equipo.closet.closetvirtual.databinding.FragmentClothesCategoryBinding
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
-import equipo.closet.closetvirtual.ui.clothes_category_cards.adapters.ClothesCategoryGridAdapter
+import equipo.closet.closetvirtual.ui.clothesCategory.adapters.ClothesCategoryGridAdapter
+import equipo.closet.closetvirtual.ui.clothesCategoryFilter.ClothesCategoryFilterFragment
+import equipo.closet.closetvirtual.ui.clothesCategoryFilter.ClothesCategoryViewModel
 import kotlinx.coroutines.launch
 
-class ClothesCategoryCardsFragment : Fragment() {
+class ClothesCategoryFragment : Fragment() {
 
-    private lateinit var btnBackCategoryCards: MaterialButton
-    private lateinit var btnProfileCategoryCards: MaterialButton
+    private lateinit var binding: FragmentClothesCategoryBinding
+    private lateinit var viewModel : ClothesCategoryViewModel
+
+    //this is where we save the tag gotten from the filter fragment
+    private lateinit var tag: String
 
     private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        viewModel = ViewModelProvider(this)[ClothesCategoryViewModel::class.java]
+
+        binding = FragmentClothesCategoryBinding.inflate(inflater, container, false)
         activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.VISIBLE
-        return inflater.inflate(R.layout.fragment_clothes_category_cards, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnBackCategoryCards = view.findViewById(R.id.btnBackCategoryCards)
-        btnProfileCategoryCards = view.findViewById(R.id.btnProfileCategoryCards)
-
+        setViewModelObserver()
         setBackButtonClickListener()
+        setSearchButtonBehavior()
         setProfileButtonClickListener()
+        setFilterButtonBehavior()
+        setViewModelObserver()
 
         lifecycleScope.launch {
             val clothes = clothesRepository.getAll().toMutableList()
 
             // === Top ===
             val topClothes = clothes.filter { it.category.lowercase() == "top" }
-            view.findViewById<GridView>(R.id.top_clothes_cards_grid).adapter =
+            binding.topClothesCardsGrid.adapter =
                 ClothesCategoryGridAdapter(requireContext(), topClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.top_clothes_counter_label).text =
-                formatCategoryClothesCount(topClothes.size)
+            binding.topClothesCounterLabel.text = formatCategoryClothesCount(topClothes.size)
 
             // === Bottom ===
             val bottomClothes = clothes.filter { it.category.lowercase() == "bottom" }
-            view.findViewById<GridView>(R.id.bottom_clothes_cards_grid).adapter =
+            binding.bottomClothesCardsGrid.adapter =
                 ClothesCategoryGridAdapter(requireContext(), bottomClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.bottom_clothes_counter_label).text =
-                formatCategoryClothesCount(bottomClothes.size)
+            binding.bottomClothesCounterLabel.text = formatCategoryClothesCount(bottomClothes.size)
 
             // === Zapatos ===
             val shoesClothes = clothes.filter { it.category.lowercase() == "zapatos" }
-            view.findViewById<GridView>(R.id.shoes_clothes_cards_grid).adapter =
+            binding.shoesClothesCardsGrid.adapter =
                 ClothesCategoryGridAdapter(requireContext(), shoesClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.shoes_clothes_counter_label).text =
-                formatCategoryClothesCount(shoesClothes.size)
+            binding.shoesClothesCounterLabel.text = formatCategoryClothesCount(shoesClothes.size)
 
             // === Bodysuit ===
             val bodysuitClothes = clothes.filter { it.category.lowercase() == "bodysuit" }
-            view.findViewById<GridView>(R.id.bodysuit_clothes_cards_grid).adapter =
+            binding.bodysuitClothesCardsGrid.adapter =
                 ClothesCategoryGridAdapter(requireContext(), bodysuitClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.bodysuit_clothes_counter_label).text =
-                formatCategoryClothesCount(bodysuitClothes.size)
+            binding.bodysuitClothesCounterLabel.text = formatCategoryClothesCount(bodysuitClothes.size)
 
             // === Accesorios ===
             val accessoriesClothes = clothes.filter { it.category.lowercase() == "accesorios" }
-            view.findViewById<GridView>(R.id.accessories_clothes_cards_grid).adapter =
+            binding.accessoriesClothesCardsGrid.adapter =
                 ClothesCategoryGridAdapter(requireContext(), accessoriesClothes.toMutableList())
-            view.findViewById<MaterialTextView>(R.id.accessories_clothes_counter_label).text =
-                formatCategoryClothesCount(accessoriesClothes.size)
+            binding.accessoriesClothesCounterLabel.text = formatCategoryClothesCount(accessoriesClothes.size)
+        }
+    }
+
+    private fun setViewModelObserver(){
+        viewModel.tag.observe(viewLifecycleOwner) {
+            this.tag = viewModel.tag.value.toString()
         }
     }
 
     private fun setProfileButtonClickListener() {
-        btnProfileCategoryCards.setOnClickListener {
+        binding.btnProfileCategoryCards.setOnClickListener {
             val intent = Intent(requireContext(), ProfileActivity::class.java)
             startActivity(intent)
         }
     }
 
     private fun setBackButtonClickListener() {
-        btnBackCategoryCards.setOnClickListener {
+        binding.btnBackCategoryCards.setOnClickListener {
             @Suppress("DEPRECATION")
             requireActivity().onBackPressed()
+        }
+    }
+
+    private fun setSearchButtonBehavior() {
+        binding.btnSearchClothesCategory.setOnClickListener {
+            Toast.makeText(requireContext(), "Search button clicked", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setFilterButtonBehavior() {
+        binding.btnFilterClothesCategory.setOnClickListener {
+            ClothesCategoryFilterFragment().show(childFragmentManager, "NewClothesCategoryFilterFragment")
         }
     }
 
@@ -104,4 +126,5 @@ class ClothesCategoryCardsFragment : Fragment() {
             else -> count.toString()
         }
     }
+
 }

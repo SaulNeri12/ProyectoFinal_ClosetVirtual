@@ -19,37 +19,32 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
-import equipo.closet.closetvirtual.profileActivity
+import equipo.closet.closetvirtual.ProfileActivity
+import equipo.closet.closetvirtual.databinding.FragmentClothesSelectionBinding
+import equipo.closet.closetvirtual.databinding.FragmentGarmentRegistryBinding
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import java.io.File
 
 class GarmentRegistryFragment : Fragment() {
 
+    private lateinit var binding : FragmentGarmentRegistryBinding
+
     private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
 
-    private lateinit var imageView: ImageView
-    private lateinit var btnCamera : MaterialButton
-    private lateinit var etName : TextInputEditText
-    private lateinit var etTag : TextInputEditText
-    private lateinit var spinnerCategory : Spinner
-    private lateinit var spinnerColor : Spinner
-    private lateinit var switchPrint : SwitchCompat
-    private lateinit var btnRegister : MaterialButton
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private var imageFile: File? = null
     private var imageUri: Uri? = null
 
-    private lateinit var btnBackGarmentRegistry: MaterialButton
-    private lateinit var btnProfileGarmentRegistry: MaterialButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_garment_registry, container, false)
+        activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.VISIBLE
+        binding = FragmentGarmentRegistryBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     /**
@@ -58,20 +53,6 @@ class GarmentRegistryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-            btnBackGarmentRegistry = view.findViewById(R.id.btnBackGarmentRegistry)
-            btnProfileGarmentRegistry = view.findViewById(R.id.btnProfileGarmentRegistry)
-
-            btnCamera = view.findViewById(R.id.btnCameraRegistry)
-            etName = view.findViewById(R.id.etNameRegistry)
-            etTag = view.findViewById(R.id.etTagRegistry)
-            spinnerCategory = view.findViewById(R.id.spCategoryRegistry)
-            spinnerColor = view.findViewById(R.id.spColorRegistry)
-            switchPrint = view.findViewById(R.id.switchPrintRegistry)
-            btnRegister = view.findViewById(R.id.btnAdd)
-            imageView = view.findViewById(R.id.garmentImageRegistry)
-
-
-            // --- THEN CALL METHODS THAT USE THESE VIEWS ---
             //set the behavior of the camera button
             openCamera()
             //set the behavior of the camera launcher
@@ -81,20 +62,24 @@ class GarmentRegistryFragment : Fragment() {
             //fill the color spinner
             setColorSpinner()
             // Set up the register button listener (assuming you want to do this in onViewCreated)
-            registerGarment() // You also call this from here, so btnRegister needs to be initialized first.
+            registerGarment()
+            //set the behavior of the back button
+            setBackBehavior()
+            //set the behavior of the profile button
+            setProfileBehavior()
 
     }
 
     private fun setBackBehavior() : Unit {
-        btnBackGarmentRegistry.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             @Suppress("DEPRECATION")
             requireActivity().onBackPressed()
         }
     }
 
     private fun setProfileBehavior() : Unit {
-        btnProfileGarmentRegistry.setOnClickListener {
-            val intent = Intent(requireContext(), profileActivity::class.java)
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
             startActivity(intent)
         }
     }
@@ -103,7 +88,7 @@ class GarmentRegistryFragment : Fragment() {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && imageFile != null) {
                 // show img
-                imageView.setImageURI(imageUri)
+                binding.garmentImage.setImageURI(imageUri)
 
                 // pa guardar despues
                 val imagePath = imageFile!!.absolutePath
@@ -117,7 +102,7 @@ class GarmentRegistryFragment : Fragment() {
     }
 
     private fun openCamera() : Unit {
-        btnCamera.setOnClickListener {
+        binding.btnCamera.setOnClickListener {
             imageFile = createImageFile()
             imageUri = FileProvider.getUriForFile(
                 requireContext(),
@@ -147,7 +132,9 @@ class GarmentRegistryFragment : Fragment() {
         // Set the layout resource for the dropdown menu
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set the adapter to the genderSpinner
-        spinnerCategory.adapter = adapter
+        binding.spGarmentCategory.adapter = adapter
+        //set the default value
+        binding.spGarmentCategory.setSelection(0)
     }
 
     private fun setColorSpinner() : Unit {
@@ -159,24 +146,26 @@ class GarmentRegistryFragment : Fragment() {
         // Set the layout resource for the dropdown menu
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set the adapter to the genderSpinner
-        spinnerColor.adapter = adapter
+        binding.spGarmentColor.adapter = adapter
+        //set the default value
+        binding.spGarmentColor.setSelection(0)
     }
 
     private fun validateInputFields() : Boolean {
         //get the input fields
-        val name = etName.text.toString()
-        val tag = etTag.text.toString()
-        val category = spinnerCategory.selectedItem.toString()
-        val color = spinnerColor.selectedItem.toString()
+        val name = binding.etGarmentName.text.toString()
+        val tag = binding.etGarmentTag.text.toString()
+        val category = binding.spGarmentCategory.selectedItem.toString()
+        val color = binding.spGarmentColor.selectedItem.toString()
         val image = imageUri.toString()
 
         //validate empty fields
         if (name.isEmpty()) {
-            etName.error = "Ingrese un nombre"
+            binding.etGarmentName.error = "Ingrese un nombre"
             return false
         }
         if (tag.isEmpty()) {
-            etTag.error = "Ingrese una etiqueta"
+            binding.etGarmentTag.error = "Ingrese una etiqueta"
             return false
         }
         if (category.isEmpty()) {
@@ -200,14 +189,14 @@ class GarmentRegistryFragment : Fragment() {
     }
 
     private fun registerGarment() : Unit {
-        btnRegister.setOnClickListener {
+        binding.btnAddGarment.setOnClickListener {
             if (validateInputFields()) {
-                val name = etName.text.toString()
-                val tag = etTag.text.toString()
-                val category = spinnerCategory.selectedItem.toString()
-                val color = spinnerColor.selectedItem.toString()
-                val print = switchPrint.isChecked
-                val image = imageUri.toString()
+                val name = binding.etGarmentName.text.toString()
+                val tag = binding.etGarmentTag.text.toString()
+                val category = binding.spGarmentCategory.selectedItem.toString()
+                val color = binding.spGarmentColor.selectedItem.toString()
+                val print = binding.switchPrint.isChecked
+                val image = if (imageUri != null) imageUri.toString() else ""
 
                 val newGarment = Garment(
                     0,
@@ -216,7 +205,7 @@ class GarmentRegistryFragment : Fragment() {
                     tag,
                     category,
                     print,
-                    imageUri = if (imageUri != null) imageUri.toString() else ""
+                    image
                 )
 
                 // NOTE: Test message
