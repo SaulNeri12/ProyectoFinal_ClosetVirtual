@@ -71,5 +71,9 @@
         <item name="itemIconSize">24dp</item>
     </style>
 
+    <style name="Theme.ClosetVirtual.SplashScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+        <item name="android:statusBarColor">@color/background_main</item>
+    </style>
 
 </resources>
