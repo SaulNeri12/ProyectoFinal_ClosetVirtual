@@ -49,7 +49,7 @@ class ClothesCategoryGridAdapter(
         }
 
         // Apply slide-in-bottom animation to the card
-        equipo.closet.closetvirtual.utils.AnimationHelper.applySlideInBottomAnimation(view, context)
+        //equipo.closet.closetvirtual.utils.AnimationHelper.applySlideInBottomAnimation(view, context)
 
         holder.previewImage.setOnClickListener {
             var intent: Intent = Intent(context, ClothingInformationActivity::class.java)
