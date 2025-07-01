@@ -257,28 +257,29 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    // Archivo: ProfileActivity.kt
+
     private fun updatePassword() {
         binding.btnUpdateProfilePassword.setOnClickListener {
-            // 1. Validar los campos primero
             if (validatePasswordChange()) {
                 val currentPassword = binding.etCurrentPassword.text.toString()
                 val newPassword = binding.etNewPassword.text.toString()
 
-                // Si los campos están vacíos, no hacer nada (la validación ya lo permite)
-                if (currentPassword.isEmpty() && newPassword.isEmpty()) {
+                if (currentPassword.isEmpty() || newPassword.isEmpty()) {
+                    Toast.makeText(
+                        this,
+                        "Por favor, completa todos los campos de contraseña.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@setOnClickListener
                 }
 
-                // 2. Usar una corrutina para llamar al repositorio
                 lifecycleScope.launch {
                     try {
-                        // NOTA: Necesitarás el ID del usuario actual.
-                        // Debes obtenerlo de SharedPreferences, un singleton, o como lo gestiones.
-                        val currentUserId = "ID_DEL_USUARIO_LOGUEADO"
 
-                        userRepository.updatePassword(currentUserId, currentPassword, newPassword)
+                        userRepository.updatePassword(currentPassword, newPassword)
 
-                        // 3. Éxito: Notificar al usuario y limpiar campos
+                        // Éxito
                         Toast.makeText(
                             this@ProfileActivity,
                             "Contraseña actualizada exitosamente",
@@ -289,13 +290,8 @@ class ProfileActivity : AppCompatActivity() {
                         binding.etConfirmNewPassword.text?.clear()
 
                     } catch (e: Exception) {
-                        // 4. Error: Mostrar un mensaje adecuado
-
-                        Toast.makeText(
-                            this@ProfileActivity,
-                            "Error: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        // Error
+                        Toast.makeText(this@ProfileActivity, e.message, Toast.LENGTH_LONG).show()
                     }
                 }
             }
