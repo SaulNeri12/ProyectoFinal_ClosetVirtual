@@ -3,6 +3,7 @@ package equipo.closet.closetvirtual
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -12,6 +13,7 @@ import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +35,9 @@ class MainActivity : AppCompatActivity() {
 
         val navController = navHostFragment.navController
 
+        /*
         // adding some clothes...
+        lifecycleScope.launch {
         this.clothes.insert(Garment(UUID.randomUUID().toString(), "Maquina Azul", "Azul", "Formal", "Top", false))
         this.clothes.insert(Garment(UUID.randomUUID().toString(), "Pantalon Versachi", "Negro", "Elegante", "Bottom", false))
         this.clothes.insert(Garment(UUID.randomUUID().toString(), "Chaqueta Negra", "Negro", "Urbano", "Top", false))
@@ -46,6 +50,8 @@ class MainActivity : AppCompatActivity() {
         outfitGala.addGarment(this.clothes.getAll().get(2))
 
         this.outfits.insert(outfitGala)
+
+         */
 
         navView.setupWithNavController(navController)
     }

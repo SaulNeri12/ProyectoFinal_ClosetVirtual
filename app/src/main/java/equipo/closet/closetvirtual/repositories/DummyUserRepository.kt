@@ -93,21 +93,21 @@ object DummyUserRepository : UserRepository {
         }
     }
 
-    override fun getAll(): List<User> = users
-    override fun getAll(filters: Map<String, Any>): List<User> {
+    override suspend fun getAll(): List<User> = users
+    override suspend fun getAll(filters: Map<String, Any>): List<User> {
         return this.getAll()
     }
 
-    override fun getById(id: String): User? = users.find { it.uid == id }
+    override suspend fun getById(id: String): User? = users.find { it.uid == id }
 
-    override fun getByName(name: String): User? = users.find { it.name == name }
+    override suspend fun getByName(name: String): User? = users.find { it.name == name }
 
-    override fun insert(item: User): String {
+    override suspend fun insert(item: User): String {
         users.add(item)
         return item.uid
     }
 
-    override fun update(item: User): String {
+    override suspend fun update(item: User): String {
         val index = users.indexOfFirst { it.uid == item.uid }
         if (index != -1) {
             users[index] = item
@@ -117,7 +117,7 @@ object DummyUserRepository : UserRepository {
         }
     }
 
-    override fun delete(id: String): String {
+    override suspend fun delete(id: String): String {
         val iterator = users.iterator()
         while (iterator.hasNext()) {
             val user = iterator.next()

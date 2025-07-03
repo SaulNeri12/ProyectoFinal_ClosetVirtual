@@ -123,19 +123,19 @@ object FirebaseUserRepository : UserRepository {
         }
     }
 
-    override fun getAll(): List<User> {
+    override suspend fun getAll(): List<User> {
         TODO("Not yet implemented")
     }
 
-    override fun getAll(filters: Map<String, Any>): List<User> {
+    override suspend fun getAll(filters: Map<String, Any>): List<User> {
         TODO("Not yet implemented")
     }
 
-    override fun getById(id: String): User? {
+    override suspend fun getById(id: String): User? {
         TODO("Not yet implemented")
     }
 
-    override fun getByName(name: String): User? {
+    override suspend fun getByName(name: String): User? {
         TODO("Not yet implemented")
     }
 
@@ -143,16 +143,16 @@ object FirebaseUserRepository : UserRepository {
      * Use signUp method instead.
      * @see signUp(user: User)
      */
-    override fun insert(item: User): String {
+    override suspend fun insert(item: User): String {
         throw UnsupportedOperationException("Use 'signUp' suspend method instead of 'insert'")
     }
 
-    override fun update(item: User): String {
+    override suspend fun update(item: User): String {
         TODO("Not yet implemented")
     }
 
 
-    override fun delete(id: String): String {
+    override suspend fun delete(id: String): String {
         TODO("Not yet implemented")
     }
 }
