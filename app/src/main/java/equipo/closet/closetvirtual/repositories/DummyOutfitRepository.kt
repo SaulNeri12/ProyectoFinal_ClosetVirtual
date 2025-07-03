@@ -3,10 +3,9 @@ package equipo.closet.closetvirtual.repositories
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.entities.Outfit
 
-object DummyOutfitRepository : Repository<Outfit, Int> {
+object DummyOutfitRepository : Repository<Outfit, String> {
 
     private val outfits: MutableList<Outfit> = mutableListOf()
-    private var idCounter: Int = 1
 
     override fun getAll(): List<Outfit> {
         return outfits.toList()
@@ -21,33 +20,33 @@ object DummyOutfitRepository : Repository<Outfit, Int> {
         return null
     }
 
-    override fun getById(id: Int): Outfit? {
+    override fun getById(id: String): Outfit? {
         return outfits.find { it.id == id }
     }
 
-    override fun insert(item: Outfit): Int {
-        val newItem = item.copy(id = idCounter++)
+    override fun insert(item: Outfit): String {
+        val newItem = item.copy()
         outfits.add(newItem)
         return newItem.id
     }
 
-    override fun update(item: Outfit): Int {
+    override fun update(item: Outfit): String {
         val index = outfits.indexOfFirst { it.id == item.id }
         if (index != -1) {
             outfits[index] = item
-            return 1
+            return item.id
         } else {
-            return 0
+            return ""
         }
     }
 
-    override fun delete(id: Int): Int {
+    override fun delete(id: String): String {
         val index = outfits.indexOfFirst { it.id == id }
         if (index != -1) {
             outfits.removeAt(index)
-            return 1
+            return id
         } else {
-            return 0
+            return ""
         }
     }
 }
