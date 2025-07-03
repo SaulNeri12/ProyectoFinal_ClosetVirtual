@@ -1,6 +1,7 @@
 package equipo.closet.closetvirtual.repositories
 
 import android.annotation.SuppressLint
+import com.google.firebase.auth.EmailAuthProvider
 import equipo.closet.closetvirtual.repositories.exceptions.RegistrationException
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import equipo.closet.closetvirtual.repositories.exceptions.AuthException
@@ -94,6 +95,33 @@ object FirebaseUserRepository : UserRepository {
             )
         }
     }
+    /**
+     * Updates the user's password in FirebaseAuth and Firestore.
+     * It re-authenticates the user first for security reasons.
+     */
+    override suspend fun updatePassword(currentPassword: String, newPassword: String) {
+        val firebaseUser = auth.currentUser
+            ?: throw AuthException("No hay un usuario con sesión activa.")
+
+        val db = FirebaseFirestore.getInstance()
+
+        try {
+            // Paso 1: Re-autenticar al usuario para confirmar su identidad
+            val credential = EmailAuthProvider.getCredential(firebaseUser.email!!, currentPassword)
+            auth.currentUser!!.reauthenticate(credential).await()
+
+            // Paso 2: Si la re-autenticación es exitosa, actualizar la contraseña en FirebaseAuth
+            auth.currentUser!!.updatePassword(newPassword).await()
+
+            // Paso 3: Actualizar el hash de la contraseña en Firestore
+            val userDocRef = db.collection(USER_COLLECTION_NAME).document(firebaseUser.uid)
+            userDocRef.update("password", hashSHA256(newPassword)).await()
+
+        } catch (e: Exception) {
+            // Captura errores de re-autenticación (contraseña incorrecta) o de actualización
+            throw AuthException("La contraseña actual es incorrecta o ocurrió un error al actualizarla.")
+        }
+    }
 
     override fun getAll(): List<User> {
         TODO("Not yet implemented")
@@ -118,6 +146,7 @@ object FirebaseUserRepository : UserRepository {
     override fun update(item: User): String {
         TODO("Not yet implemented")
     }
+
 
     override fun delete(id: String): String {
         TODO("Not yet implemented")

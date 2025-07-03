@@ -75,6 +75,24 @@ object DummyUserRepository : UserRepository {
         users.add(user)
     }
 
+    /**
+     * AÑADIDO: Implementación de updatePassword para cumplir con la interfaz.
+     * Esto soluciona el error de compilación.
+     */
+    override suspend fun updatePassword(currentPassword: String, newPassword: String) {
+        // En este repositorio de prueba, asumimos que el usuario que cambia la contraseña
+        // es el que coincide con la contraseña actual.
+        val userToUpdate = users.find { it.password == currentPassword }
+
+        if (userToUpdate != null) {
+            userToUpdate.password = newPassword
+        } else {
+            // Si no se encuentra ningún usuario con esa contraseña, lanzamos un error,
+            // simulando el comportamiento del repositorio real.
+            throw AuthException("La contraseña actual es incorrecta.")
+        }
+    }
+
     override fun getAll(): List<User> = users
 
     override fun getById(id: String): User? = users.find { it.uid == id }
