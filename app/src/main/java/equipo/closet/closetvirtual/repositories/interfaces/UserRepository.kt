@@ -25,4 +25,9 @@ interface UserRepository : Repository<User, String> {
      * @throws RegistrationException if the user could not be created or already exists.
      */
     suspend fun signUp(user: User)
+
+
+    suspend fun updatePassword(currentPassword: String, newPassword: String)
 }
+
+
