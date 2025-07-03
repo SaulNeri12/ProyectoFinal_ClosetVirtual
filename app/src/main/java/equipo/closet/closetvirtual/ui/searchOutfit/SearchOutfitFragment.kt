@@ -26,7 +26,7 @@ class SearchOutfitFragment : Fragment() {
     private lateinit var binding: FragmentSearchOutfitBinding
     private lateinit var viewModel: SearchOutfitViewModel
 
-    private val outfitRepository: Repository<Outfit, Int> = OutfitRepositoryFactory.create()
+    private val outfitRepository: Repository<Outfit, String> = OutfitRepositoryFactory.create()
 
     //this is where we save the tag gotten from the filter fragment
     private lateinit var tag: String

@@ -3,7 +3,7 @@ package equipo.closet.closetvirtual.repositories
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.entities.Garment
 
-object DummyGarmentRepository : Repository<Garment, Int> {
+object DummyGarmentRepository : Repository<Garment, String> {
     private val garments: MutableList<Garment> = mutableListOf()
     private var idCounter: Int = 1
 
@@ -20,33 +20,33 @@ object DummyGarmentRepository : Repository<Garment, Int> {
         return null
     }
 
-    override fun getById(id: Int): Garment? {
+    override fun getById(id: String): Garment? {
         return garments.find { it.id == id }
     }
 
-    override fun insert(item: Garment): Int {
-        val newItem = item.copy(id = idCounter++)
+    override fun insert(item: Garment): String {
+        val newItem = item.copy(id = "")
         garments.add(newItem)
         return newItem.id
     }
 
-    override fun update(item: Garment): Int {
+    override fun update(item: Garment): String {
         val index = garments.indexOfFirst { it.id == item.id }
         if (index != -1) {
             garments[index] = item
-            return 1
+            return item.id
         } else {
-            return 0
+            return ""
         }
     }
 
-    override fun delete(id: Int): Int {
+    override fun delete(id: String): String {
         val index = garments.indexOfFirst { it.id == id }
         if (index != -1) {
             garments.removeAt(index)
-            return 1
+            return id
         } else {
-            return 0
+            return ""
         }
     }
 }

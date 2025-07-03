@@ -9,10 +9,10 @@ data class Outfit(
 )*/
 
 class Outfit(
-    var id: Int = 0,
+    var id: String = "",
     var name: String
 ) {
-    private val clothesIds: MutableList<Int> = mutableListOf()
+    private val clothesIds: MutableList<String> = mutableListOf()
     private val clothes: MutableList<Garment> = mutableListOf()
 
     fun addGarment(garment: Garment): Boolean {
@@ -27,7 +27,7 @@ class Outfit(
         return true
     }
 
-    fun removeGarmentById(garmentId: Int) {
+    fun removeGarmentById(garmentId: String) {
         clothes.removeAll { it.id == garmentId }
         clothesIds.remove(garmentId)
     }
@@ -37,10 +37,10 @@ class Outfit(
     }
 
     fun getClothes(): List<Garment> = clothes.toList()
-    fun getClothesIds(): List<Int> = clothesIds.toList()
+    fun getClothesIds(): List<String> = clothesIds.toList()
 
     fun copy(
-        id: Int = this.id,
+        id: String = this.id,
         name: String = this.name
     ): Outfit {
         val newOutfit = Outfit(this.id, this.name)

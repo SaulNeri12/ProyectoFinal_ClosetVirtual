@@ -12,11 +12,12 @@ import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
-    val clothes: Repository<Garment, Int> = GarmentRepositoryFactory.create()
-    val outfits: Repository<Outfit, Int> = OutfitRepositoryFactory.create()
+    val clothes: Repository<Garment, String> = GarmentRepositoryFactory.create()
+    val outfits: Repository<Outfit, String> = OutfitRepositoryFactory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +34,10 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         // adding some clothes...
-        this.clothes.insert(Garment(0, "Maquina Azul", "Azul", "Formal", "Top", false))
-        this.clothes.insert(Garment(0, "Pantalon Versachi", "Negro", "Elegante", "Bottom", false))
-        this.clothes.insert(Garment(0, "Chaqueta Negra", "Negro", "Urbano", "Top", false))
-        this.clothes.insert(Garment(0, "Zapatos De Guchi", "Negro", "Elegante", "Zapatos", false))
+        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Maquina Azul", "Azul", "Formal", "Top", false))
+        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Pantalon Versachi", "Negro", "Elegante", "Bottom", false))
+        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Chaqueta Negra", "Negro", "Urbano", "Top", false))
+        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Zapatos De Guchi", "Negro", "Elegante", "Zapatos", false))
 
         // adding an outfit
         val outfitGala = Outfit(name="Traje de Gala")

@@ -29,7 +29,7 @@ class ClothesCategoryFragment : Fragment() {
     //this is where we save the tag gotten from the filter fragment
     private lateinit var tag: String
 
-    private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
+    private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

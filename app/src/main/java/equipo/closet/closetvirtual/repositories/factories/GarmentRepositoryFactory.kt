@@ -5,11 +5,11 @@ import equipo.closet.closetvirtual.repositories.DummyGarmentRepository
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.entities.Garment
 
-object GarmentRepositoryFactory : Factory<Repository<Garment, Int>> {
+object GarmentRepositoryFactory : Factory<Repository<Garment, String>> {
 
     private var debug: Boolean = true
 
-    override fun create(): Repository<Garment, Int> {
+    override fun create(): Repository<Garment, String> {
 
         /*
         if (debug) {

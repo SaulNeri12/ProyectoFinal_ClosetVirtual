@@ -25,12 +25,13 @@ import equipo.closet.closetvirtual.databinding.FragmentGarmentRegistryBinding
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import java.io.File
+import java.util.UUID
 
 class GarmentRegistryFragment : Fragment() {
 
     private lateinit var binding : FragmentGarmentRegistryBinding
 
-    private val clothesRepository: Repository<Garment, Int> = GarmentRepositoryFactory.create()
+    private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
 
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
@@ -199,7 +200,7 @@ class GarmentRegistryFragment : Fragment() {
                 val image = if (imageUri != null) imageUri.toString() else ""
 
                 val newGarment = Garment(
-                    0,
+                    UUID.randomUUID().toString(),
                     name,
                     color,
                     tag,
