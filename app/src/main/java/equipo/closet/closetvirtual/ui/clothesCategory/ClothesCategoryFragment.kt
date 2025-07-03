@@ -53,37 +53,42 @@ class ClothesCategoryFragment : Fragment() {
         setViewModelObserver()
 
         lifecycleScope.launch {
-            val clothes = clothesRepository.getAll().toMutableList()
 
-            // === Top ===
-            val topClothes = clothes.filter { it.category.lowercase() == "top" }
-            binding.topClothesCardsGrid.adapter =
-                ClothesCategoryGridAdapter(requireContext(), topClothes.toMutableList())
-            binding.topClothesCounterLabel.text = formatCategoryClothesCount(topClothes.size)
+            try {
+                val clothes = clothesRepository.getAll().toMutableList()
 
-            // === Bottom ===
-            val bottomClothes = clothes.filter { it.category.lowercase() == "bottom" }
-            binding.bottomClothesCardsGrid.adapter =
-                ClothesCategoryGridAdapter(requireContext(), bottomClothes.toMutableList())
-            binding.bottomClothesCounterLabel.text = formatCategoryClothesCount(bottomClothes.size)
+                // === Top ===
+                val topClothes = clothes.filter { it.category.lowercase() == "top" }
+                binding.topClothesCardsGrid.adapter =
+                    ClothesCategoryGridAdapter(requireContext(), topClothes.toMutableList())
+                binding.topClothesCounterLabel.text = formatCategoryClothesCount(topClothes.size)
 
-            // === Zapatos ===
-            val shoesClothes = clothes.filter { it.category.lowercase() == "zapatos" }
-            binding.shoesClothesCardsGrid.adapter =
-                ClothesCategoryGridAdapter(requireContext(), shoesClothes.toMutableList())
-            binding.shoesClothesCounterLabel.text = formatCategoryClothesCount(shoesClothes.size)
+                // === Bottom ===
+                val bottomClothes = clothes.filter { it.category.lowercase() == "bottom" }
+                binding.bottomClothesCardsGrid.adapter =
+                    ClothesCategoryGridAdapter(requireContext(), bottomClothes.toMutableList())
+                binding.bottomClothesCounterLabel.text = formatCategoryClothesCount(bottomClothes.size)
 
-            // === Bodysuit ===
-            val bodysuitClothes = clothes.filter { it.category.lowercase() == "bodysuit" }
-            binding.bodysuitClothesCardsGrid.adapter =
-                ClothesCategoryGridAdapter(requireContext(), bodysuitClothes.toMutableList())
-            binding.bodysuitClothesCounterLabel.text = formatCategoryClothesCount(bodysuitClothes.size)
+                // === Zapatos ===
+                val shoesClothes = clothes.filter { it.category.lowercase() == "zapatos" }
+                binding.shoesClothesCardsGrid.adapter =
+                    ClothesCategoryGridAdapter(requireContext(), shoesClothes.toMutableList())
+                binding.shoesClothesCounterLabel.text = formatCategoryClothesCount(shoesClothes.size)
 
-            // === Accesorios ===
-            val accessoriesClothes = clothes.filter { it.category.lowercase() == "accesorios" }
-            binding.accessoriesClothesCardsGrid.adapter =
-                ClothesCategoryGridAdapter(requireContext(), accessoriesClothes.toMutableList())
-            binding.accessoriesClothesCounterLabel.text = formatCategoryClothesCount(accessoriesClothes.size)
+                // === Bodysuit ===
+                val bodysuitClothes = clothes.filter { it.category.lowercase() == "bodysuit" }
+                binding.bodysuitClothesCardsGrid.adapter =
+                    ClothesCategoryGridAdapter(requireContext(), bodysuitClothes.toMutableList())
+                binding.bodysuitClothesCounterLabel.text = formatCategoryClothesCount(bodysuitClothes.size)
+
+                // === Accesorios ===
+                val accessoriesClothes = clothes.filter { it.category.lowercase() == "accesorios" }
+                binding.accessoriesClothesCardsGrid.adapter =
+                    ClothesCategoryGridAdapter(requireContext(), accessoriesClothes.toMutableList())
+                binding.accessoriesClothesCounterLabel.text = formatCategoryClothesCount(accessoriesClothes.size)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 

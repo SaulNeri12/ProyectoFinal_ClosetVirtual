@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import equipo.closet.closetvirtual.R
@@ -24,6 +25,7 @@ import equipo.closet.closetvirtual.databinding.FragmentClothesSelectionBinding
 import equipo.closet.closetvirtual.databinding.FragmentGarmentRegistryBinding
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.UUID
 
@@ -212,11 +214,15 @@ class GarmentRegistryFragment : Fragment() {
                 // NOTE: Test message
                 Toast.makeText(requireContext(), "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
 
-                this.clothesRepository.insert(newGarment)
+                lifecycleScope.launch {
+                    clothesRepository.insert(newGarment)
 
-                //succes mesagge
-                Toast.makeText(requireContext(), "Prenda registrada exitosamente",
-                    Toast.LENGTH_SHORT).show()
+                    //succes mesagge
+                    Toast.makeText(
+                        requireContext(), "Prenda registrada exitosamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
