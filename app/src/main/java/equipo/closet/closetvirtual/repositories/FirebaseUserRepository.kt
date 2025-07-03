@@ -127,6 +127,10 @@ object FirebaseUserRepository : UserRepository {
         TODO("Not yet implemented")
     }
 
+    override fun getAll(filters: Map<String, Any>): List<User> {
+        TODO("Not yet implemented")
+    }
+
     override fun getById(id: String): User? {
         TODO("Not yet implemented")
     }
