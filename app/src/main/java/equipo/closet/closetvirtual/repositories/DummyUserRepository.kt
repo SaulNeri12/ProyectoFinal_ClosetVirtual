@@ -94,6 +94,9 @@ object DummyUserRepository : UserRepository {
     }
 
     override fun getAll(): List<User> = users
+    override fun getAll(filters: Map<String, Any>): List<User> {
+        return this.getAll()
+    }
 
     override fun getById(id: String): User? = users.find { it.uid == id }
 

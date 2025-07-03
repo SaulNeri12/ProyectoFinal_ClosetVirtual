@@ -11,6 +11,10 @@ object DummyOutfitRepository : Repository<Outfit, String> {
         return outfits.toList()
     }
 
+    override fun getAll(filters: Map<String, Any>): List<Outfit> {
+        return this.getAll()
+    }
+
     override fun getByName(name: String): Outfit? {
         for (outfit in outfits) {
             if (outfit.name.equals(name, ignoreCase = true)) {
