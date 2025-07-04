@@ -9,6 +9,7 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
@@ -19,6 +20,7 @@ import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.ui.clothesCategoryFilter.ClothesCategoryFilterFragment
 import equipo.closet.closetvirtual.ui.searchOutfit.adapters.OutfitSearchListAdapter
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitViewModel
+import kotlinx.coroutines.launch
 
 
 class SearchOutfitFragment : Fragment() {
@@ -57,10 +59,12 @@ class SearchOutfitFragment : Fragment() {
     }
 
     private fun loadOutfits(view : View){
-        val outfits = outfitRepository.getAll()
+        lifecycleScope.launch {
+            val outfits = outfitRepository.getAll()
 
-        val outfitList: ListView = view.findViewById(R.id.outfit_cards_listview)
-        outfitList.adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
+            val outfitList: ListView = view.findViewById(R.id.outfit_cards_listview)
+            outfitList.adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
+        }
     }
 
 
