@@ -67,6 +67,33 @@
     <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#018786</color>
 
+    <!-- Colores para prendas - Selector gráfico -->
+    <color name="garment_red">#EF4444</color>
+    <color name="garment_blue">#3B82F6</color>
+    <color name="garment_green">#10B981</color>
+    <color name="garment_yellow">#F59E0B</color>
+    <color name="garment_orange">#F97316</color>
+    <color name="garment_purple">#8B5CF6</color>
+    <color name="garment_pink">#EC4899</color>
+    <color name="garment_brown">#92400E</color>
+    <color name="garment_gray">#6B7280</color>
+    <color name="garment_black">#111827</color>
+    <color name="garment_white">#FFFFFF</color>
+    <color name="garment_beige">#F5F5DC</color>
+    <color name="garment_navy">#1E3A8A</color>
+    <color name="garment_teal">#0D9488</color>
+    <color name="garment_lime">#84CC16</color>
+    <color name="garment_cyan">#06B6D4</color>
+    <color name="garment_indigo">#6366F1</color>
+    <color name="garment_amber">#D97706</color>
+    <color name="garment_deep_orange">#EA580C</color>
+    <color name="garment_light_blue">#0EA5E9</color>
+    <color name="garment_rose">#F43F5E</color>
+    <color name="garment_emerald">#059669</color>
+    <color name="garment_violet">#7C3AED</color>
+    <color name="garment_slate">#475569</color>
+    <color name="garment_stone">#78716C</color>
+
     <color name="transparent">#00000000</color>
 
 </resources>
