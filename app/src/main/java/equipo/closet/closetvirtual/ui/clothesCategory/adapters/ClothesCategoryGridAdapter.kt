@@ -22,7 +22,7 @@ class ClothesCategoryGridAdapter(
 
     override fun getItem(position: Int): Garment = clothes[position]
 
-    override fun getItemId(position: Int): Long = clothes[position].id.toLong()
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -45,6 +45,7 @@ class ClothesCategoryGridAdapter(
         } else {
             Glide.with(context)
                 .load(garment.imageUri)
+                .error(R.mipmap.garment_bottom_test)
                 .into(holder.previewImage)
         }
 
