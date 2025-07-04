@@ -313,7 +313,7 @@
                             android:layout_weight="1"
                             android:text="@string/garment_has_print_switch"
                             android:textColor="@color/text_primary_dark"
-                            android:textSize="14sp"
+                            android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.SwitchCompat
