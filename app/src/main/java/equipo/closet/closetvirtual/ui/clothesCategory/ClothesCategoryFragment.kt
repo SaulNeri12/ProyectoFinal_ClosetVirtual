@@ -1,8 +1,9 @@
-
 package equipo.closet.closetvirtual.ui.clothesCategory
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.ProfileActivity
+import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentClothesCategoryBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
@@ -19,6 +20,8 @@ import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.ui.clothesCategory.adapters.ClothesCategoryGridAdapter
 import equipo.closet.closetvirtual.ui.clothesCategoryFilter.ClothesCategoryFilterFragment
 import equipo.closet.closetvirtual.ui.clothesCategoryFilter.ClothesCategoryViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ClothesCategoryFragment : Fragment() {
@@ -26,6 +29,9 @@ class ClothesCategoryFragment : Fragment() {
     private lateinit var binding: FragmentClothesCategoryBinding
     private val viewModel: ClothesCategoryViewModel by activityViewModels()
     private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
+
+    private var allGarments: List<Garment> = listOf()
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,38 +45,57 @@ class ClothesCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        fetchAndDisplayGarments()
+        fetchAllGarments()
 
         setBackButtonClickListener()
-        setSearchButtonBehavior()
+        setSearchByTagButtonBehavior()
         setProfileButtonClickListener()
         setFilterButtonBehavior()
+        setRealTimeSearchByName()
     }
 
-
-    private fun fetchAndDisplayGarments(filters: Map<String, Any> = emptyMap()) {
+    private fun fetchAllGarments() {
         lifecycleScope.launch {
             try {
-                // Llama al repositorio con el mapa de filtros.
-                val clothes = clothesRepository.getAll(filters)
-
-                if (clothes.isEmpty() && filters.containsKey("tag")) {
-                    Toast.makeText(requireContext(), "No se encontraron prendas con la etiqueta '${filters["tag"]}'", Toast.LENGTH_SHORT).show()
-                }
-
-                // Actualiza la UI con las prendas obtenidas.
-                updateGarmentViews(clothes)
-
+                allGarments = clothesRepository.getAll()
+                updateGarmentViews(allGarments)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
 
+    private fun setRealTimeSearchByName() {
+
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                searchJob?.cancel()
+                searchJob = lifecycleScope.launch {
+                    delay(500L)
+                    val searchText = s.toString().trim()
+                    filterGarmentsByName(searchText)
+                }
+            }
+        })
+    }
+
+    private fun filterGarmentsByName(searchText: String) {
+        val filteredList = if (searchText.isEmpty()) {
+            allGarments
+        } else {
+            allGarments.filter { garment ->
+                garment.name.contains(searchText, ignoreCase = true)
+            }
+        }
+        activity?.runOnUiThread {
+            updateGarmentViews(filteredList)
+        }
+    }
 
     private fun updateGarmentViews(garments: List<Garment>) {
-
         val categoryMap = garments.groupBy { it.category.lowercase() }
 
         val topClothes = categoryMap["top"] ?: emptyList()
@@ -94,19 +119,29 @@ class ClothesCategoryFragment : Fragment() {
         binding.accessoriesClothesCounterLabel.text = formatCategoryClothesCount(accessoriesClothes.size)
     }
 
-
-    private fun setSearchButtonBehavior() {
+    private fun setSearchByTagButtonBehavior() {
         binding.btnSearchClothesCategory.setOnClickListener {
             val tagToSearch = viewModel.tag.value?.trim()
-
-            // Crea un mapa de filtros. Si la etiqueta no está vacía, lo añade al mapa.
             val filters = if (!tagToSearch.isNullOrEmpty()) {
                 mapOf("tag" to tagToSearch)
             } else {
-                emptyMap() // Si está vacía, busca todo.
+                emptyMap()
             }
+            fetchAndDisplayGarmentsByTag(filters)
+        }
+    }
 
-            fetchAndDisplayGarments(filters)
+    private fun fetchAndDisplayGarmentsByTag(filters: Map<String, Any>) {
+        lifecycleScope.launch {
+            try {
+                val clothes = clothesRepository.getAll(filters)
+                if (clothes.isEmpty() && filters.containsKey("tag")) {
+                    Toast.makeText(requireContext(), "No se encontraron prendas con la etiqueta '${filters["tag"]}'", Toast.LENGTH_SHORT).show()
+                }
+                updateGarmentViews(clothes)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
