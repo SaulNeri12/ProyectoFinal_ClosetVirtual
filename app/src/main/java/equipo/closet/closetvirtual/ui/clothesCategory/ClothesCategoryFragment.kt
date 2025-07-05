@@ -23,12 +23,13 @@ import kotlinx.coroutines.launch
 
 class ClothesCategoryFragment : Fragment() {
 
-    private lateinit var binding: FragmentClothesCategoryBinding
-    private lateinit var viewModel : ClothesCategoryViewModel
-
     //this is where we save the tag gotten from the filter fragment
-    private lateinit var tag: String
+    private lateinit var tags: MutableList<String>
 
+    private lateinit var binding: FragmentClothesCategoryBinding //binding instance
+    private lateinit var viewModel : ClothesCategoryViewModel //model instance
+
+    //repository instance for persisting data
     private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
 
     override fun onCreateView(
@@ -51,7 +52,10 @@ class ClothesCategoryFragment : Fragment() {
         setProfileButtonClickListener()
         setFilterButtonBehavior()
         setViewModelObserver()
+        setClothesCards()
+    }
 
+    private fun setClothesCards(){
         lifecycleScope.launch {
 
             try {
@@ -93,8 +97,8 @@ class ClothesCategoryFragment : Fragment() {
     }
 
     private fun setViewModelObserver(){
-        viewModel.tag.observe(viewLifecycleOwner) {
-            this.tag = viewModel.tag.value.toString()
+        viewModel.tags.observe(viewLifecycleOwner) {
+            this.tags = viewModel.tags.value as MutableList<String>
         }
     }
 

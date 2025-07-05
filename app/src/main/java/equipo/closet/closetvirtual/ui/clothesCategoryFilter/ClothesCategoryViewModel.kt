@@ -5,6 +5,14 @@ import androidx.lifecycle.ViewModel
 
 class ClothesCategoryViewModel : ViewModel() {
 
-    var tag = MutableLiveData<String>()
+    var tags = MutableLiveData<List<String>>()
+
+    fun setTags(selectedTags: List<String>) {
+        tags.value = selectedTags
+    }
+
+    fun clearTags() {
+        tags.value = emptyList()
+    }
 
 }
