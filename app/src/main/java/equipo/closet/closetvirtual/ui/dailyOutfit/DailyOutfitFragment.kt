@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentClothesSelectionBinding
 import equipo.closet.closetvirtual.databinding.FragmentDailyOutfitBinding
+import androidx.core.view.isEmpty
 
 class DailyOutfitFragment : Fragment() {
 
@@ -34,6 +36,7 @@ class DailyOutfitFragment : Fragment() {
         setBackBehavior()
         setProfileBehavior()
         useOutfit()
+        setChipGroupData()
 
     }
 
@@ -45,20 +48,44 @@ class DailyOutfitFragment : Fragment() {
         }
     }
 
+    private fun setChipGroupData() {
+
+        val etiquetas = listOf(
+            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
+            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
+        )
+
+        val chipGroup = binding.chipGroupTags
+
+        etiquetas.forEach { etiqueta ->
+            val chip = Chip(requireContext()).apply {
+                text = etiqueta
+                isCheckable = true
+                isClickable = true
+            }
+            chipGroup.addView(chip)
+        }
+    }
+
     private fun validateFields(): Boolean {
         val name = binding.etOutfitName.text.toString()
-        val tag = binding.etOutfitTag.text.toString()
+        val tags = binding.chipGroupTags.checkedChipIds
 
         if(name.isEmpty()){
             binding.etOutfitName.error = "El nombre no puede estar vacío"
             return false
         }
-        if(tag.isEmpty()){
-            binding.etOutfitTag.error = "La etiqueta no puede estar vacía"
+        if(tags.isEmpty()){
+            Toast.makeText(requireContext(), "No has seleccionado ninguna etiqueta", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if(tags.size > 5) {
+            Toast.makeText(requireContext(), "No puedes seleccionar más de 5 etiquetas", Toast.LENGTH_SHORT).show()
             return false
         }
         return true
     }
+
 
     private fun setBackBehavior() : Unit {
         binding.btnBack.setOnClickListener {

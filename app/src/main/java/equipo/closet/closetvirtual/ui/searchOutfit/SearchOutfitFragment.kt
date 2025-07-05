@@ -31,7 +31,7 @@ class SearchOutfitFragment : Fragment() {
     private val outfitRepository: Repository<Outfit, String> = OutfitRepositoryFactory.create()
 
     //this is where we save the tag gotten from the filter fragment
-    private lateinit var tag: String
+    private lateinit var tags: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +48,6 @@ class SearchOutfitFragment : Fragment() {
 
         //Load outfits
         loadOutfits(view)
-
         setBackBehavior()
         setProfileBehavior()
         setFilterButtonBehavior()
@@ -66,7 +65,6 @@ class SearchOutfitFragment : Fragment() {
             outfitList.adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
         }
     }
-
 
     private fun setBackBehavior() : Unit {
         binding.btnBack.setOnClickListener {
@@ -89,8 +87,8 @@ class SearchOutfitFragment : Fragment() {
     }
 
     private fun setViewModelObserver(){
-        viewModel.tag.observe(viewLifecycleOwner) {
-            this.tag = viewModel.tag.value.toString()
+        viewModel.tags.observe(viewLifecycleOwner) {
+            this.tags = viewModel.tags.value as MutableList<String>
         }
     }
 

@@ -504,17 +504,15 @@
                     app:cardCornerRadius="25dp"
                     app:cardUseCompatPadding="false">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etOutfitTag"
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupTags"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:background="@android:color/transparent"
-                        android:hint="Etiqueta"
-                        android:paddingHorizontal="20dp"
-                        android:textColor="@color/text_primary_dark"
-                        android:textColorHint="@color/gray_medium"
-                        android:textSize="17sp"
-                        android:theme="@style/InputStyle"/>
+                        android:layout_height="wrap_content"
+                        app:singleSelection="false"
+                        app:selectionRequired="false"
+                        app:singleLine="false"
+                        android:padding="8dp" />
+
                 </com.google.android.material.card.MaterialCardView>
 
 
