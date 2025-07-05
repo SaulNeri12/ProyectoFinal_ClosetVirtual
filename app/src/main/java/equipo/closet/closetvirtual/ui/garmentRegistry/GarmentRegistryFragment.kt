@@ -20,6 +20,9 @@ import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.databinding.FragmentGarmentRegistryBinding
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import equipo.closet.closetvirtual.adapters.ColorItem
+import equipo.closet.closetvirtual.adapters.ColorSpinnerAdapter
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 class GarmentRegistryFragment : Fragment() {
@@ -156,17 +159,42 @@ class GarmentRegistryFragment : Fragment() {
     }
 
     private fun setColorSpinner() : Unit {
-        // List of gender options
-        val colorOptions = listOf("Rojo", "Azul", "Verde", "Amarillo", "Negro", "Blanco")
-        // Create an ArrayAdapter using the genderOptions list
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item,
-            colorOptions)
-        // Set the layout resource for the dropdown menu
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set the adapter to the genderSpinner
+        val colors = listOf(
+            ColorItem("Seleccionar color", R.color.gray_light),
+            ColorItem("Rojo", R.color.garment_red),
+            ColorItem("Azul", R.color.garment_blue),
+            ColorItem("Verde", R.color.garment_green),
+            ColorItem("Amarillo", R.color.garment_yellow),
+            ColorItem("Naranja", R.color.garment_orange),
+            ColorItem("Morado", R.color.garment_purple),
+            ColorItem("Rosa", R.color.garment_pink),
+            ColorItem("Café", R.color.garment_brown),
+            ColorItem("Gris", R.color.garment_gray),
+            ColorItem("Negro", R.color.garment_black),
+            ColorItem("Blanco", R.color.garment_white),
+            ColorItem("Beige", R.color.garment_beige),
+            ColorItem("Azul Marino", R.color.garment_navy),
+            ColorItem("Verde Azulado", R.color.garment_teal),
+            ColorItem("Lima", R.color.garment_lime),
+            ColorItem("Cian", R.color.garment_cyan),
+            ColorItem("Índigo", R.color.garment_indigo),
+            ColorItem("Ámbar", R.color.garment_amber),
+            ColorItem("Naranja Intenso", R.color.garment_deep_orange),
+            ColorItem("Azul Claro", R.color.garment_light_blue)
+        )
+
+        val adapter = ColorSpinnerAdapter(requireContext(), colors)
         binding.spGarmentColor.adapter = adapter
-        //set the default value
-        binding.spGarmentColor.setSelection(0)
+    }
+
+    private fun getSelectedColor(): String? {
+        val selectedPosition = binding.spGarmentColor.selectedItemPosition
+        return if (selectedPosition > 0) { // Excluir "Seleccionar color"
+            val colorItem = binding.spGarmentColor.selectedItem as ColorItem
+            colorItem.name
+        } else {
+            null
+        }
     }
 
     private fun validateInputFields() : Boolean {
@@ -174,7 +202,7 @@ class GarmentRegistryFragment : Fragment() {
         val name = binding.etGarmentName.text.toString()
         val tags = binding.chipGroupTags.checkedChipIds
         val category = binding.spGarmentCategory.selectedItem.toString()
-        val color = binding.spGarmentColor.selectedItem.toString()
+        val color = getSelectedColor()
         val image = imageUri.toString()
 
         //validate empty fields
@@ -195,7 +223,7 @@ class GarmentRegistryFragment : Fragment() {
                 Toast.LENGTH_SHORT).show()
             return false
         }
-        if (color.isEmpty()) {
+        if (color.isNullOrEmpty()) {
             Toast.makeText(requireContext(), "Elija un color",
                 Toast.LENGTH_SHORT).show()
             return false
@@ -216,7 +244,7 @@ class GarmentRegistryFragment : Fragment() {
                 val name = binding.etGarmentName.text.toString()
                 val tag = getTags()
                 val category = binding.spGarmentCategory.selectedItem.toString()
-                val color = binding.spGarmentColor.selectedItem.toString()
+                val color = getSelectedColor() ?: ""
                 val print = binding.switchPrint.isChecked
                 val image = if (imageUri != null) imageUri.toString() else ""
 
