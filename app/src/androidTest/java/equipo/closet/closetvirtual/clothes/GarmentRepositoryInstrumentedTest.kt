@@ -28,7 +28,7 @@ class FirebaseGarmentRepositoryInstrumentedTest {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Puedes hacer login anónimo si no estás logueado
+
         runBlocking {
             if (auth.currentUser == null) {
                 auth.signInAnonymously().await()

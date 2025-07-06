@@ -16,7 +16,6 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override suspend fun getAll(): List<Garment> {
-
         return getAll(emptyMap())
     }
 
@@ -136,6 +135,4 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
             throw Exception("No se pudo encontrar la prenda debido a un error, inténtelo de nuevo más tarde.")
         }
     }
-
-
 }

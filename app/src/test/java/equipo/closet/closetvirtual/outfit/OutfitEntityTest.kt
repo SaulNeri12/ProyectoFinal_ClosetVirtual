@@ -45,7 +45,7 @@ class OutfitEntityTest {
         // Assert
         assertTrue(result)
         assertEquals(1, outfit.getClothes().size)
-        assertEquals("g1", outfit.getClothesIds().first())
+        assertEquals("g1", outfit.clothesIds.first())
     }
 
     @Test
@@ -117,6 +117,7 @@ class OutfitEntityTest {
         assertEquals("g2", outfit.getClothes().first().id)
     }
 
+    /*
     @Test
     fun countByCategory_shouldReturnCorrectCount() {
 
@@ -131,7 +132,7 @@ class OutfitEntityTest {
 
         // Assert
         assertEquals(1, count)
-    }
+    }*/
 
     @Test
     fun copy_shouldDuplicateOutfitWithClothes() {
@@ -333,7 +334,7 @@ class OutfitEntityTest {
         tags.forEach { outfit.addTag(it) }
 
         // Act
-        val tagsSet = outfit.getTagsSet()
+        val tagsSet = outfit.tags
 
         // Assert
         assertEquals(tags.size, tagsSet.size)

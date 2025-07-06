@@ -1,12 +1,18 @@
 package equipo.closet.closetvirtual.entities
 
+import com.google.firebase.firestore.Exclude
+
+
 class Outfit(
     var id: String = "",
     var name: String = "",
+    var clothesIds: MutableList<String> = mutableListOf(),
+    var tags: MutableList<String> = mutableListOf(),
+    var userId: String = ""
 ) {
-    private val clothesIds: MutableList<String> = mutableListOf()
-    private val clothes: MutableList<Garment> = mutableListOf()
-    private val tags: MutableSet<String> = mutableSetOf()
+
+    @Exclude
+    private var clothes: MutableList<Garment> = mutableListOf()
 
     fun addGarment(garment: Garment): Boolean {
         val category = garment.category.lowercase()
@@ -32,12 +38,7 @@ class Outfit(
         clothesIds.remove(garmentId)
     }
 
-    fun countByCategory(category: String): Int {
-        return clothes.count { it.category.equals(category, ignoreCase = true) }
-    }
-
     fun getClothes(): List<Garment> = clothes.toList()
-    fun getClothesIds(): List<String> = clothesIds.toList()
 
     fun addTag(tag: String): Boolean {
         if (tags.size >= 6) return false
@@ -52,24 +53,21 @@ class Outfit(
         this.tags.clear()
     }
 
-    fun getTagsList(): MutableList<String> {
-        return this.tags.toMutableList()
-    }
-
-    fun getTagsSet(): MutableSet<String> {
-        return this.tags.toMutableSet()
-    }
 
     fun copy(
         id: String = this.id,
         name: String = this.name,
-        tags: MutableSet<String> = this.tags
+        userId: String = this.userId,
+        tags: MutableList<String> = this.tags
     ): Outfit
     {
-        val newOutfit = Outfit(id, name)
+        val newOutfit = Outfit(id=id, name=name, userId=userId, tags = tags)
         this.clothes.forEach { newOutfit.clothes.add(it.copy()) }
         this.clothesIds.forEach { newOutfit.clothesIds.add(it) }
-        this.tags.forEach({ newOutfit.addTag(it) })
         return newOutfit
+    }
+
+    override fun toString(): String {
+        return "Outfit(id='$id', name='$name', clothesIds=$clothesIds, tags=$tags)"
     }
 }
