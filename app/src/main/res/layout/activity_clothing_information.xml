@@ -99,50 +99,84 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="25dp"
-                    app:cardElevation="6dp"
-                    app:cardUseCompatPadding="false">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnEditImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:insetLeft="0dp"
-                        android:insetRight="0dp"
-                        android:backgroundTint="@color/white"
-                        app:cornerRadius="25dp"
-                        app:icon="@drawable/ic_edit"
-                        app:iconTint="@color/icon_color"
-                        app:iconSize="20dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        style="@style/Widget.Material3.Button.IconButton" />
-                </com.google.android.material.card.MaterialCardView>
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="15dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="25dp"
+                        app:cardElevation="6dp"
+                        app:cardUseCompatPadding="false">
 
-                <RelativeLayout
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOpenCamera"
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:insetLeft="0dp"
+                            android:insetRight="0dp"
+                            android:backgroundTint="@color/white"
+                            app:cornerRadius="25dp"
+                            app:icon="@drawable/ic_camera"
+                            app:iconTint="@color/icon_color"
+                            app:iconSize="20dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            style="@style/Widget.Material3.Button.IconButton" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="25dp"
+                        app:cardElevation="6dp"
+                        app:cardUseCompatPadding="false">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOpenGallery"
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:insetLeft="0dp"
+                            android:insetRight="0dp"
+                            android:backgroundTint="@color/white"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="8dp"
+                            app:cornerRadius="25dp"
+                            app:icon="@drawable/upload_icon"
+                            app:iconTint="@color/icon_color"
+                            app:iconSize="24dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            style="@style/Widget.Material3.Button.IconButton" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp">
 
-
-
                 <ImageView
                     android:id="@+id/garmentImage"
-                    android:layout_width="190dp"
+                    android:layout_width="200dp"
                     android:layout_height="190dp"
                     android:layout_marginTop="10dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_camera" />
+                    android:layout_gravity="center" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
             </LinearLayout>
 

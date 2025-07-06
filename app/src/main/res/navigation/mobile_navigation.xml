@@ -23,21 +23,18 @@
         android:label="Buscador de Outfits"
         tools:layout="@layout/fragment_search_outfit" />
 
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="equipo.closet.closetvirtual.ui.profile.ProfileFragment"
-        android:label="Perfil de Usuario"
-        tools:layout="@layout/activity_profile" />
 
     <fragment
         android:id="@+id/clothes_selection_fragment"
         android:name="equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionFragment"
         android:label="Seleccion de Prendas"
-        tools:layout="@layout/fragment_clothes_selection" />
+        tools:layout="@layout/fragment_clothes_selection">
 
-    <action
-        android:id="@+id/action_global_to_profileFragment"
-        app:destination="@id/profileFragment" />
+        <!-- 👇 Acción agregada -->
+        <action
+            android:id="@+id/action_clothes_selection_fragment_to_navigation_new_clothes"
+            app:destination="@id/navigation_new_clothes" />
+    </fragment>
 
     <fragment
         android:id="@+id/daily_outfit_fragment"
