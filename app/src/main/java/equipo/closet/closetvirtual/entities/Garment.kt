@@ -7,12 +7,13 @@ data class Garment(
     var category: String = "",
     var print: Boolean = false,
     var imageUri: String = "",
-    var userId: String = ""
+    var userId: String = "",
+    var tags: MutableList<String> = mutableListOf()
 ) {
-    private val tags: MutableSet<String> = mutableSetOf()
 
     fun addTag(tag: String): Boolean {
         if (tags.size >= 6) return false
+        if (tags.any { it.equals(tag, ignoreCase = true) }) return false
         return tags.add(tag.lowercase())
     }
 
@@ -26,10 +27,6 @@ data class Garment(
 
     fun getTagsList(): List<String> {
         return tags.toList()
-    }
-
-    fun getTagsSet(): Set<String> {
-        return tags.toSet()
     }
 
     fun getTagsCount(): Int {

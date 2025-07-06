@@ -26,25 +26,29 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         return try {
             val userId = auth.currentUser?.uid ?: throw IllegalStateException("Usuario no autenticado")
 
-            // Inicia la consulta base, filtrando siempre por el usuario actual.
             var query: Query = db.collection(CLOTHES_COLLECTION_NAME).whereEqualTo("userId", userId)
 
-
+            /*
             filters.forEach { (key, value) ->
                 query = query.whereEqualTo(key, value)
-            }
+            }*/
 
+            val tagsFilter = filters["tags"]
+            if (tagsFilter is List<*>) {
+                val tagsList = tagsFilter.filterIsInstance<String>()
+                if (tagsList.isNotEmpty()) {
+                    query = query.whereArrayContainsAny("tags", tagsList)
+                }
+            }
 
             val snapshot: QuerySnapshot = query.get().await()
 
-            // Convierte los documentos a objetos Garment.
             snapshot.documents.mapNotNull { doc ->
                 doc.toObject(Garment::class.java)?.apply {
                     id = doc.id
                 }
             }
         } catch (e: Exception) {
-            // Lanza una excepción personalizada en caso de error.
             throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
         }
     }
