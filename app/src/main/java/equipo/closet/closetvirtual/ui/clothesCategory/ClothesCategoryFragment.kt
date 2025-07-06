@@ -126,13 +126,14 @@ class ClothesCategoryFragment : Fragment() {
 
     private fun setSearchByTagButtonBehavior() {
         binding.btnSearchClothesCategory.setOnClickListener {
+            /*
             val tagToSearch = viewModel.tag.value?.trim()
             val filters = if (!tagToSearch.isNullOrEmpty()) {
                 mapOf("tag" to tagToSearch)
             } else {
                 emptyMap()
             }
-            fetchAndDisplayGarmentsByTag(filters)
+            fetchAndDisplayGarmentsByTag(filters)*/
         }
     }
 
