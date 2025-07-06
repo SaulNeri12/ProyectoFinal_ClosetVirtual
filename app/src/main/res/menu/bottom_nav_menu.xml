@@ -16,10 +16,10 @@
         android:icon="@drawable/ic_gancho"
         android:title="" />
 
-    <item
-        android:id="@+id/clothes_selection_fragment"
-        android:icon="@drawable/ic_ropa"
-        android:title="" />
+<!--    <item-->
+<!--        android:id="@+id/clothes_selection_fragment"-->
+<!--        android:icon="@drawable/ic_ropa"-->
+<!--        android:title="" />-->
 
     <item
         android:id="@+id/daily_outfit_fragment"

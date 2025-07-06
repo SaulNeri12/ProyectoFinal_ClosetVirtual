@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
+import equipo.closet.closetvirtual.OutfitCreationActivity
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentSearchOutfitBinding
@@ -53,11 +54,11 @@ class SearchOutfitFragment : Fragment() {
         setFilterButtonBehavior()
         setViewModelObserver()
         setSearchButtonBehavior()
-        setOpenNewOutfitButtonBehavior()
+        openNewOutfitActivity()
 
     }
 
-    private fun loadOutfits(view : View){
+    private fun loadOutfits(view : View) : Unit {
         lifecycleScope.launch {
             val outfits = outfitRepository.getAll()
 
@@ -80,27 +81,28 @@ class SearchOutfitFragment : Fragment() {
         }
     }
 
-    private fun setFilterButtonBehavior() {
+    private fun setFilterButtonBehavior() : Unit {
         binding.btnFilter.setOnClickListener {
             ClothesCategoryFilterFragment().show(childFragmentManager, "NewClothesSelectionFilterFragment")
         }
     }
 
-    private fun setViewModelObserver(){
+    private fun setViewModelObserver() : Unit {
         viewModel.tags.observe(viewLifecycleOwner) {
             this.tags = viewModel.tags.value as MutableList<String>
         }
     }
 
-    private fun setSearchButtonBehavior() {
+    private fun setSearchButtonBehavior() : Unit {
         binding.btnSearch.setOnClickListener {
             Toast.makeText(requireContext(), "Search button clicked", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun setOpenNewOutfitButtonBehavior() {
+    private fun openNewOutfitActivity() : Unit {
         binding.btnNewOutfit.setOnClickListener {
-            Toast.makeText(requireContext(), "Open new outfit button clicked", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), OutfitCreationActivity::class.java)
+            startActivity(intent)
         }
     }
 
