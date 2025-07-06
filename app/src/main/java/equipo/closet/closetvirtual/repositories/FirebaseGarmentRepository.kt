@@ -136,4 +136,6 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
             throw Exception("No se pudo encontrar la prenda debido a un error, inténtelo de nuevo más tarde.")
         }
     }
+
+
 }

@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
+import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
@@ -20,6 +21,7 @@ class FirebaseGarmentRepositoryInstrumentedTest {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
     private lateinit var currentUserId: String
+    private lateinit var repository: Repository<Garment, String>
 
     @Before
     fun setup() {
@@ -33,6 +35,8 @@ class FirebaseGarmentRepositoryInstrumentedTest {
                 Log.d("TEST", "Signed in anonymously for testing")
             }
             currentUserId = auth.currentUser?.uid ?: throw IllegalStateException("No se pudo obtener el UID del usuario autenticado.")
+
+            repository = FirebaseGarmentRepository
         }
     }
 
@@ -53,7 +57,7 @@ class FirebaseGarmentRepositoryInstrumentedTest {
             db.collection("clothes").document(garment.id).set(garment).await()
 
             // Act
-            val result = FirebaseGarmentRepository.getAll()
+            val result = repository.getAll()
 
             println("Resultado: ${result}")
 
@@ -95,7 +99,7 @@ class FirebaseGarmentRepositoryInstrumentedTest {
             db.collection("clothes").document(garment2.id).set(garment2).await()
 
             // Act
-            val result = FirebaseGarmentRepository.getAll(mapOf("tags" to listOf("casual")))
+            val result = repository.getAll(mapOf("tags" to listOf("casual")))
 
             println("Resultado: ${result}")
 
@@ -107,6 +111,132 @@ class FirebaseGarmentRepositoryInstrumentedTest {
             // Cleanup
             db.collection("clothes").document(garment.id).delete().await()
             db.collection("clothes").document(garment2.id).delete().await()
+        }
+    }
+
+    @Test(timeout = 10_000)
+    fun insert_shouldSaveGarmentAndGetById() {
+
+        runBlocking {
+
+            // Arrange
+            val garment = Garment(
+                name = "Camisa Blanca",
+                color = "Blanco",
+                category = "top",
+                userId = currentUserId,
+                tags = mutableListOf("formal")
+            )
+
+            // Act
+            val id = repository.insert(garment)
+            val retrieved = repository.getById(id)
+
+            // Assert
+            assertNotNull(retrieved)
+            assertEquals("Camisa Blanca", retrieved?.name)
+
+            // Cleanup
+            db.collection("clothes").document(id).delete().await()
+        }
+    }
+
+    @Test(timeout = 10_000)
+    fun getByName_shouldReturnGarmentIfExists() {
+
+        runBlocking {
+
+            // Arrange
+            val garment = Garment(
+                name = "Falda Negra",
+                color = "Negro",
+                category = "bottom",
+                userId = currentUserId,
+                tags = mutableListOf("elegante")
+            )
+
+            // Act
+            val id = repository.insert(garment)
+            val found = repository.getByName("Falda Negra")
+
+            // Assert
+            assertNotNull(found)
+            assertEquals("Falda Negra", found?.name)
+
+            // Cleanup
+            db.collection("clothes").document(id).delete().await()
+        }
+    }
+
+    @Test(timeout = 10_000)
+    fun update_shouldModifyExistingGarment() {
+
+        runBlocking {
+
+            // Arrange
+            val garment = Garment(
+                name = "Chamarra Roja",
+                color = "Rojo",
+                category = "outer",
+                userId = currentUserId,
+                tags = mutableListOf("invierno")
+            )
+
+            // Act
+            val id = repository.insert(garment)
+
+            val updated = garment.copy(id = id, name = "Chamarra Negra", color = "negro")
+            val updatedId = repository.update(updated)
+
+            val result = repository.getById(updatedId)
+
+            // Assert
+            assertEquals("Chamarra Negra", result?.name)
+
+            // Cleanup
+            db.collection("clothes").document(id).delete().await()
+        }
+    }
+
+
+
+    @Test(timeout = 10_000)
+    fun delete_shouldRemoveGarment() {
+
+        runBlocking {
+
+            // Arrange
+            val garment = Garment(
+                name = "Polo Azul",
+                color = "Azul",
+                category = "top",
+                userId = currentUserId,
+                tags = mutableListOf("casual")
+            )
+
+            // Act
+            val id = repository.insert(garment)
+            val deletedId = repository.delete(id)
+            val result = repository.getById(deletedId)
+
+            // Assert
+            assertNull(result)
+        }
+    }
+
+
+
+    @Test(timeout = 10_000)
+    fun getById_shouldReturnNullIfNotExists() {
+        runBlocking {
+            // Arrange
+            var result: Garment?
+
+            // Act
+            result = repository.getById("id_inexistente")
+
+            // Assert
+            assertNull(result)
         }
     }
 }
