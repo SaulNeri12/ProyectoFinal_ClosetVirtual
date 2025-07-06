@@ -229,13 +229,12 @@ class GarmentRegistryFragment : Fragment() {
                 val image = if (imageUri != null) imageUri.toString() else ""
 
                 val newGarment = Garment(
-                    UUID.randomUUID().toString(),
-                    name,
-                    color,
-                    tag,
-                    category,
-                    print,
-                    image
+                    id = UUID.randomUUID().toString(),
+                    name = name,
+                    color = color,
+                    category = category,
+                    print = print,
+                    imageUri = image
                 )
 
                 // NOTE: Test message

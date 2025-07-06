@@ -26,7 +26,6 @@ class OutfitEntityTest {
             name = "Garment $id",
             color = "color",
             category = category,
-            tag = "tag",
             print = false,
             imageUri = "image://uri",
             userId = "user"
