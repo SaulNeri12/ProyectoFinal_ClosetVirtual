@@ -26,8 +26,13 @@ import kotlinx.coroutines.launch
 
 class ClothesCategoryFragment : Fragment() {
 
-    private lateinit var binding: FragmentClothesCategoryBinding
-    private val viewModel: ClothesCategoryViewModel by activityViewModels()
+    //this is where we save the tag gotten from the filter fragment
+    private lateinit var tags: MutableList<String>
+
+    private lateinit var binding: FragmentClothesCategoryBinding //binding instance
+    private lateinit var viewModel : ClothesCategoryViewModel //model instance
+
+    //repository instance for persisting data
     private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
 
     private var allGarments: List<Garment> = listOf()
@@ -121,13 +126,14 @@ class ClothesCategoryFragment : Fragment() {
 
     private fun setSearchByTagButtonBehavior() {
         binding.btnSearchClothesCategory.setOnClickListener {
+            /*
             val tagToSearch = viewModel.tag.value?.trim()
             val filters = if (!tagToSearch.isNullOrEmpty()) {
                 mapOf("tag" to tagToSearch)
             } else {
                 emptyMap()
             }
-            fetchAndDisplayGarmentsByTag(filters)
+            fetchAndDisplayGarmentsByTag(filters)*/
         }
     }
 

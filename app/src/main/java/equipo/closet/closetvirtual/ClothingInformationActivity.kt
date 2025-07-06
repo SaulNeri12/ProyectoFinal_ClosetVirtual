@@ -19,12 +19,14 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import equipo.closet.closetvirtual.databinding.ActivityClothingInformationBinding
 import java.io.File
+import java.io.FileOutputStream
 
 class ClothingInformationActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityClothingInformationBinding
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var galeryLauncher: ActivityResultLauncher<String>
     private var imageFile: File? = null
     private var imageUri: Uri? = null
 
@@ -36,17 +38,20 @@ class ClothingInformationActivity : AppCompatActivity() {
         val extras = intent.extras
 
         //set the input fields information
-        setInfo()
+        setGarmentInfo()
         //fill the category spinner
         setCategorySpinner()
         //fill the color spinner
         setColorSpinner()
         //set the behavior of the edit button
         setEditButton()
-        //set the behavior of the camera button
-        setUpCamaraBehavior()
-        //open the camera
         openCamera()
+        //set the behavior of the camera launcher
+        setUpCamaraBehavior()
+        // set the behavior of the gallery launcher
+        openGalery()
+        //set the behavior of the camera launcher
+        setUpGaleryBehavior()
         //set the behavior of the back button
         setBtnBackBehavior()
         //set the behavior of the delete button
@@ -75,7 +80,6 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setUpCamaraBehavior() : Unit {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && imageFile != null) {
@@ -93,15 +97,47 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpGaleryBehavior() : Unit {
+        galeryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                try {
+                    val inputStream = this.contentResolver.openInputStream(uri)
+                    val copiedFile = createImageFile()
+                    val outputStream = FileOutputStream(copiedFile)
+
+                    inputStream?.use { input ->
+                        outputStream.use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+
+                    imageFile = copiedFile
+                    imageUri = copiedFile.toUri()
+
+                    binding.garmentImage.setImageURI(imageUri)
+
+                    // Ahora imageFile!!.absolutePath es usable como en cámara
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(this, "Error al guardar imagen", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     private fun openCamera() : Unit {
-        binding.btnEditImage.setOnClickListener {
+        binding.btnOpenCamera.setOnClickListener {
             imageFile = createImageFile()
-            imageUri = FileProvider.getUriForFile(
-                this,
-                "${this.packageName}.fileprovider",
-                imageFile!!
+            imageUri = FileProvider.getUriForFile(this,
+                "${this.packageName}.fileprovider", imageFile!!
             )
             cameraLauncher.launch(imageUri)
+        }
+    }
+
+    private fun openGalery() : Unit {
+        binding.btnOpenGallery.setOnClickListener {
+            galeryLauncher.launch("image/*")
         }
     }
 
@@ -109,12 +145,11 @@ class ClothingInformationActivity : AppCompatActivity() {
         val storageDir = File(this.filesDir, "images")
         if (!storageDir.exists()) storageDir.mkdirs()
 
-        // Unique name
-        // change this later kevin dont let yourself forget it
-        return File.createTempFile("photo_", ".jpg", storageDir)
+        val name = "IMG_${System.currentTimeMillis()}"
+        return File.createTempFile(name, ".jpg", storageDir)
     }
 
-    private fun setInfo(){
+    private fun setGarmentInfo(){
 
         val extras = intent.extras
 

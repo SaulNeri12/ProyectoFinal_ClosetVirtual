@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentClothesSelectionBinding
@@ -21,7 +22,7 @@ class ClothesSelectionFragment : Fragment() {
     private lateinit var viewModel: ClothesSelectionViewModel
 
     //this is where we save the tag gotten from the filter fragment
-    private lateinit var tag: String
+    private lateinit var tags: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,11 +63,7 @@ class ClothesSelectionFragment : Fragment() {
 
     private fun openRegistryFragment() {
         binding.btnOpenClothesRegistry.setOnClickListener {
-            val fragment = GarmentRegistryFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, fragment)
-                .addToBackStack(null) // Permite volver atrás
-                .commit()
+            findNavController().navigate(R.id.navigation_new_clothes)
         }
     }
 
@@ -77,8 +74,8 @@ class ClothesSelectionFragment : Fragment() {
     }
 
     private fun setViewModelObserver(){
-        viewModel.tag.observe(viewLifecycleOwner) {
-            this.tag = viewModel.tag.value.toString()
+        viewModel.tags.observe(viewLifecycleOwner) {
+            this.tags = viewModel.tags.value as MutableList<String>
         }
     }
 
