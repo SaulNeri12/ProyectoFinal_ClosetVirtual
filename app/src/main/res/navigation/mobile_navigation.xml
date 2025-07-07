@@ -15,7 +15,11 @@
         android:id="@+id/navigation_new_clothes"
         android:name="equipo.closet.closetvirtual.ui.garmentRegistry.GarmentRegistryFragment"
         android:label="Registrar Prenda"
-        tools:layout="@layout/fragment_garment_registry" />
+        tools:layout="@layout/fragment_garment_registry" >
+        <action
+            android:id="@+id/action_navigation_new_clothes_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_outfit_finder"

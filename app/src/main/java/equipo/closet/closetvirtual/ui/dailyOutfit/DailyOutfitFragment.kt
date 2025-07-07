@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
-import equipo.closet.closetvirtual.databinding.FragmentClothesSelectionBinding
 import equipo.closet.closetvirtual.databinding.FragmentDailyOutfitBinding
-import androidx.core.view.isEmpty
 
 class DailyOutfitFragment : Fragment() {
 

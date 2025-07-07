@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import equipo.closet.closetvirtual.databinding.ActivityClothesSelectionBinding
+import equipo.closet.closetvirtual.global.NavigationHelper
 import equipo.closet.closetvirtual.ui.clothesCategoryFilter.ClothesCategoryFilterFragment
+import equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionFragment
 import equipo.closet.closetvirtual.ui.clothesSelectionFilter.ClothesSelectionViewModel
 
 class ClothesSelectionActivity : AppCompatActivity() {
@@ -12,7 +14,7 @@ class ClothesSelectionActivity : AppCompatActivity() {
     private lateinit var binding : ActivityClothesSelectionBinding
     private lateinit var viewModel: ClothesSelectionViewModel
 
-    //this is where we save the tag gotten from the filter fragment
+    //this is where we save the tags gotten from the filter fragment
     private lateinit var tags: List<String>
 
 
@@ -23,9 +25,9 @@ class ClothesSelectionActivity : AppCompatActivity() {
 
         setBackBehavior()
         setProfileBehavior()
-        openRegistryFragment()
         handleShowTagsFilter()
         setViewModelObserver()
+        openRegistryClothesFragment()
     }
 
     private fun setBackBehavior() : Unit {
@@ -42,15 +44,16 @@ class ClothesSelectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun openRegistryFragment() : Unit {
+    private fun openRegistryClothesFragment() : Unit {
         binding.btnOpenClothesRegistry.setOnClickListener {
-
+            //using navigation helper to navigate to the new clothes fragment
+            NavigationHelper.openMainActivityAt(this, NavigationHelper.DEST_GARMENT_REGISTRY)
         }
     }
 
     private fun handleShowTagsFilter() : Unit {
         binding.btnFilter.setOnClickListener {
-            ClothesCategoryFilterFragment().show(childFragmentManager, "NewClothesSelectionFilterFragment")
+            ClothesCategoryFilterFragment().show(this.supportFragmentManager, "NewClothesSelectionFilterFragment")
         }
     }
 

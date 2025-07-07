@@ -13,6 +13,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
@@ -22,9 +24,12 @@ import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFacto
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.adapters.ColorItem
 import equipo.closet.closetvirtual.adapters.ColorSpinnerAdapter
+import equipo.closet.closetvirtual.objects.SessionManager
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.util.UUID
+
 class GarmentRegistryFragment : Fragment() {
 
     private lateinit var binding : FragmentGarmentRegistryBinding
@@ -242,34 +247,38 @@ class GarmentRegistryFragment : Fragment() {
         binding.btnAddGarment.setOnClickListener {
             if (validateInputFields()) {
                 val name = binding.etGarmentName.text.toString()
-                val tag = getTags()
-                val category = binding.spGarmentCategory.selectedItem.toString()
                 val color = getSelectedColor() ?: ""
+                val category = binding.spGarmentCategory.selectedItem.toString()
                 val print = binding.switchPrint.isChecked
                 val image = if (imageUri != null) imageUri.toString() else ""
+                val userId = SessionManager.user.uid
+                val tags = getTags()
 
-//                val newGarment = Garment(
-//                    UUID.randomUUID().toString(),
-//                    name,
-//                    color,
-//                    tag,
-//                    category,
-//                    print,
-//                    image
-//                )
-//
-//                // NOTE: Test message
-//                Toast.makeText(requireContext(), "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
-//
-//                lifecycleScope.launch {
-//                    clothesRepository.insert(newGarment)
-//
-//                    //succes mesagge
-//                    Toast.makeText(
-//                        requireContext(), "Prenda registrada exitosamente",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
+                val newGarment = Garment(
+                    UUID.randomUUID().toString(),
+                    name,
+                    color,
+                    category,
+                    print,
+                    image,
+                    userId,
+                    tags,
+                )
+
+                // NOTE: Test message
+                Toast.makeText(requireContext(), "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
+
+                lifecycleScope.launch {
+                    clothesRepository.insert(newGarment)
+
+                    //succes mesagge
+                    Toast.makeText(
+                        requireContext(), "Prenda registrada exitosamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                // go to home fragment
+                findNavController().navigate(R.id.action_navigation_new_clothes_to_navigation_home)
             }
         }
     }
@@ -293,7 +302,7 @@ class GarmentRegistryFragment : Fragment() {
         }
     }
 
-    private fun getTags(): List<String> {
+    private fun getTags(): MutableList<String> {
         val selectedTags = mutableListOf<String>()
 
         //make a loop to get the selected tags
