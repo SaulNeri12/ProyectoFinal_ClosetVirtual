@@ -14,12 +14,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
 import com.google.android.material.textfield.TextInputEditText
+import equipo.closet.closetvirtual.adapters.ColorItem
+import equipo.closet.closetvirtual.adapters.ColorSpinnerAdapter
 import equipo.closet.closetvirtual.databinding.ActivityClothingInformationBinding
+import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.objects.SessionManager
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
+import java.util.UUID
 
 class ClothingInformationActivity : AppCompatActivity() {
 
@@ -30,6 +40,9 @@ class ClothingInformationActivity : AppCompatActivity() {
     private var imageFile: File? = null
     private var imageUri: Uri? = null
 
+    //repository instance for persisting data
+    private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClothingInformationBinding.inflate(layoutInflater)
@@ -37,14 +50,17 @@ class ClothingInformationActivity : AppCompatActivity() {
 
         val extras = intent.extras
 
-        //set the input fields information
-        setGarmentInfo()
         //fill the category spinner
         setCategorySpinner()
         //fill the color spinner
         setColorSpinner()
+        //set the chip group data
+        setChipGroupData()
+        //set the input fields information
+        setGarmentInfo()
         //set the behavior of the edit button
-        setEditButton()
+        handleGarmentEdit()
+        //set the behavior of the camera button
         openCamera()
         //set the behavior of the camera launcher
         setUpCamaraBehavior()
@@ -55,28 +71,13 @@ class ClothingInformationActivity : AppCompatActivity() {
         //set the behavior of the back button
         setBtnBackBehavior()
         //set the behavior of the delete button
-        setBtnDeleteBehavior()
+        handleGarmentDelete()
 
     }
 
     private fun setBtnBackBehavior() : Unit {
         binding.btnBack.setOnClickListener {
             finish()
-        }
-    }
-
-    private fun setBtnDeleteBehavior() : Unit {
-        binding.btnDelete.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Cerrar sesion")
-                .setMessage("¿Estás seguro de que quiere eliminar la prenda?")
-                .setPositiveButton("Sí") { dialog, which ->
-                    finish()
-                }
-                .setNegativeButton("No") { dialog, which ->
-                    dialog.dismiss()
-                }
-                .show()
         }
     }
 
@@ -163,8 +164,8 @@ class ClothingInformationActivity : AppCompatActivity() {
             val imageUri = extras.getString("garment_image_uri") ?: ""
 
             binding.etGarmentName.setText(name)
-            binding.etGarmentTag.setText(tag)
             binding.switchPrint.isChecked = print
+            setTags() //settin the selected tags
 
 
             binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, color))
@@ -196,6 +197,22 @@ class ClothingInformationActivity : AppCompatActivity() {
         return 0
     }
 
+    private fun setTags(){
+        val tags = listOf(
+            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
+            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
+        )
+        val chipGroup = binding.chipGroupTags
+        tags.forEach { etiqueta ->
+            val chip = Chip(this).apply {
+                text = etiqueta
+                isCheckable = true
+                isClickable = true
+            }
+            chipGroup.addView(chip)
+        }
+    }
+
     private fun setCategorySpinner() {
         // List of gender options
         val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapato", "Accesorio")
@@ -209,50 +226,179 @@ class ClothingInformationActivity : AppCompatActivity() {
         binding.spGarmentCategory.setSelection(0)
     }
 
-    private fun setColorSpinner() {
-        // List of gender options
-        val colorOptions = listOf("Rojo", "Azul", "Verde", "Amarillo", "Negro", "Blanco")
-        // Create an ArrayAdapter using the genderOptions list
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,
-            colorOptions)
-        // Set the layout resource for the dropdown menu
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set the adapter to the genderSpinner
+    private fun setColorSpinner() : Unit {
+        val colors = listOf(
+            ColorItem("Seleccionar color", R.color.gray_light),
+            ColorItem("Rojo", R.color.garment_red),
+            ColorItem("Azul", R.color.garment_blue),
+            ColorItem("Verde", R.color.garment_green),
+            ColorItem("Amarillo", R.color.garment_yellow),
+            ColorItem("Naranja", R.color.garment_orange),
+            ColorItem("Morado", R.color.garment_purple),
+            ColorItem("Rosa", R.color.garment_pink),
+            ColorItem("Café", R.color.garment_brown),
+            ColorItem("Gris", R.color.garment_gray),
+            ColorItem("Negro", R.color.garment_black),
+            ColorItem("Blanco", R.color.garment_white),
+            ColorItem("Beige", R.color.garment_beige),
+            ColorItem("Azul Marino", R.color.garment_navy),
+            ColorItem("Verde Azulado", R.color.garment_teal),
+            ColorItem("Lima", R.color.garment_lime),
+            ColorItem("Cian", R.color.garment_cyan),
+            ColorItem("Índigo", R.color.garment_indigo),
+            ColorItem("Ámbar", R.color.garment_amber),
+            ColorItem("Naranja Intenso", R.color.garment_deep_orange),
+            ColorItem("Azul Claro", R.color.garment_light_blue)
+        )
+
+        val adapter = ColorSpinnerAdapter(this, colors)
         binding.spGarmentColor.adapter = adapter
-        //set the default value
-        binding.spGarmentColor.setSelection(0)
     }
 
-    private fun setEditButton(){
+    private fun getSelectedColor(): String? {
+        val selectedPosition = binding.spGarmentColor.selectedItemPosition
+        return if (selectedPosition > 0) { // Excluir "Seleccionar color"
+            val colorItem = binding.spGarmentColor.selectedItem as ColorItem
+            colorItem.name
+        } else {
+            null
+        }
+    }
+
+    private fun setChipGroupData() {
+
+        val etiquetas = listOf(
+            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
+            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
+        )
+
+        val chipGroup = binding.chipGroupTags
+
+        etiquetas.forEach { etiqueta ->
+            val chip = Chip(this).apply {
+                text = etiqueta
+                isCheckable = true
+                isClickable = true
+            }
+            chipGroup.addView(chip)
+        }
+    }
+
+    private fun getTags(): MutableList<String> {
+        val selectedTags = mutableListOf<String>()
+
+        //make a loop to get the selected tags
+        for (i in 0 until  binding.chipGroupTags.childCount) {
+            val chip =  binding.chipGroupTags.getChildAt(i) as Chip
+            if (chip.isChecked) {
+                selectedTags.add(chip.text.toString())
+            }
+        }
+
+        return selectedTags
+    }
+
+    private fun handleGarmentEdit(){
         binding.btnEditGarment.setOnClickListener {
             if (validateInputFields()){
                 val name = binding.etGarmentName.text.toString()
-                val tag = binding.etGarmentTag.text.toString()
+                val color = getSelectedColor() ?: ""
                 val category = binding.spGarmentCategory.selectedItem.toString()
-                val color = binding.spGarmentColor.selectedItem.toString()
                 val print = binding.switchPrint.isChecked
+                val image = if (imageUri != null) imageUri.toString()
+                            else intent.getStringExtra("garment_image_uri") ?: ""
+
+                val userId = SessionManager.user.uid
+                val tags = getTags()
+
+                val editedGarment = Garment(
+                    UUID.randomUUID().toString(),
+                    name,
+                    color,
+                    category,
+                    print,
+                    image,
+                    userId,
+                    tags,
+                )
+
+                // NOTE: Test message
+                Toast.makeText(this, "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
+
+                lifecycleScope.launch {
+                    clothesRepository.update(editedGarment)
+                }
 
                 //succes mesagge
-                Toast.makeText(this, "Clothes edited successfully",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Prenda editada exitosamente", Toast.LENGTH_SHORT).show()
+
+                //close the activity
+                finish()
             }
         }
     }
 
-    private fun validateInputFields(): Boolean {
+    private fun handleGarmentDelete(){
+        binding.btnDelete.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Cerrar sesion")
+                .setMessage("¿Estás seguro de que quiere salir de la sesión?")
+                .setPositiveButton("Sí") { dialog, which ->
+                    // Delete confirmation
+                    lifecycleScope.launch {
+                        val id = intent.getStringExtra("garment_id")
+                        clothesRepository.delete(id.toString())
+                    }
+                    //Succes mesagge
+                    Toast.makeText(this, "Prenda eliminadae", Toast.LENGTH_SHORT).show()
+
+                    //Close the activity
+                    finish()
+                }
+                .setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+    }
+
+    private fun validateInputFields() : Boolean {
         //get the input fields
         val name = binding.etGarmentName.text.toString()
-        val tag = binding.etGarmentTag.text.toString()
+        val tags = binding.chipGroupTags.checkedChipIds
+        val category = binding.spGarmentCategory.selectedItem.toString()
+        val color = getSelectedColor()
+        val image = imageUri.toString()
 
         //validate empty fields
         if (name.isEmpty()) {
-            binding.etGarmentName.error = "El nombre es requerido"
+            binding.etGarmentName.error = "Ingrese un nombre"
             return false
         }
-        if (tag.isEmpty()) {
-            binding.etGarmentTag.error = "Elija una etiqueta"
+        if(tags.isEmpty()){
+            Toast.makeText(this, "No has seleccionado ninguna etiqueta", Toast.LENGTH_SHORT).show()
             return false
         }
+        if(tags.size > 5) {
+            Toast.makeText(this, "No puedes seleccionar más de 5 etiquetas", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (category.isEmpty()) {
+            Toast.makeText(this, "Elija una categoria",
+                Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (color.isNullOrEmpty()) {
+            Toast.makeText(this, "Elija un color",
+                Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (image.isEmpty()) {
+            Toast.makeText(this, "Tome una foto de la prenda",
+                Toast.LENGTH_SHORT).show()
+            return false
+        }
+
         //default case
         return true
     }
