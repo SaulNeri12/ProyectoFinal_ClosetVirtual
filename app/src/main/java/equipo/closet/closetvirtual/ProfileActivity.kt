@@ -15,10 +15,16 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import equipo.closet.closetvirtual.databinding.ActivityProfileBinding
+import equipo.closet.closetvirtual.entities.User
+import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import kotlin.String
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -54,14 +60,27 @@ class ProfileActivity : AppCompatActivity() {
      * Set the user information in the fragment except the password fields
      */
     private fun setUserInformation(): Unit {
+        //instance of the current user
+        val currentUser = SessionManager.user
+
         // Set the user email
-        binding.tvEmail.text = "example.com"
+        binding.tvEmail.text = currentUser.email
         // Set the user name
-        binding.etName.setText("John Doe")
+        binding.etName.setText(currentUser.name)
         // Set the user birth date
-        binding.etBirthDate.setText("01/01/2000")
+        binding.etBirthDate.setText(currentUser.birthdate.toString())
+        // Set the user gender
+        for (i in 0 until binding.spGender.adapter.count) {
+            if (binding.spGender.getItemAtPosition(i).toString() == currentUser.gender) {
+                binding.spGender.setSelection(i)
+                break
+            }
+        }
     }
 
+    /**
+     * Closes the activity
+     */
     private fun setBackBehavior(): Unit {
         binding.btnBack.setOnClickListener {
             finish()
@@ -242,22 +261,59 @@ class ProfileActivity : AppCompatActivity() {
     private fun editProfileInformation(): Unit {
         binding.btnUpdateProfileInfo.setOnClickListener {
             if (validateInputFields()) {
-                val name = binding.etName.text.toString()
-                val birthDate = binding.etBirthDate.text.toString()
-                val gender = binding.spGender.selectedItem.toString()
 
-                //persist the user new information
+                val currentUser = SessionManager.user
 
-                Toast.makeText(
-                    this, "Se actualizó la información del perfil",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val editedUser = User(
+                    uid = currentUser.uid,
+                    name = binding.etName.text.toString(),
+                    email = currentUser.email,
+                    gender = binding.spGender.selectedItem.toString(),
+                    birthdate = getDateObject(binding.etBirthDate.text.toString()),
+                    password = currentUser.password,
+                    profileImgUrl = currentUser.profileImgUrl,
+                    fireAuthUID = currentUser.fireAuthUID
+                )
 
+                lifecycleScope.launch {
+                    try {
+                        //change the user in the repository
+                        userRepository.update(editedUser)
+                        //update the user in the session manager
+                        SessionManager.user = editedUser
+                        //show a toast for success
+                        Toast.makeText(
+                            this@ProfileActivity,
+                            "Se actualizó la información del perfil",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    catch (exception: Exception){
+                        Toast.makeText(this@ProfileActivity,
+                            "Error al actualizar la información",
+                            Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     }
 
-    // Archivo: ProfileActivity.kt
+    private fun getDateObject(dateString: String): Date? {
+        val dateString = binding.etBirthDate.text.toString().trim()
+        val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
+        val birthDateObject = try {
+            dateFormat.parse(dateString)
+        } catch (e: Exception) {
+            null
+        }
+
+        if (birthDateObject == null) {
+            Toast.makeText(this, "Fecha inválida, use formato d-M-yyyy", Toast.LENGTH_LONG).show()
+            return null
+        }
+
+        return birthDateObject
+    }
 
     private fun updatePassword() {
         binding.btnUpdateProfilePassword.setOnClickListener {

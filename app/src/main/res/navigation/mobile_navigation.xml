@@ -15,7 +15,11 @@
         android:id="@+id/navigation_new_clothes"
         android:name="equipo.closet.closetvirtual.ui.garmentRegistry.GarmentRegistryFragment"
         android:label="Registrar Prenda"
-        tools:layout="@layout/fragment_garment_registry" />
+        tools:layout="@layout/fragment_garment_registry" >
+        <action
+            android:id="@+id/action_navigation_new_clothes_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_outfit_finder"
@@ -24,17 +28,16 @@
         tools:layout="@layout/fragment_search_outfit" />
 
 
-    <fragment
-        android:id="@+id/clothes_selection_fragment"
-        android:name="equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionFragment"
-        android:label="Seleccion de Prendas"
-        tools:layout="@layout/fragment_clothes_selection">
+<!--    <fragment-->
+<!--        android:id="@+id/clothes_selection_fragment"-->
+<!--        android:name="equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionFragment"-->
+<!--        android:label="Seleccion de Prendas"-->
+<!--        tools:layout="@layout/activity_clothes_selection">-->
 
-        <!-- 👇 Acción agregada -->
-        <action
-            android:id="@+id/action_clothes_selection_fragment_to_navigation_new_clothes"
-            app:destination="@id/navigation_new_clothes" />
-    </fragment>
+<!--        <action-->
+<!--            android:id="@+id/action_clothes_selection_fragment_to_navigation_new_clothes"-->
+<!--            app:destination="@id/navigation_new_clothes" />-->
+<!--    </fragment>-->
 
     <fragment
         android:id="@+id/daily_outfit_fragment"

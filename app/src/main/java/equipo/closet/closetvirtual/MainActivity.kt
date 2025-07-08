@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
+import equipo.closet.closetvirtual.global.NavigationHelper
 import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
@@ -35,23 +36,14 @@ class MainActivity : AppCompatActivity() {
 
         val navController = navHostFragment.navController
 
-        /*
-        // adding some clothes...
-        lifecycleScope.launch {
-        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Maquina Azul", "Azul", "Formal", "Top", false))
-        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Pantalon Versachi", "Negro", "Elegante", "Bottom", false))
-        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Chaqueta Negra", "Negro", "Urbano", "Top", false))
-        this.clothes.insert(Garment(UUID.randomUUID().toString(), "Zapatos De Guchi", "Negro", "Elegante", "Zapatos", false))
-
-        // adding an outfit
-        val outfitGala = Outfit(name="Traje de Gala")
-        outfitGala.addGarment(this.clothes.getAll().first())
-        outfitGala.addGarment(this.clothes.getAll().last())
-        outfitGala.addGarment(this.clothes.getAll().get(2))
-
-        this.outfits.insert(outfitGala)
-
-         */
+        // Handle navigation based on the destination
+        if (savedInstanceState == null) {
+            intent.getStringExtra(NavigationHelper.EXTRA_NAV_DESTINATION)?.let { destination ->
+                when (destination) {
+                    NavigationHelper.DEST_GARMENT_REGISTRY -> navController.navigate(R.id.navigation_new_clothes)
+                }
+            }
+        }
 
         navView.setupWithNavController(navController)
     }

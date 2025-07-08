@@ -39,6 +39,11 @@ android {
         viewBinding = true
     }
 
+    packagingOptions {
+        exclude("META-INF/NOTICE.md")
+        exclude("META-INF/LICENSE.md") // ← opcional si da error también por LICENSE.md
+    }
+
 }
 
 dependencies {
@@ -61,4 +66,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation ("com.sun.mail:android-mail:1.6.7")
+    implementation ("com.sun.mail:android-activation:1.6.7")
 }
