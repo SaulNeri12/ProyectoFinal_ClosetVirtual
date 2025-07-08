@@ -19,7 +19,6 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         return getAll(emptyMap())
     }
 
-
     override suspend fun getAll(filters: Map<String, Any>): List<Garment> {
         val db = FirebaseFirestore.getInstance()
         return try {
