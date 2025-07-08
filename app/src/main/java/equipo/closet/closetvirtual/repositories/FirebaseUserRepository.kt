@@ -50,7 +50,7 @@ object FirebaseUserRepository : UserRepository {
                 email = firebaseUser.email ?: "",
                 birthdate = userInfo.getDate("birthdate"),
                 gender = userInfo.getString("gender"),
-                profileImgUrl = userInfo.getString("profileImgUrl"),
+                //profileImgUrl = userInfo.getString("profileImgUrl"),
                 fireAuthUID = firebaseUser.uid
             )
 
@@ -86,7 +86,7 @@ object FirebaseUserRepository : UserRepository {
             user.name = userData.name
             user.birthdate = userData.birthdate
             user.gender = userData.gender
-            user.profileImgUrl = userData.profileImgUrl
+            //user.profileImgUrl = userData.profileImgUrl
             user.uid = firebaseUser.uid
 
         } catch (e: Exception) {

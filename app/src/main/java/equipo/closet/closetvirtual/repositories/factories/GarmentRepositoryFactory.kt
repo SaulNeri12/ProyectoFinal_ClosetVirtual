@@ -8,7 +8,7 @@ import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 
 object GarmentRepositoryFactory : Factory<Repository<Garment, String>> {
 
-    private var debug: Boolean = true
+    private var debug: Boolean = false
 
     override fun create(): Repository<Garment, String> {
 

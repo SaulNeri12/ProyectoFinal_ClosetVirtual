@@ -9,5 +9,6 @@ data class User(
     var gender: String? = "",
     var birthdate: Date? = Date(),
     var password: String = "",
-    var fireAuthUID: String = "" // used for data-linking
+    var fireAuthUID: String = "", // used for data-linking
+    var profileImgUrl: String = ""
 )

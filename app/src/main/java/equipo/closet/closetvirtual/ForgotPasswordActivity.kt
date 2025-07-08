@@ -15,9 +15,6 @@ import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import kotlinx.coroutines.launch
 import java.util.Properties
-import javax.mail.*
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeMessage
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
