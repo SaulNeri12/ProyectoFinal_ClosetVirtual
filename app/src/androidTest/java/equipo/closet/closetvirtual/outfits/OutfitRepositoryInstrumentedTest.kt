@@ -75,7 +75,9 @@ class OutfitRepositoryInstrumentedTest {
                         "id" to outfit.id,
                         "name" to outfit.name,
                         "tags" to outfit.tags,
-                        "userId" to outfit.userId
+                        "userId" to outfit.userId,
+                        "nameLowerCase" to outfit.name.lowercase(),
+                        "clothesIds" to outfit.clothesIds
                     )
                 )
                 .await()
@@ -95,7 +97,85 @@ class OutfitRepositoryInstrumentedTest {
             assertTrue(result.any { it.tags.contains("Sports") })
 
             // Cleanup
-            //db.collection("outfits").document(outfit.id).delete().await()
+            db.collection("outfits").document(outfit.id).delete().await()
+        }
+    }
+
+    @Test(timeout = 10_000)
+    fun getAll_shouldFilterByNamePrefix() {
+
+        runBlocking {
+
+            // Arrange
+            val outfit1 = Outfit(
+                id = UUID.randomUUID().toString(),
+                name = "Outfit Casual",
+                tags = mutableListOf("casual"),
+                userId = currentUserId
+            )
+
+            val outfit2 = Outfit(
+                id = UUID.randomUUID().toString(),
+                name = "Outfit Deportivo",
+                tags = mutableListOf("sports"),
+                userId = currentUserId
+            )
+
+            val outfit3 = Outfit(
+                id = UUID.randomUUID().toString(),
+                name = "Formal Look",
+                tags = mutableListOf("formal"),
+                userId = currentUserId
+            )
+
+            db.collection("outfits").document(outfit1.id).set(
+                mapOf(
+                    "id" to outfit1.id,
+                    "name" to outfit1.name,
+                    "nameLowerCase" to outfit1.name.lowercase(),
+                    "tags" to outfit1.tags,
+                    "userId" to outfit1.userId,
+                    "clothesIds" to outfit1.clothesIds
+                )
+            ).await()
+
+            db.collection("outfits").document(outfit2.id).set(
+                mapOf(
+                    "id" to outfit2.id,
+                    "name" to outfit2.name,
+                    "nameLowerCase" to outfit2.name.lowercase(),
+                    "tags" to outfit2.tags,
+                    "userId" to outfit2.userId,
+                    "clothesIds" to outfit1.clothesIds
+                )
+            ).await()
+
+            db.collection("outfits").document(outfit3.id).set(
+                mapOf(
+                    "id" to outfit3.id,
+                    "name" to outfit3.name,
+                    "nameLowerCase" to outfit3.name.lowercase(),
+                    "tags" to outfit3.tags,
+                    "userId" to outfit3.userId,
+                    "clothesIds" to outfit1.clothesIds
+                )
+            ).await()
+
+            // Act
+            val filter = mapOf("name" to "outfit")
+            val result = repository.getAll(filter)
+
+            println("Resultado búsqueda por nombre: $result")
+
+            // Assert
+            assertTrue(result.any { it.name == "Outfit Casual" })
+            assertTrue(result.any { it.name == "Outfit Deportivo" })
+            assertFalse(result.any { it.name == "Formal Look" })
+
+            // Cleanup
+            db.collection("outfits").document(outfit1.id).delete().await()
+            db.collection("outfits").document(outfit2.id).delete().await()
+            db.collection("outfits").document(outfit3.id).delete().await()
         }
     }
 
@@ -132,8 +212,10 @@ class OutfitRepositoryInstrumentedTest {
                     mapOf(
                         "id" to outfit.id,
                         "name" to outfit.name,
+                        "nameLowerCase" to outfit.name.lowercase(),
                         "tags" to outfit.tags,
-                        "userId" to outfit.userId
+                        "userId" to outfit.userId,
+                        "clothesIds" to outfit.clothesIds
                     )
                 )
                 .await()

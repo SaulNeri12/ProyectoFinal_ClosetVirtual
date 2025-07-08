@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Garment(
     var id: String = "",
     var name: String = "",
+    var nameLowerCase: String = "",
     var color: String = "",
     var category: String = "",
     var print: Boolean = false,
