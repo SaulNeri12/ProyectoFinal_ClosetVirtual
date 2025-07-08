@@ -1,19 +1,17 @@
-package equipo.closet.closetvirtual.ui.clothesselection.adapters // O la ruta que prefieras
+package equipo.closet.closetvirtual.ui.clothesselection.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import equipo.closet.closetvirtual.databinding.SelectableGarmentCardBinding // Necesitas crear este layout
+import equipo.closet.closetvirtual.databinding.SelectableGarmentCardBinding
 import equipo.closet.closetvirtual.entities.Garment
 
-// El lambda 'onGarmentClick' se ejecutará cuando el usuario toque una prenda
 class SelectableGarmentAdapter(
     private var garments: List<Garment>,
     private val onGarmentClick: (Garment) -> Unit
 ) : RecyclerView.Adapter<SelectableGarmentAdapter.GarmentViewHolder>() {
 
-    // El ViewHolder contiene las vistas de cada item de la lista
     inner class GarmentViewHolder(val binding: SelectableGarmentCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(garment: Garment) {
             binding.tvGarmentName.text = garment.name
@@ -22,7 +20,7 @@ class SelectableGarmentAdapter(
                 .centerCrop()
                 .into(binding.ivGarmentImage)
 
-            // Configura el click listener para todo el item
+            // Configura el click listener para toda la tarjeta
             itemView.setOnClickListener {
                 onGarmentClick(garment)
             }
@@ -44,7 +42,6 @@ class SelectableGarmentAdapter(
 
     override fun getItemCount(): Int = garments.size
 
-    // Función para actualizar la lista de prendas en el adaptador
     fun updateData(newGarments: List<Garment>) {
         garments = newGarments
         notifyDataSetChanged()
