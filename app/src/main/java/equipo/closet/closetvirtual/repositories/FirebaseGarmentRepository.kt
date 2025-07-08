@@ -57,8 +57,8 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
                 }
             }
         } catch (e: Exception) {
-            throw e.message?.let { SearchException(it) }!!
-            //throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
+            //throw e.message?.let { SearchException(it) }!!
+            throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
         }
     }
 
