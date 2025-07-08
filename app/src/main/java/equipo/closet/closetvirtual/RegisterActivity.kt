@@ -74,8 +74,8 @@ class RegisterActivity : AppCompatActivity() {
                     uid = UUID.randomUUID().toString(),
                     name = etName.text.toString().trim(),
                     email = etMail.text.toString().trim(),
-                    birthdate = birthDateObject,
                     gender = etGender.selectedItem.toString(),
+                    birthdate = birthDateObject,
                     password = etPassword.text.toString()
                 )
 
