@@ -139,7 +139,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <EditText
-                    android:id="@+id/filtered_garment_search_input"
+                    android:id="@+id/etSearch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"

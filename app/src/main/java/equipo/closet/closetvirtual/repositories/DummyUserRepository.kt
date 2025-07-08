@@ -26,7 +26,7 @@ object DummyUserRepository : UserRepository {
             gender = "Femenino",
             birthdate = Date(95, 5, 24), // 24 junio 1995
             password = "password123",
-            profileImgUrl = null,
+            profileImgUrl = "",
             fireAuthUID = "auth_001"
         )
 
@@ -37,7 +37,7 @@ object DummyUserRepository : UserRepository {
             gender = "Masculino",
             birthdate = Date(98, 10, 3), // 3 noviembre 1998
             password = "brunopass456",
-            profileImgUrl = null,
+            profileImgUrl = "",
             fireAuthUID = "auth_002"
         )
 
@@ -48,7 +48,7 @@ object DummyUserRepository : UserRepository {
             gender = "Femenino",
             birthdate = Date(2000 - 1900, 1, 14), // 14 febrero 2000
             password = "cami_secure",
-            profileImgUrl = null,
+            profileImgUrl = "",
             fireAuthUID = "auth_003"
         )
 

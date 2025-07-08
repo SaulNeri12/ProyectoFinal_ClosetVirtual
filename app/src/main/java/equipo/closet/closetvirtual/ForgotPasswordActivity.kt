@@ -15,9 +15,6 @@ import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import kotlinx.coroutines.launch
 import java.util.Properties
-import javax.mail.*
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeMessage
 
 class ForgotPasswordActivity : AppCompatActivity() {
 
@@ -57,11 +54,14 @@ class ForgotPasswordActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     try {
                         val userEmail = binding.etEmail.text.toString()
-                        userEmail?.let { userRepository.sendPasswordResetMail(it) }
+                        userRepository.sendPasswordResetMail(userEmail)
+
                         Toast.makeText(this@ForgotPasswordActivity, "Correo enviado", Toast.LENGTH_LONG).show()
+
                         val intent = Intent(this@ForgotPasswordActivity, LoginActivity::class.java)
                         startActivity(intent)
                         finish()
+
                     } catch (e: AuthException) {
                         Toast.makeText(this@ForgotPasswordActivity, e.message, Toast.LENGTH_LONG).show()
                     }

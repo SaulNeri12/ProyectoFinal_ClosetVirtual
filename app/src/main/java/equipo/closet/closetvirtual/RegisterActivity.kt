@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat 
 import java.util.Calendar
 import java.util.Locale
+import java.util.UUID
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -70,10 +71,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
                 val user = User(
+                    uid = UUID.randomUUID().toString(),
                     name = etName.text.toString().trim(),
                     email = etMail.text.toString().trim(),
-                    birthdate = birthDateObject,
                     gender = etGender.selectedItem.toString(),
+                    birthdate = birthDateObject,
                     password = etPassword.text.toString()
                 )
 
