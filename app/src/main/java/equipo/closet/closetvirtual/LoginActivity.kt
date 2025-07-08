@@ -31,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
         //declare the function login
         login();
         register();
+        openForgotPasswordActivity()
 
     }
 
@@ -83,6 +84,13 @@ class LoginActivity : AppCompatActivity() {
 
         //Default case
         return true
+    }
+
+    private fun openForgotPasswordActivity() {
+        binding.tvForgotPassword.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

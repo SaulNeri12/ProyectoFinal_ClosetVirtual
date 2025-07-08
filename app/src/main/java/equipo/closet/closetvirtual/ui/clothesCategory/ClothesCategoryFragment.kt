@@ -53,7 +53,6 @@ class ClothesCategoryFragment : Fragment() {
         fetchAllGarments()
 
         setBackButtonClickListener()
-        setSearchByTagButtonBehavior()
         setProfileButtonClickListener()
         setFilterButtonBehavior()
         setRealTimeSearchByName()
@@ -124,32 +123,6 @@ class ClothesCategoryFragment : Fragment() {
         binding.accessoriesClothesCounterLabel.text = formatCategoryClothesCount(accessoriesClothes.size)
     }
 
-    private fun setSearchByTagButtonBehavior() {
-        binding.btnSearchClothesCategory.setOnClickListener {
-            /*
-            val tagToSearch = viewModel.tag.value?.trim()
-            val filters = if (!tagToSearch.isNullOrEmpty()) {
-                mapOf("tag" to tagToSearch)
-            } else {
-                emptyMap()
-            }
-            fetchAndDisplayGarmentsByTag(filters)*/
-        }
-    }
-
-    private fun fetchAndDisplayGarmentsByTag(filters: Map<String, Any>) {
-        lifecycleScope.launch {
-            try {
-                val clothes = clothesRepository.getAll(filters)
-                if (clothes.isEmpty() && filters.containsKey("tag")) {
-                    Toast.makeText(requireContext(), "No se encontraron prendas con la etiqueta '${filters["tag"]}'", Toast.LENGTH_SHORT).show()
-                }
-                updateGarmentViews(clothes)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
 
     private fun setProfileButtonClickListener() {
         binding.btnProfileCategoryCards.setOnClickListener {
