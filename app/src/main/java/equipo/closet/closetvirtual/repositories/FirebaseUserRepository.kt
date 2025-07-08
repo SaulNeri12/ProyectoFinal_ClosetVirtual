@@ -123,6 +123,16 @@ object FirebaseUserRepository : UserRepository {
         }
     }
 
+    override suspend fun sendPasswordResetMail(email: String) {
+        val auth = FirebaseAuth.getInstance()
+
+        try {
+            auth.sendPasswordResetEmail(email).await()
+        } catch (e: Exception) {
+            throw AuthException("No se pudo enviar el mensaje para recuperar la contraseña, por favor intenta más tarde.")
+        }
+    }
+
     override suspend fun getAll(): List<User> {
         TODO("Not yet implemented")
     }

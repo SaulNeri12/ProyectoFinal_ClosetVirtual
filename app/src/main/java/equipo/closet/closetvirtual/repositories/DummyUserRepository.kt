@@ -93,6 +93,10 @@ object DummyUserRepository : UserRepository {
         }
     }
 
+    override suspend fun sendPasswordResetMail(email: String) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getAll(): List<User> = users
     override suspend fun getAll(filters: Map<String, Any>): List<User> {
         return this.getAll()
