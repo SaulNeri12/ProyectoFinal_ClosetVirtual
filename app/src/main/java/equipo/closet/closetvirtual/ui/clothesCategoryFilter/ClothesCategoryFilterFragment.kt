@@ -17,7 +17,7 @@ class ClothesCategoryFilterFragment : BottomSheetDialogFragment() {
     )
 
     private lateinit var binding: FragmentClothesCategoryFilterBinding
-    private lateinit var viewModel: ClothesCategoryViewModel
+    private lateinit var viewModel: ClothesCategoryFilterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,7 @@ class ClothesCategoryFilterFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity())[ClothesCategoryViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[ClothesCategoryFilterViewModel::class.java]
 
         setChipGroupData()
         setSelectedChips()
@@ -79,6 +79,9 @@ class ClothesCategoryFilterFragment : BottomSheetDialogFragment() {
 
             //save it on the view model
             viewModel.setTags(selectedTags)
+            //shoot the event
+            viewModel.shootSearchEvent()
+            //close the fragment
             dismiss()
         }
     }
