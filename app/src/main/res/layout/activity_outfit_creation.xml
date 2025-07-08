@@ -143,7 +143,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="La irreverente"
+                            android:text="Camiseta"
                             android:textColor="@color/text_primary_dark"
                             android:textSize="16sp" />
 
@@ -154,7 +154,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="50dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             app:cardBackgroundColor="@color/white"
                             app:cardCornerRadius="25dp"
                             app:cardElevation="0dp"
@@ -168,7 +168,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:scaleType="center"
-                                android:src="@drawable/ic_delete"
+                                android:src="@drawable/ic_add"
                                 app:tint="@color/icon_color" />
 
                         </com.google.android.material.card.MaterialCardView>
@@ -217,7 +217,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="50dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             app:cardBackgroundColor="@color/white"
                             app:cardCornerRadius="25dp"
                             app:cardElevation="0dp"
@@ -232,7 +232,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:scaleType="center"
-                                android:src="@drawable/ic_delete"
+                                android:src="@drawable/ic_add"
                                 app:tint="@color/icon_color" />
 
                         </com.google.android.material.card.MaterialCardView>
@@ -281,7 +281,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="50dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             app:cardBackgroundColor="@color/white"
                             app:cardCornerRadius="25dp"
                             app:cardElevation="0dp"
@@ -345,7 +345,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="50dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             app:cardBackgroundColor="@color/white"
                             app:cardCornerRadius="25dp"
                             app:cardElevation="0dp"
@@ -409,7 +409,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="50dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             app:cardBackgroundColor="@color/white"
                             app:cardCornerRadius="25dp"
                             app:cardElevation="0dp"

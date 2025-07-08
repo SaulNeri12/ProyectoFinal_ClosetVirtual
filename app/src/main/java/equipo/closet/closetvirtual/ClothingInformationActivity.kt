@@ -155,25 +155,20 @@ class ClothingInformationActivity : AppCompatActivity() {
         val extras = intent.extras
 
         if (extras != null) {
-            val id = extras.getInt("garment_id", -1)
-            val name = extras.getString("garment_name") ?: ""
-            val color = extras.getString("garment_color") ?: ""
-            val tag = extras.getString("garment_tag") ?: ""
-            val category = extras.getString("garment_category") ?: ""
-            val print = extras.getBoolean("garment_print", false)
-            val imageUri = extras.getString("garment_image_uri") ?: ""
 
-            binding.etGarmentName.setText(name)
-            binding.switchPrint.isChecked = print
-            setTags() //settin the selected tags
+            @Suppress("DEPRECATION")
+            val garment = extras.getParcelable<Garment>("garment")
 
+            val id = garment!!.id.toString()
+            binding.etGarmentName.setText(garment.name)
+            binding.switchPrint.isChecked = garment.print
+            setSelectedTags(garment.tags) //settin the selected tags
+            binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, garment.color))
+            binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, garment.category))
 
-            binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, color))
-            binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, category))
-
-
-            if (imageUri.isNotEmpty()) {
-                val uri = imageUri.toUri()
+            //set the image
+            if (garment.imageUri.isNotEmpty()) {
+                val uri = imageUri
                 Glide.with(this)
                     .load(uri)
                     .into(binding.garmentImage)
@@ -197,20 +192,24 @@ class ClothingInformationActivity : AppCompatActivity() {
         return 0
     }
 
-    private fun setTags(){
-        val tags = listOf(
-            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
-            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
-        )
-        val chipGroup = binding.chipGroupTags
-        tags.forEach { etiqueta ->
-            val chip = Chip(this).apply {
-                text = etiqueta
-                isCheckable = true
-                isClickable = true
-            }
-            chipGroup.addView(chip)
+    private fun setSelectedTags(tags: MutableList<String>){
+        for (tag in tags){
+            val chip = binding.chipGroupTags.findViewWithTag<Chip>(tag)
+            chip.isChecked = true
         }
+    }
+
+    private fun getTags(): MutableList<String> {
+        val selectedTags = mutableListOf<String>()
+
+        //make a loop to get the selected tags
+        for (i in 0 until  binding.chipGroupTags.childCount) {
+            val chip =  binding.chipGroupTags.getChildAt(i) as Chip
+            if (chip.isChecked) {
+                selectedTags.add(chip.text.toString())
+            }
+        }
+        return selectedTags
     }
 
     private fun setCategorySpinner() {
@@ -282,20 +281,6 @@ class ClothingInformationActivity : AppCompatActivity() {
             }
             chipGroup.addView(chip)
         }
-    }
-
-    private fun getTags(): MutableList<String> {
-        val selectedTags = mutableListOf<String>()
-
-        //make a loop to get the selected tags
-        for (i in 0 until  binding.chipGroupTags.childCount) {
-            val chip =  binding.chipGroupTags.getChildAt(i) as Chip
-            if (chip.isChecked) {
-                selectedTags.add(chip.text.toString())
-            }
-        }
-
-        return selectedTags
     }
 
     private fun handleGarmentEdit(){

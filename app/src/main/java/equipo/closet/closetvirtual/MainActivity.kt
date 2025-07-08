@@ -43,20 +43,6 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
 
-        /*
-        lifecycleScope.launch {
-            try {
-                val userEmail = FirebaseAuth.getInstance().currentUser?.email
-                userEmail?.let { userRepository.sendPasswordResetMail(it) }
-            } catch (e: AuthException) {
-                Toast.makeText(
-                    context,
-                    e.message,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }*/
-
         val navView: BottomNavigationView = findViewById(R.id.bottom_navigation_view)
 
         val navHostFragment = supportFragmentManager
