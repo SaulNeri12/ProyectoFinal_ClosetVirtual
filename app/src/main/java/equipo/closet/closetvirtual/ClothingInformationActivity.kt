@@ -192,24 +192,6 @@ class ClothingInformationActivity : AppCompatActivity() {
         return 0
     }
 
-    private fun setTags(){
-        val etiquetas = listOf(
-            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
-            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
-        )
-
-        val chipGroup = binding.chipGroupTags
-
-        etiquetas.forEach { etiqueta ->
-            val chip = Chip(this).apply {
-                text = etiqueta
-                isCheckable = true
-                isClickable = true
-            }
-            chipGroup.addView(chip)
-        }
-    }
-
     private fun setSelectedTags(tags: MutableList<String>){
         for (tag in tags){
             val chip = binding.chipGroupTags.findViewWithTag<Chip>(tag)
