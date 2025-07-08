@@ -40,6 +40,15 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
                 }
             }
 
+            val nameFilter = filters["name"]
+            if (nameFilter is String && nameFilter.isNotBlank()) {
+                val capitalized = nameFilter.lowercase()
+                query = query
+                    .orderBy("nameLowerCase")
+                    .startAt(capitalized)
+                    .endAt(capitalized + '\uf8ff')
+            }
+
             val snapshot: QuerySnapshot = query.get().await()
 
             snapshot.documents.mapNotNull { doc ->
@@ -48,7 +57,8 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
                 }
             }
         } catch (e: Exception) {
-            throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
+            throw e.message?.let { SearchException(it) }!!
+            //throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
         }
     }
 
@@ -75,7 +85,7 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         val db = FirebaseFirestore.getInstance()
         val userId = auth.currentUser?.uid ?: throw IllegalStateException("Usuario no autenticado")
         val id = UUID.randomUUID().toString()
-        val garment = item.copy(id = id, userId = userId)
+        val garment = item.copy(id = id, userId = userId, nameLowerCase = item.name.lowercase())
         return try {
             db.collection(CLOTHES_COLLECTION_NAME)
                 .document(id)
@@ -94,7 +104,7 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         if (garmentId.isBlank()) {
             garmentId = UUID.randomUUID().toString()
         }
-        val updatedGarment = item.copy(userId = userId)
+        val updatedGarment = item.copy(userId = userId, nameLowerCase = item.name.lowercase())
         return try {
             db.collection(CLOTHES_COLLECTION_NAME)
                 .document(garmentId)
