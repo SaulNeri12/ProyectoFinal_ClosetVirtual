@@ -26,8 +26,9 @@ interface UserRepository : Repository<User, String> {
      */
     suspend fun signUp(user: User)
 
-
     suspend fun updatePassword(currentPassword: String, newPassword: String)
+
+    suspend fun sendPasswordResetMail(email: String)
 }
 
 
