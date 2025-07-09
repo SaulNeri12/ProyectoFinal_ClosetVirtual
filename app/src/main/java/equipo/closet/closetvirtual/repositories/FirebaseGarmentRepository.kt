@@ -119,6 +119,8 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         }
     }
 
+
+
     override suspend fun getById(id: String): Garment? {
         val db = FirebaseFirestore.getInstance()
         return try {

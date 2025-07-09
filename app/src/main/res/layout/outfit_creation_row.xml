@@ -1,57 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btn_add_garment"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_marginBottom="12dp"
-    android:background="@drawable/rounded_gray_background"
-    android:paddingHorizontal="12dp"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground">
+    android:paddingVertical="8dp">
 
-    <!-- CardView para la imagen con sombra y borde -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/garment_image_card"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="4dp"
-        app:strokeColor="@color/gray_medium"
-        app:strokeWidth="1dp">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp">
 
         <ImageView
-            android:id="@+id/iv_garment_image"
+            android:id="@+id/iv_garment_preview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_add_ropa" /> <!-- Ícono genérico inicial -->
-    </com.google.android.material.card.MaterialCardView>
+            android:src="@drawable/ic_top_placeholder" /> </com.google.android.material.card.MaterialCardView>
 
-    <!-- Nombre de la prenda o texto por defecto -->
     <TextView
-        android:id="@+id/tv_garment_name"
+        android:id="@+id/tv_garment_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="16dp"
-        android:layout_toStartOf="@id/btn_action"
         android:layout_toEndOf="@id/garment_image_card"
+        android:text="Categoría"
         android:textColor="@color/text_primary_dark"
-        android:textSize="16sp"
-        tools:text="Seleccionar Prenda" />
+        android:textSize="16sp" />
 
-    <!-- Ícono de acción (Añadir/Eliminar) -->
     <ImageView
-        android:id="@+id/btn_action"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_chevron_right"
         app:tint="@color/icon_color" />
 
 </RelativeLayout>
