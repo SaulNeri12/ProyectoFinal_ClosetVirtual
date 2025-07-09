@@ -282,6 +282,8 @@ class ClothingInformationActivity : AppCompatActivity() {
     private fun handleGarmentEdit(){
         binding.btnEditGarment.setOnClickListener {
             if (validateInputFields()){
+                @Suppress("DEPRECATION")
+                val id = intent.getParcelableExtra<Garment>("garment")?.id.toString()
                 val name = binding.etGarmentName.text.toString()
                 val color = getSelectedColor() ?: ""
                 val category = binding.spGarmentCategory.selectedItem.toString()
@@ -293,7 +295,7 @@ class ClothingInformationActivity : AppCompatActivity() {
                 val tags = getTags()
 
                 val editedGarment = Garment(
-                    id =UUID.randomUUID().toString(),
+                    id = id,
                     name = name,
                     color = color,
                     category = category,
@@ -306,18 +308,16 @@ class ClothingInformationActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     try{
                         clothesRepository.update(editedGarment)
+                        //Succes mesagge
+                        Toast.makeText(this@ClothingInformationActivity, "Prenda actualizada", Toast.LENGTH_SHORT).show()
+                        //close the activity
+                        finish()
                     }
                     catch (e: Exception){
                         Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
                         return@launch
                     }
                 }
-
-                //succes mesagge
-                Toast.makeText(this, "Prenda editada exitosamente", Toast.LENGTH_SHORT).show()
-
-                //close the activity
-                finish()
             }
         }
     }

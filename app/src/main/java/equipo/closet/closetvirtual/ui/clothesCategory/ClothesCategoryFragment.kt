@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class ClothesCategoryFragment : Fragment() {
 
     //this is where we save the tag gotten from the filter fragment
-    private lateinit var tags: MutableList<String>
+    private var tags: MutableList<String> = emptyList<String>().toMutableList()
 
     private lateinit var binding: FragmentClothesCategoryBinding
     private lateinit var viewModel : ClothesCategoryFilterViewModel
@@ -66,10 +66,10 @@ class ClothesCategoryFragment : Fragment() {
      * in this method we fetch all the garments from the database when the fragment
      * gets the focus back after being created
      */
-//    override fun onResume() {
-//        super.onResume()
-//        fetchAllGarments()
-//    }
+    override fun onResume() {
+        super.onResume()
+        fetchAllGarments()
+    }
 
     private fun fetchAllGarments() {
         lifecycleScope.launch {
@@ -90,13 +90,31 @@ class ClothesCategoryFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
-                    delay(500L)
-                    val searchText = s.toString().trim()
-                    filterGarmentsByName(searchText) // Change this to the correct function
+                    try {
+                        delay(500L)
+
+                        val searchText = s.toString().lowercase()
+
+                        val filterMap = mutableMapOf<String, Any>()
+
+                        if (searchText.isNotEmpty()) {
+                            filterMap["name"] = searchText
+                        }
+                        if (!tags.isEmpty()) {
+                            filterMap["tags"] = tags
+                        }
+
+                        val garments = clothesRepository.getAll(filterMap)
+                        updateGarmentViews(garments)
+
+                    } catch (e: Exception) {
+                        Log.e("Search", "Error: ${e.message}", e)
+                    }
                 }
             }
         })
     }
+
 
     private fun filterGarmentsByName(searchText: String) {
         val filteredList = if (searchText.isEmpty()) {
@@ -163,9 +181,29 @@ class ClothesCategoryFragment : Fragment() {
 
     private fun setSearchEventObserver() : Unit {
         viewModel.searchEvent.observe(viewLifecycleOwner) {
-            //Here we trigger the search
-            Log.d("ClothesCategoryFragment", "Search event triggered")
-            //searchGarmentEvent()
+            searchJob?.cancel()
+            searchJob = lifecycleScope.launch {
+                try {
+                    delay(500L)
+
+                    val searchText = binding.etSearch.toString().lowercase()
+
+                    val filterMap = mutableMapOf<String, Any>()
+
+                    if (searchText.isNotEmpty()) {
+                        filterMap["name"] = searchText
+                    }
+                    if (!tags.isEmpty()) {
+                        filterMap["tags"] = tags
+                    }
+
+                    val garments = clothesRepository.getAll(filterMap)
+                    updateGarmentViews(garments)
+
+                } catch (e: Exception) {
+                    Log.e("Search", "Error: ${e.message}", e)
+                }
+            }
         }
     }
 
@@ -183,4 +221,5 @@ class ClothesCategoryFragment : Fragment() {
             else -> count.toString()
         }
     }
+
 }

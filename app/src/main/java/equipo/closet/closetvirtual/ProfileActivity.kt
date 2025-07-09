@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.FirebaseAuth
 import equipo.closet.closetvirtual.databinding.ActivityProfileBinding
 import equipo.closet.closetvirtual.entities.User
 import equipo.closet.closetvirtual.objects.SessionManager
@@ -155,10 +156,18 @@ class ProfileActivity : AppCompatActivity() {
                 .setTitle("Cerrar sesion")
                 .setMessage("¿Estás seguro de que quiere salir de la sesión?")
                 .setPositiveButton("Sí") { dialog, which ->
-                    // Go to the login activity
-                    val intent = Intent(this, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    try {
+
+                        FirebaseAuth.getInstance().signOut()
+
+                        // Go to the login activity
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+                    catch (exception: Exception){
+                        Toast.makeText(this, "Error al cerrar sesión", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 .setNegativeButton("No") { dialog, which ->
                     dialog.dismiss()
@@ -367,4 +376,5 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
+
 }

@@ -265,9 +265,6 @@ class GarmentRegistryFragment : Fragment() {
                     tags = tags,
                 )
 
-                // NOTE: Test message
-                Toast.makeText(requireContext(), "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
-
                 lifecycleScope.launch {
                     clothesRepository.insert(newGarment)
 
