@@ -1,4 +1,4 @@
-package equipo.closet.closetvirtual
+package equipo.closet.closetvirtual.ui.outfitCreation
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
 
@@ -29,7 +30,7 @@ class OutfitsAdapter(
         val imagesContainer = view.findViewById<LinearLayout>(R.id.garment_images_container)
 
         tvOutfitName.text = outfit.name
-        imagesContainer.removeAllViews() // Limpiar vistas anteriores
+        imagesContainer.removeAllViews()
 
         // Cargar las imágenes de las prendas del outfit
         outfit.clothesIds.forEach { garmentId ->

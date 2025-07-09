@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_top_placeholder" /> </com.google.android.material.card.MaterialCardView>
+            android:src="@drawable/ic_placeholder_garment" /> </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/tv_garment_category"
