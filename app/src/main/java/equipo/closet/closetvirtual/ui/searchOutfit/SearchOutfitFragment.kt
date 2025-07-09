@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.ui.outfitCreation.OutfitsAdapter
 import equipo.closet.closetvirtual.databinding.FragmentSearchOutfitBinding
 
@@ -40,6 +42,10 @@ class SearchOutfitFragment : Fragment() {
 
         binding.filteredGarmentSearchInput.addTextChangedListener { text ->
             viewModel.search(text.toString())
+        }
+
+        binding.btnNewOutfit.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_outfit_finder_to_outfit_creation_fragment)
         }
     }
 

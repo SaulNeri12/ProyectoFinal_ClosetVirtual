@@ -45,7 +45,10 @@ class ClothesSelectionActivity : AppCompatActivity() {
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { finish() }
         binding.btnProfile.setOnClickListener { startActivity(Intent(this, ProfileActivity::class.java)) }
-        binding.btnOpenClothesRegistry.setOnClickListener { NavigationHelper.openMainActivityAt(this, NavigationHelper.DEST_GARMENT_REGISTRY) }
+        binding.btnOpenClothesRegistry.setOnClickListener {
+            val intent = Intent(this, OutfitCreationActivity::class.java)
+            startActivity(intent)
+        }
         binding.btnFilter.setOnClickListener { ClothesCategoryFilterFragment().show(supportFragmentManager, "ClothesCategoryFilterFragment") }
 
         // Listener para la búsqueda por texto
