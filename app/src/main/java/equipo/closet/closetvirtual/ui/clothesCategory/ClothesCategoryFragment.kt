@@ -62,6 +62,15 @@ class ClothesCategoryFragment : Fragment() {
         searchGarmentEvent()
     }
 
+    /**
+     * in this method we fetch all the garments from the database when the fragment
+     * gets the focus back after being created
+     */
+//    override fun onResume() {
+//        super.onResume()
+//        fetchAllGarments()
+//    }
+
     private fun fetchAllGarments() {
         lifecycleScope.launch {
             try {
@@ -125,7 +134,6 @@ class ClothesCategoryFragment : Fragment() {
         binding.accessoriesClothesCardsGrid.adapter = ClothesCategoryGridAdapter(requireContext(), accessoriesClothes.toMutableList())
         binding.accessoriesClothesCounterLabel.text = formatCategoryClothesCount(accessoriesClothes.size)
     }
-
 
     private fun setProfileButtonClickListener() {
         binding.btnProfileCategoryCards.setOnClickListener {

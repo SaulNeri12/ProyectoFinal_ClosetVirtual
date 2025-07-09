@@ -150,13 +150,6 @@ class ClothingInformationActivity : AppCompatActivity() {
         return File.createTempFile(name, ".jpg", storageDir)
     }
 
-    private fun loadImage(imageUri: Uri) : Unit {
-        val imageView = binding.garmentImage
-        Glide.with(this)
-            .load(imageUri)
-            .into(imageView)
-    }
-
     private fun setGarmentInfo(){
 
         val extras = intent.extras
@@ -170,34 +163,61 @@ class ClothingInformationActivity : AppCompatActivity() {
             binding.garmentImage.setImageURI(garment.imageUri.toUri())
             binding.etGarmentName.setText(garment.name)
             binding.switchPrint.isChecked = garment.print
-            setSelectedTags(garment.tags) //settin the selected tags
+            setSelectedTags(garment.tags)
             binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, garment.color))
             binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, garment.category))
-
-//            //set the image
-//            if (garment.imageUri.isNotEmpty()) {
-//                val uri = imageUri
-//                Glide.with(this)
-//                    .load(uri)
-//                    .into(binding.garmentImage)
-//            } else {
-//                Glide.with(this)
-//                    .load(R.mipmap.garment_bottom_test)
-//                    .into(binding.garmentImage)
-//            }
 
         }
 
     }
 
     private fun getIndex(spinner: Spinner, myString: String): Int {
-        for (i in 0..<spinner.count) {
-            if (spinner.getItemAtPosition(i).toString().equals(myString, ignoreCase = true)) {
+        for (i in 0 until spinner.count) {
+            val item = spinner.getItemAtPosition(i)
+            if (item is ColorItem && item.name.equals(myString, ignoreCase = true)) {
                 return i
             }
         }
-
         return 0
+    }
+
+    private fun setColorSpinner() : Unit {
+        val colors = listOf(
+            ColorItem("Seleccionar color", R.color.gray_light),
+            ColorItem("Rojo", R.color.garment_red),
+            ColorItem("Azul", R.color.garment_blue),
+            ColorItem("Verde", R.color.garment_green),
+            ColorItem("Amarillo", R.color.garment_yellow),
+            ColorItem("Naranja", R.color.garment_orange),
+            ColorItem("Morado", R.color.garment_purple),
+            ColorItem("Rosa", R.color.garment_pink),
+            ColorItem("Café", R.color.garment_brown),
+            ColorItem("Gris", R.color.garment_gray),
+            ColorItem("Negro", R.color.garment_black),
+            ColorItem("Blanco", R.color.garment_white),
+            ColorItem("Beige", R.color.garment_beige),
+            ColorItem("Azul Marino", R.color.garment_navy),
+            ColorItem("Verde Azulado", R.color.garment_teal),
+            ColorItem("Lima", R.color.garment_lime),
+            ColorItem("Cian", R.color.garment_cyan),
+            ColorItem("Índigo", R.color.garment_indigo),
+            ColorItem("Ámbar", R.color.garment_amber),
+            ColorItem("Naranja Intenso", R.color.garment_deep_orange),
+            ColorItem("Azul Claro", R.color.garment_light_blue)
+        )
+
+        val adapter = ColorSpinnerAdapter(this, colors)
+        binding.spGarmentColor.adapter = adapter
+    }
+
+    private fun getSelectedColor(): String? {
+        val selectedPosition = binding.spGarmentColor.selectedItemPosition
+        return if (selectedPosition > 0) { // Excluir "Seleccionar color"
+            val colorItem = binding.spGarmentColor.selectedItem as ColorItem
+            colorItem.name
+        } else {
+            null
+        }
     }
 
     /**
@@ -238,45 +258,6 @@ class ClothingInformationActivity : AppCompatActivity() {
         binding.spGarmentCategory.adapter = adapter
         //set the default value
         binding.spGarmentCategory.setSelection(0)
-    }
-
-    private fun setColorSpinner() : Unit {
-        val colors = listOf(
-            ColorItem("Seleccionar color", R.color.gray_light),
-            ColorItem("Rojo", R.color.garment_red),
-            ColorItem("Azul", R.color.garment_blue),
-            ColorItem("Verde", R.color.garment_green),
-            ColorItem("Amarillo", R.color.garment_yellow),
-            ColorItem("Naranja", R.color.garment_orange),
-            ColorItem("Morado", R.color.garment_purple),
-            ColorItem("Rosa", R.color.garment_pink),
-            ColorItem("Café", R.color.garment_brown),
-            ColorItem("Gris", R.color.garment_gray),
-            ColorItem("Negro", R.color.garment_black),
-            ColorItem("Blanco", R.color.garment_white),
-            ColorItem("Beige", R.color.garment_beige),
-            ColorItem("Azul Marino", R.color.garment_navy),
-            ColorItem("Verde Azulado", R.color.garment_teal),
-            ColorItem("Lima", R.color.garment_lime),
-            ColorItem("Cian", R.color.garment_cyan),
-            ColorItem("Índigo", R.color.garment_indigo),
-            ColorItem("Ámbar", R.color.garment_amber),
-            ColorItem("Naranja Intenso", R.color.garment_deep_orange),
-            ColorItem("Azul Claro", R.color.garment_light_blue)
-        )
-
-        val adapter = ColorSpinnerAdapter(this, colors)
-        binding.spGarmentColor.adapter = adapter
-    }
-
-    private fun getSelectedColor(): String? {
-        val selectedPosition = binding.spGarmentColor.selectedItemPosition
-        return if (selectedPosition > 0) { // Excluir "Seleccionar color"
-            val colorItem = binding.spGarmentColor.selectedItem as ColorItem
-            colorItem.name
-        } else {
-            null
-        }
     }
 
     private fun setChipGroupData() {
