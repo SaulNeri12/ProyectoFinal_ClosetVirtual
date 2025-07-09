@@ -4,16 +4,11 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
 import equipo.closet.closetvirtual.databinding.ActivityProfileBinding
 import equipo.closet.closetvirtual.entities.User
 import equipo.closet.closetvirtual.objects.SessionManager
@@ -22,8 +17,8 @@ import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
+import java.util.Date
 import kotlin.String
 
 class ProfileActivity : AppCompatActivity() {
@@ -37,8 +32,6 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set the user information
-        setUserInformation()
         // Fill the gender spinner
         fillGenderSpinner()
         // Set the behavior of the birth date field
@@ -53,6 +46,8 @@ class ProfileActivity : AppCompatActivity() {
         updatePassword()
         // Set the back button behavior
         setBackBehavior()
+        // Set the user information
+        setUserInformation()
 
     }
 
@@ -63,12 +58,14 @@ class ProfileActivity : AppCompatActivity() {
         //instance of the current user
         val currentUser = SessionManager.user
 
+        Toast.makeText(this, "User: ${currentUser.name}", Toast.LENGTH_SHORT).show()
+
         // Set the user email
         binding.tvEmail.text = currentUser.email
         // Set the user name
         binding.etName.setText(currentUser.name)
         // Set the user birth date
-        binding.etBirthDate.setText(currentUser.birthdate.toString())
+        binding.etBirthDate.setText(setDateObject(currentUser.birthdate))
         // Set the user gender
         for (i in 0 until binding.spGender.adapter.count) {
             if (binding.spGender.getItemAtPosition(i).toString() == currentUser.gender) {
@@ -269,11 +266,13 @@ class ProfileActivity : AppCompatActivity() {
                     name = binding.etName.text.toString(),
                     email = currentUser.email,
                     gender = binding.spGender.selectedItem.toString(),
-                    birthdate = getDateObject(binding.etBirthDate.text.toString()),
+                    birthdate = getDateObject(),
                     password = currentUser.password,
-                    profileImgUrl = currentUser.profileImgUrl,
+                    profileImgUrl = "",
                     fireAuthUID = currentUser.fireAuthUID
                 )
+
+                Log.d("ProfileActivity", "Edited user: $editedUser")
 
                 lifecycleScope.launch {
                     try {
@@ -294,11 +293,14 @@ class ProfileActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG).show()
                     }
                 }
+                Log.d("ProfileActivity", "Session user: $SessionManager.user")
             }
         }
     }
 
-    private fun getDateObject(dateString: String): Date? {
+
+
+    private fun getDateObject(): Date? {
         val dateString = binding.etBirthDate.text.toString().trim()
         val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
         val birthDateObject = try {
@@ -313,6 +315,18 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         return birthDateObject
+    }
+
+    /**
+     * From a date object returns a date string with the format d-M-yyyy
+     */
+    private fun setDateObject(date: Date?): String {
+        return if (date != null) {
+            val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
+            dateFormat.format(date)
+        } else {
+            ""
+        }
     }
 
     private fun updatePassword() {
