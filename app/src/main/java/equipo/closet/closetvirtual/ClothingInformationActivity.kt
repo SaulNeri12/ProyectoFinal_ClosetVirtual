@@ -150,6 +150,13 @@ class ClothingInformationActivity : AppCompatActivity() {
         return File.createTempFile(name, ".jpg", storageDir)
     }
 
+    private fun loadImage(imageUri: Uri) : Unit {
+        val imageView = binding.garmentImage
+        Glide.with(this)
+            .load(imageUri)
+            .into(imageView)
+    }
+
     private fun setGarmentInfo(){
 
         val extras = intent.extras
@@ -160,23 +167,24 @@ class ClothingInformationActivity : AppCompatActivity() {
             val garment = extras.getParcelable<Garment>("garment")
 
             val id = garment!!.id.toString()
+            binding.garmentImage.setImageURI(garment.imageUri.toUri())
             binding.etGarmentName.setText(garment.name)
             binding.switchPrint.isChecked = garment.print
             setSelectedTags(garment.tags) //settin the selected tags
             binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, garment.color))
             binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, garment.category))
 
-            //set the image
-            if (garment.imageUri.isNotEmpty()) {
-                val uri = imageUri
-                Glide.with(this)
-                    .load(uri)
-                    .into(binding.garmentImage)
-            } else {
-                Glide.with(this)
-                    .load(R.mipmap.garment_bottom_test)
-                    .into(binding.garmentImage)
-            }
+//            //set the image
+//            if (garment.imageUri.isNotEmpty()) {
+//                val uri = imageUri
+//                Glide.with(this)
+//                    .load(uri)
+//                    .into(binding.garmentImage)
+//            } else {
+//                Glide.with(this)
+//                    .load(R.mipmap.garment_bottom_test)
+//                    .into(binding.garmentImage)
+//            }
 
         }
 
@@ -192,10 +200,17 @@ class ClothingInformationActivity : AppCompatActivity() {
         return 0
     }
 
-    private fun setSelectedTags(tags: MutableList<String>){
-        for (tag in tags){
-            val chip = binding.chipGroupTags.findViewWithTag<Chip>(tag)
-            chip.isChecked = true
+    /**
+     * Set the selected tags in the chip group based on the list
+     * of tags given by the parameter. If a chip's text exists in
+     * the list, it gets selected.
+     */
+    private fun setSelectedTags(tags: MutableList<String>) {
+        val chipGroup = binding.chipGroupTags
+
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as? Chip
+            chip?.isChecked = tags.contains(chip.text.toString())
         }
     }
 
@@ -290,9 +305,9 @@ class ClothingInformationActivity : AppCompatActivity() {
                 val color = getSelectedColor() ?: ""
                 val category = binding.spGarmentCategory.selectedItem.toString()
                 val print = binding.switchPrint.isChecked
-                val image = if (imageUri != null) imageUri.toString()
-                            else intent.getStringExtra("garment_image_uri") ?: ""
-
+                @Suppress("DEPRECATION")
+                val image = if (this.imageUri != null) this.imageUri.toString()
+                            else intent.getParcelableExtra<Garment>("garment")?.imageUri.toString()
                 val userId = SessionManager.user.uid
                 val tags = getTags()
 
@@ -307,11 +322,14 @@ class ClothingInformationActivity : AppCompatActivity() {
                     tags = tags,
                 )
 
-                // NOTE: Test message
-                Toast.makeText(this, "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
-
                 lifecycleScope.launch {
-                    clothesRepository.update(editedGarment)
+                    try{
+                        clothesRepository.update(editedGarment)
+                    }
+                    catch (e: Exception){
+                        Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
                 }
 
                 //succes mesagge
@@ -327,16 +345,22 @@ class ClothingInformationActivity : AppCompatActivity() {
         binding.btnDelete.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Cerrar sesion")
-                .setMessage("¿Estás seguro de que quiere salir de la sesión?")
+                .setMessage("¿Estás seguro de que quiere eliminar la prenda?")
                 .setPositiveButton("Sí") { dialog, which ->
                     // Delete confirmation
                     lifecycleScope.launch {
-                        val id = intent.getStringExtra("garment_id")
-                        clothesRepository.delete(id.toString())
+                        try{
+                            @Suppress("DEPRECATION")
+                            val id = intent.getParcelableExtra<Garment>("garment")?.id
+                            clothesRepository.delete(id.toString())
+                        }
+                        catch (e: Exception){
+                            Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
+                            return@launch
+                        }
                     }
                     //Succes mesagge
-                    Toast.makeText(this, "Prenda eliminadae", Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(this, "Prenda eliminada", Toast.LENGTH_SHORT).show()
                     //Close the activity
                     finish()
                 }
