@@ -255,18 +255,15 @@ class GarmentRegistryFragment : Fragment() {
                 val tags = getTags()
 
                 val newGarment = Garment(
-                    UUID.randomUUID().toString(),
-                    name,
-                    color,
-                    category,
-                    print,
-                    image,
-                    userId,
-                    tags,
+                    id = UUID.randomUUID().toString(),
+                    name = name,
+                    color = color,
+                    category = category,
+                    print =  print,
+                    imageUri = image,
+                    userId = userId,
+                    tags = tags,
                 )
-
-                // NOTE: Test message
-                Toast.makeText(requireContext(), "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
 
                 lifecycleScope.launch {
                     clothesRepository.insert(newGarment)

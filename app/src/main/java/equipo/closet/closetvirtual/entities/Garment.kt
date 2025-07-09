@@ -1,15 +1,20 @@
 package equipo.closet.closetvirtual.entities
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Garment(
     var id: String = "",
     var name: String = "",
+    var nameLowerCase: String = "",
     var color: String = "",
     var category: String = "",
     var print: Boolean = false,
     var imageUri: String = "",
     var userId: String = "",
     var tags: MutableList<String> = mutableListOf()
-) {
+) : Parcelable {
 
     fun addTag(tag: String): Boolean {
         if (tags.size >= 6) return false
@@ -37,3 +42,4 @@ data class Garment(
         return tags.contains(tag.lowercase())
     }
 }
+

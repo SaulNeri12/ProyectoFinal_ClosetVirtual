@@ -155,75 +155,30 @@ class ClothingInformationActivity : AppCompatActivity() {
         val extras = intent.extras
 
         if (extras != null) {
-            val id = extras.getInt("garment_id", -1)
-            val name = extras.getString("garment_name") ?: ""
-            val color = extras.getString("garment_color") ?: ""
-            val tag = extras.getString("garment_tag") ?: ""
-            val category = extras.getString("garment_category") ?: ""
-            val print = extras.getBoolean("garment_print", false)
-            val imageUri = extras.getString("garment_image_uri") ?: ""
 
-            binding.etGarmentName.setText(name)
-            binding.switchPrint.isChecked = print
-            setTags() //settin the selected tags
+            @Suppress("DEPRECATION")
+            val garment = extras.getParcelable<Garment>("garment")
 
-
-            binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, color))
-            binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, category))
-
-
-            if (imageUri.isNotEmpty()) {
-                val uri = imageUri.toUri()
-                Glide.with(this)
-                    .load(uri)
-                    .into(binding.garmentImage)
-            } else {
-                Glide.with(this)
-                    .load(R.mipmap.garment_bottom_test)
-                    .into(binding.garmentImage)
-            }
+            val id = garment!!.id.toString()
+            binding.garmentImage.setImageURI(garment.imageUri.toUri())
+            binding.etGarmentName.setText(garment.name)
+            binding.switchPrint.isChecked = garment.print
+            setSelectedTags(garment.tags)
+            binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, garment.color))
+            binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, garment.category))
 
         }
 
     }
 
     private fun getIndex(spinner: Spinner, myString: String): Int {
-        for (i in 0..<spinner.count) {
-            if (spinner.getItemAtPosition(i).toString().equals(myString, ignoreCase = true)) {
+        for (i in 0 until spinner.count) {
+            val item = spinner.getItemAtPosition(i)
+            if (item is ColorItem && item.name.equals(myString, ignoreCase = true)) {
                 return i
             }
         }
-
         return 0
-    }
-
-    private fun setTags(){
-        val tags = listOf(
-            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
-            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
-        )
-        val chipGroup = binding.chipGroupTags
-        tags.forEach { etiqueta ->
-            val chip = Chip(this).apply {
-                text = etiqueta
-                isCheckable = true
-                isClickable = true
-            }
-            chipGroup.addView(chip)
-        }
-    }
-
-    private fun setCategorySpinner() {
-        // List of gender options
-        val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapato", "Accesorio")
-        // Create an ArrayAdapter using the genderOptions list
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryOptions)
-        // Set the layout resource for the dropdown menu
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        // Set the adapter to the genderSpinner
-        binding.spGarmentCategory.adapter = adapter
-        //set the default value
-        binding.spGarmentCategory.setSelection(0)
     }
 
     private fun setColorSpinner() : Unit {
@@ -265,6 +220,46 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Set the selected tags in the chip group based on the list
+     * of tags given by the parameter. If a chip's text exists in
+     * the list, it gets selected.
+     */
+    private fun setSelectedTags(tags: MutableList<String>) {
+        val chipGroup = binding.chipGroupTags
+
+        for (i in 0 until chipGroup.childCount) {
+            val chip = chipGroup.getChildAt(i) as? Chip
+            chip?.isChecked = tags.contains(chip.text.toString())
+        }
+    }
+
+    private fun getTags(): MutableList<String> {
+        val selectedTags = mutableListOf<String>()
+
+        //make a loop to get the selected tags
+        for (i in 0 until  binding.chipGroupTags.childCount) {
+            val chip =  binding.chipGroupTags.getChildAt(i) as Chip
+            if (chip.isChecked) {
+                selectedTags.add(chip.text.toString())
+            }
+        }
+        return selectedTags
+    }
+
+    private fun setCategorySpinner() {
+        // List of gender options
+        val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapato", "Accesorio")
+        // Create an ArrayAdapter using the genderOptions list
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryOptions)
+        // Set the layout resource for the dropdown menu
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Set the adapter to the genderSpinner
+        binding.spGarmentCategory.adapter = adapter
+        //set the default value
+        binding.spGarmentCategory.setSelection(0)
+    }
+
     private fun setChipGroupData() {
 
         val etiquetas = listOf(
@@ -284,56 +279,45 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
-    private fun getTags(): MutableList<String> {
-        val selectedTags = mutableListOf<String>()
-
-        //make a loop to get the selected tags
-        for (i in 0 until  binding.chipGroupTags.childCount) {
-            val chip =  binding.chipGroupTags.getChildAt(i) as Chip
-            if (chip.isChecked) {
-                selectedTags.add(chip.text.toString())
-            }
-        }
-
-        return selectedTags
-    }
-
     private fun handleGarmentEdit(){
         binding.btnEditGarment.setOnClickListener {
             if (validateInputFields()){
+                @Suppress("DEPRECATION")
+                val id = intent.getParcelableExtra<Garment>("garment")?.id.toString()
                 val name = binding.etGarmentName.text.toString()
                 val color = getSelectedColor() ?: ""
                 val category = binding.spGarmentCategory.selectedItem.toString()
                 val print = binding.switchPrint.isChecked
-                val image = if (imageUri != null) imageUri.toString()
-                            else intent.getStringExtra("garment_image_uri") ?: ""
-
+                @Suppress("DEPRECATION")
+                val image = if (this.imageUri != null) this.imageUri.toString()
+                            else intent.getParcelableExtra<Garment>("garment")?.imageUri.toString()
                 val userId = SessionManager.user.uid
                 val tags = getTags()
 
                 val editedGarment = Garment(
-                    UUID.randomUUID().toString(),
-                    name,
-                    color,
-                    category,
-                    print,
-                    image,
-                    userId,
-                    tags,
+                    id = id,
+                    name = name,
+                    color = color,
+                    category = category,
+                    print = print,
+                    imageUri =  image,
+                    userId = userId,
+                    tags = tags,
                 )
 
-                // NOTE: Test message
-                Toast.makeText(this, "Ruta imagen: ${imageUri}", Toast.LENGTH_LONG).show()
-
                 lifecycleScope.launch {
-                    clothesRepository.update(editedGarment)
+                    try{
+                        clothesRepository.update(editedGarment)
+                        //Succes mesagge
+                        Toast.makeText(this@ClothingInformationActivity, "Prenda actualizada", Toast.LENGTH_SHORT).show()
+                        //close the activity
+                        finish()
+                    }
+                    catch (e: Exception){
+                        Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
                 }
-
-                //succes mesagge
-                Toast.makeText(this, "Prenda editada exitosamente", Toast.LENGTH_SHORT).show()
-
-                //close the activity
-                finish()
             }
         }
     }
@@ -342,16 +326,22 @@ class ClothingInformationActivity : AppCompatActivity() {
         binding.btnDelete.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Cerrar sesion")
-                .setMessage("¿Estás seguro de que quiere salir de la sesión?")
+                .setMessage("¿Estás seguro de que quiere eliminar la prenda?")
                 .setPositiveButton("Sí") { dialog, which ->
                     // Delete confirmation
                     lifecycleScope.launch {
-                        val id = intent.getStringExtra("garment_id")
-                        clothesRepository.delete(id.toString())
+                        try{
+                            @Suppress("DEPRECATION")
+                            val id = intent.getParcelableExtra<Garment>("garment")?.id
+                            clothesRepository.delete(id.toString())
+                        }
+                        catch (e: Exception){
+                            Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
+                            return@launch
+                        }
                     }
                     //Succes mesagge
-                    Toast.makeText(this, "Prenda eliminadae", Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(this, "Prenda eliminada", Toast.LENGTH_SHORT).show()
                     //Close the activity
                     finish()
                 }

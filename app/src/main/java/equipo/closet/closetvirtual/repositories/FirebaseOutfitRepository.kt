@@ -48,9 +48,20 @@ class FirebaseOutfitRepository: Repository<Outfit, String> {
                 }
             }
 
+
+            val nameFilter = filters["name"]
+            if (nameFilter is String && nameFilter.isNotBlank()) {
+                val capitalized = nameFilter.lowercase()
+                query = query
+                    .orderBy("nameLowerCase")
+                    .startAt(capitalized)
+                    .endAt(capitalized + '\uf8ff')
+            }
+
+            /*
             filters.forEach { (key, value) ->
                 if (key != "tags") query = query.whereEqualTo(key, value)
-            }
+            }*/
 
             val snapshot: QuerySnapshot = query.get().await()
 
@@ -60,7 +71,8 @@ class FirebaseOutfitRepository: Repository<Outfit, String> {
                 }
             }
         } catch (e: Exception) {
-            throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
+            throw e.message?.let { SearchException(it) }!!
+            //throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
         }
     }
 
@@ -99,7 +111,6 @@ class FirebaseOutfitRepository: Repository<Outfit, String> {
 
     override suspend fun update(item: Outfit): String {
         val db = FirebaseFirestore.getInstance()
-        val userId = getUserId()
 
         return try {
             db.collection(OUTFIT_COLLECTION_NAME)
@@ -108,7 +119,8 @@ class FirebaseOutfitRepository: Repository<Outfit, String> {
                     mapOf(
                         "name" to item.name,
                         "clothesIds" to item.clothesIds,
-                        "tags" to item.tags
+                        "tags" to item.tags,
+                        "nameLowerCase" to item.nameLowerCase
                     )
                 )
                 .await()

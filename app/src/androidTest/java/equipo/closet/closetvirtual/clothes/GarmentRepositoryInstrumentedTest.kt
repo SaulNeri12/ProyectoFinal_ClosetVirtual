@@ -115,6 +115,59 @@ class FirebaseGarmentRepositoryInstrumentedTest {
     }
 
     @Test(timeout = 10_000)
+    fun getAll_shouldFilterByNamePrefix() {
+        runBlocking {
+
+            // Arrange
+            val garment1 = Garment(
+                id = UUID.randomUUID().toString(),
+                name = "Camisa Blanca",
+                nameLowerCase = "camisa blanca",
+                color = "Blanco",
+                category = "top",
+                userId = currentUserId
+            )
+
+            val garment2 = Garment(
+                id = UUID.randomUUID().toString(),
+                name = "Camiseta Negra",
+                nameLowerCase = "camiseta negra",
+                color = "Negro",
+                category = "top",
+                userId = currentUserId
+            )
+
+            val garment3 = Garment(
+                id = UUID.randomUUID().toString(),
+                name = "Pantaln Verde",
+                nameLowerCase = "pantalón verde",
+                color = "Verde",
+                category = "bottom",
+                userId = currentUserId
+            )
+
+            db.collection("clothes").document(garment1.id).set(garment1).await()
+            db.collection("clothes").document(garment2.id).set(garment2).await()
+            db.collection("clothes").document(garment3.id).set(garment3).await()
+
+            // Act
+            val result = repository.getAll(mapOf("name" to "Cam"))
+
+            println("Resultado: $result")
+
+            // Assert
+            assertTrue(result.any { it.name == "Camisa Blanca" })
+            assertTrue(result.any { it.name == "Camiseta Negra" })
+            assertFalse(result.any { it.name == "Pantalón Verde" })
+
+            // Cleanup
+            db.collection("clothes").document(garment1.id).delete().await()
+            db.collection("clothes").document(garment2.id).delete().await()
+            db.collection("clothes").document(garment3.id).delete().await()
+        }
+    }
+
+    @Test(timeout = 10_000)
     fun insert_shouldSaveGarmentAndGetById() {
 
         runBlocking {
@@ -192,6 +245,7 @@ class FirebaseGarmentRepositoryInstrumentedTest {
 
             // Assert
             assertEquals("Chamarra Negra", result?.name)
+            assertEquals(id, updatedId)
 
             // Cleanup
             db.collection("clothes").document(id).delete().await()

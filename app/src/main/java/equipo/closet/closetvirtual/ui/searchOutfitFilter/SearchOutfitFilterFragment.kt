@@ -17,13 +17,13 @@ class SearchOutfitFilterFragment : BottomSheetDialogFragment(){
     )
 
     private lateinit var binding: FragmentClothesSelectionFilterBinding
-    private lateinit var viewModel: SearchOutfitViewModel
+    private lateinit var viewModel: SearchOutfitFilterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[SearchOutfitViewModel::class.java]
+        viewModel = ViewModelProvider(this)[SearchOutfitFilterViewModel::class.java]
         binding = FragmentClothesSelectionFilterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -32,7 +32,7 @@ class SearchOutfitFilterFragment : BottomSheetDialogFragment(){
         super.onViewCreated(view, savedInstanceState)
 
         val activity = requireActivity()
-        viewModel = ViewModelProvider(activity)[SearchOutfitViewModel::class.java]
+        viewModel = ViewModelProvider(activity)[SearchOutfitFilterViewModel::class.java]
 
         setChipGroupData()
         setSelectedChips()
@@ -81,6 +81,7 @@ class SearchOutfitFilterFragment : BottomSheetDialogFragment(){
 
             //save it on the view model
             viewModel.setTags(selectedTags)
+            viewModel.triggerSearchEvent()
             dismiss()
         }
     }

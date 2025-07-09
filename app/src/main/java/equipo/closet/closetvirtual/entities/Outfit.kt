@@ -6,6 +6,7 @@ import com.google.firebase.firestore.Exclude
 class Outfit(
     var id: String = "",
     var name: String = "",
+    var nameLowerCase: String = "",
     var clothesIds: MutableList<String> = mutableListOf(),
     var tags: MutableList<String> = mutableListOf(),
     var userId: String = ""

@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import equipo.closet.closetvirtual.entities.User
 import com.google.firebase.auth.FirebaseAuth
 import equipo.closet.closetvirtual.objects.SessionManager
+import equipo.closet.closetvirtual.repositories.exceptions.SearchException
 import kotlinx.coroutines.tasks.await
 import java.security.MessageDigest
 
@@ -50,7 +51,7 @@ object FirebaseUserRepository : UserRepository {
                 email = firebaseUser.email ?: "",
                 birthdate = userInfo.getDate("birthdate"),
                 gender = userInfo.getString("gender"),
-                profileImgUrl = userInfo.getString("profileImgUrl"),
+                //profileImgUrl = userInfo.getString("profileImgUrl"),
                 fireAuthUID = firebaseUser.uid
             )
 
@@ -86,7 +87,7 @@ object FirebaseUserRepository : UserRepository {
             user.name = userData.name
             user.birthdate = userData.birthdate
             user.gender = userData.gender
-            user.profileImgUrl = userData.profileImgUrl
+            //user.profileImgUrl = userData.profileImgUrl
             user.uid = firebaseUser.uid
 
         } catch (e: Exception) {
@@ -158,11 +159,39 @@ object FirebaseUserRepository : UserRepository {
     }
 
     override suspend fun update(item: User): String {
-        TODO("Not yet implemented")
+        val db = FirebaseFirestore.getInstance()
+        try {
+
+            db.collection(USER_COLLECTION_NAME)
+                .document(item.uid)
+                .update(
+                    mapOf(
+                        "name" to item.name,
+                        "birthdate" to item.birthdate,
+                        "gender" to item.gender,
+                        "profileImgUrl" to item.profileImgUrl
+                    )
+                )
+                .await()
+
+            return item.uid
+        } catch (e: Exception) {
+            throw IllegalStateException("No se pudo actualizar la información del usuario.")
+        }
     }
 
-
     override suspend fun delete(id: String): String {
-        TODO("Not yet implemented")
+        val db = FirebaseFirestore.getInstance()
+        try {
+
+            db.collection(USER_COLLECTION_NAME)
+                .document(id)
+                .delete()
+                .await()
+
+            return id
+        } catch (e: Exception) {
+            throw IllegalStateException("No se pudo eliminar al usuario.")
+        }
     }
 }

@@ -1,7 +1,12 @@
+@file:Suppress("DEPRECATION")
+
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -39,9 +44,10 @@ android {
         viewBinding = true
     }
 
+    // ← opcional si da error también por LICENSE.md
     packagingOptions {
         exclude("META-INF/NOTICE.md")
-        exclude("META-INF/LICENSE.md") // ← opcional si da error también por LICENSE.md
+        exclude("META-INF/LICENSE.md") // ← opcional
     }
 
 }
@@ -66,6 +72,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation ("com.sun.mail:android-mail:1.6.7")
-    implementation ("com.sun.mail:android-activation:1.6.7")
+    testImplementation(kotlin("test"))
 }

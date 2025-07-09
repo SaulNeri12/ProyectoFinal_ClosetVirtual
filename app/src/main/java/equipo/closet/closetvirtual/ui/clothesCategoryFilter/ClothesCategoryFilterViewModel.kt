@@ -1,18 +1,19 @@
-package equipo.closet.closetvirtual.ui.searchOutfitFilter
+package equipo.closet.closetvirtual.ui.clothesCategoryFilter
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SearchOutfitViewModel : ViewModel()  {
+class ClothesCategoryFilterViewModel : ViewModel() {
 
     var tags = MutableLiveData<List<String>>()
+    val searchEvent = MutableLiveData<Unit>()
 
     fun setTags(selectedTags: List<String>) {
         tags.value = selectedTags
     }
 
-    fun clearTags() {
-        tags.value = emptyList()
+    fun shootSearchEvent() {
+        searchEvent.value = Unit
     }
 
 }
