@@ -10,18 +10,21 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
-import equipo.closet.closetvirtual.databinding.FragmentOutfitCreationBinding
+import equipo.closet.closetvirtual.databinding.ActivityOutfitCreationBinding
 
 class OutfitCreationFragment : Fragment() {
 
-    private lateinit var binding: FragmentOutfitCreationBinding
+    private lateinit var binding: ActivityOutfitCreationBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.VISIBLE
-        binding = FragmentOutfitCreationBinding.inflate(inflater, container, false)
+        // The bottom_nav_card visibility setting might be specific to an Activity,
+        // and might not be present in the fragment's direct layout.
+        // Removing this line for now to avoid potential issues.
+        // activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.VISIBLE
+        binding = ActivityOutfitCreationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
