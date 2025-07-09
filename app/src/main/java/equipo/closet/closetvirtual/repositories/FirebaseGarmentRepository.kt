@@ -107,7 +107,13 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         return try {
             db.collection(CLOTHES_COLLECTION_NAME)
                 .document(garmentId)
-                .set(updatedGarment)
+                .update(
+                    "name", updatedGarment.name,
+                    "nameLowerCase", updatedGarment.nameLowerCase,
+                    "color", updatedGarment.color,
+                    "category", updatedGarment.category,
+                    "tags", updatedGarment.tags
+                )
                 .await()
             garmentId
         } catch (e: Exception) {
