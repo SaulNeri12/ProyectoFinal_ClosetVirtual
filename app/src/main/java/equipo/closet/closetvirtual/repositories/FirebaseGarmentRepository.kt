@@ -88,7 +88,18 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         return try {
             db.collection(CLOTHES_COLLECTION_NAME)
                 .document(id)
-                .set(garment)
+                .set(
+                    mapOf(
+                        "name" to garment.name,
+                        "nameLowerCase" to garment.nameLowerCase,
+                        "color" to garment.color,
+                        "category" to garment.category,
+                        "tags" to garment.tags,
+                        "print" to garment.print,
+                        "imageUri" to garment.imageUri,
+                        "userId" to garment.userId
+                    )
+                )
                 .await()
             id
         } catch (e: Exception) {
@@ -107,7 +118,15 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         return try {
             db.collection(CLOTHES_COLLECTION_NAME)
                 .document(garmentId)
-                .set(updatedGarment)
+                .update(
+                    "name", updatedGarment.name,
+                    "nameLowerCase", updatedGarment.nameLowerCase,
+                    "color", updatedGarment.color,
+                    "category", updatedGarment.category,
+                    "tags", updatedGarment.tags,
+                    "print", updatedGarment.print,
+                    "imageUri", updatedGarment.imageUri
+                )
                 .await()
             garmentId
         } catch (e: Exception) {

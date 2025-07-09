@@ -245,6 +245,7 @@ class FirebaseGarmentRepositoryInstrumentedTest {
 
             // Assert
             assertEquals("Chamarra Negra", result?.name)
+            assertEquals(id, updatedId)
 
             // Cleanup
             db.collection("clothes").document(id).delete().await()
