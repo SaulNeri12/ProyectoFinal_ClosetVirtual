@@ -19,6 +19,7 @@ import equipo.closet.closetvirtual.databinding.FragmentDailyOutfitBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
+import equipo.closet.closetvirtual.utils.ChipGroupStyler
 import kotlinx.coroutines.launch
 
 class DailyOutfitFragment : Fragment() {
@@ -134,13 +135,9 @@ class DailyOutfitFragment : Fragment() {
             "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
         )
         etiquetas.forEach { etiqueta ->
-            val chip = Chip(requireContext()).apply {
-                text = etiqueta
-                isCheckable = true
-                isClickable = true
-            }
-            binding.chipGroupTags.addView(chip)
+            ChipGroupStyler.addStyledChip(requireContext(), binding.chipGroupTags, etiqueta, ChipGroupStyler.ChipStyle.VIBRANT_COLORS, true)
         }
+        ChipGroupStyler.animateChipsStaggered(binding.chipGroupTags)
     }
 
     private fun validateFields(): Boolean {

@@ -11,6 +11,7 @@ import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.ActivityOutfitCreationBinding
+import equipo.closet.closetvirtual.utils.ChipGroupStyler
 
 class OutfitCreationFragment : Fragment() {
 
@@ -91,13 +92,9 @@ class OutfitCreationFragment : Fragment() {
         val chipGroup = binding.chipGroupTags
 
         etiquetas.forEach { etiqueta ->
-            val chip = Chip(requireContext()).apply {
-                text = etiqueta
-                isCheckable = true
-                isClickable = true
-            }
-            chipGroup.addView(chip)
+            ChipGroupStyler.addStyledChip(requireContext(), chipGroup, etiqueta, ChipGroupStyler.ChipStyle.ELEGANT_PURPLE, true)
         }
+        ChipGroupStyler.animateChipsStaggered(chipGroup)
     }
 
     private fun getTags(): List<String> {
