@@ -1,5 +1,6 @@
 package equipo.closet.closetvirtual
 
+import OutfitsAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +10,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import equipo.closet.closetvirtual.databinding.FragmentSearchOutfitBinding
-import equipo.closet.closetvirtual.ui.outfitCreation.OutfitsAdapter
 import equipo.closet.closetvirtual.ui.searchOutfit.SearchOutfitViewModel
 
 class SearchOutfitFragment : Fragment() {

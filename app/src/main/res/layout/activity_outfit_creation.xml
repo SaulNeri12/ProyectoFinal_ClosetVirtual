@@ -4,57 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_main"
     android:fillViewport="true"
     tools:context=".OutfitCreationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="32dp">
+        android:paddingBottom="32dp"
+        android:gravity="center_horizontal">
 
-        <!-- ENCABEZADO (Sin cambios) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/header_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#F5F5F5"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
-
+            app:cardElevation="4dp" >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="10dp">
+                android:padding="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnBack"
                     style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    app:iconTint="@color/icon_color"
                     app:icon="@drawable/ic_arrow_back" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnProfile"
                     style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    app:iconTint="@color/icon_color"
                     app:icon="@drawable/ic_person" />
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- TÍTULO -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +55,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <!-- CONTENEDOR DE FILAS DE SELECCIÓN DE PRENDAS -->
         <LinearLayout
             android:id="@+id/garment_selection_container"
             android:layout_width="match_parent"
@@ -73,132 +63,66 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_white_background"
             android:elevation="4dp"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
-            <!-- Fila para TOP -->
             <include
-                android:id="@+id/row_top"
+                android:id="@+id/rowTop"
                 layout="@layout/outfit_creation_row" />
 
-            <!-- Fila para BOTTOM -->
             <include
-                android:id="@+id/row_bottom"
+                android:id="@+id/rowBottom"
                 layout="@layout/outfit_creation_row" />
 
-            <!-- Fila para BODYSUIT -->
             <include
-                android:id="@+id/row_bodysuit"
+                android:id="@+id/rowBodysuit"
                 layout="@layout/outfit_creation_row" />
 
-            <!-- Fila para SHOES -->
             <include
-                android:id="@+id/row_shoes"
+                android:id="@+id/rowShoes"
                 layout="@layout/outfit_creation_row" />
 
-            <!-- Fila para ACCESSORY -->
             <include
-                android:id="@+id/row_accessory"
+                android:id="@+id/rowAccessory"
                 layout="@layout/outfit_creation_row" />
-
         </LinearLayout>
 
-        <!-- FORMULARIO NOMBRE Y ETIQUETAS -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            app:cardBackgroundColor="@color/card_background"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp">
-
+            app:cardElevation="4dp" >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:padding="16dp">
 
-                <!-- Outfit name -->
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="Nombre del outfit"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="25dp"
-                    app:cardElevation="4dp">
-
+                    android:hint="Nombre del outfit">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etOutfitName"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:background="@android:color/transparent"
-                        android:hint="Nombre del outfit"
-                        android:inputType="textCapWords"
-                        android:paddingHorizontal="20dp"
-                        android:textColor="@color/text_primary_dark"
-                        android:textColorHint="@color/gray_medium"
-                        android:textSize="17sp"
-                        android:theme="@style/InputStyle" />
-                </com.google.android.material.card.MaterialCardView>
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Outfit tag -->
-                <TextView
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupTags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="Etiquetas"
-                    android:textColor="@color/text_primary_dark"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardBackgroundColor="@android:color/white"
-                    app:cardCornerRadius="25dp"
-                    app:cardElevation="4dp">
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipGroupTags"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        app:selectionRequired="false"
-                        app:singleLine="false"
-                        app:singleSelection="false" />
-
-                </com.google.android.material.card.MaterialCardView>
-
+                    android:layout_marginTop="8dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- BOTÓN DE GUARDAR -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnUseOutfit"
-            android:layout_width="180dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="32dp"
-            android:elevation="6dp"
-            android:text="Guardar"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            app:backgroundTint="@color/button_primary"
-            app:cornerRadius="24dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Guardar Outfit" />
 
     </LinearLayout>
 </ScrollView>

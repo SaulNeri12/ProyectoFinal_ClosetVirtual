@@ -22,15 +22,11 @@ class OutfitCreationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOutfitCreationBinding
 
     private val viewModel: OutfitCreationViewModel by viewModels {
-        // 1. GarmentRepository no necesita parámetros porque es un 'object'
         val garmentRepository = FirebaseGarmentRepository
-
-        // 2. OutfitRepository SÍ necesita el garmentRepository que acabamos de referenciar
         val outfitRepository = FirebaseOutfitRepository(garmentRepository)
-
-        // 3. Finalmente, la fábrica usa el outfitRepository que creamos
         OutfitCreationViewModelFactory(outfitRepository)
     }
+
     private val selectGarmentLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -44,7 +40,6 @@ class OutfitCreationActivity : AppCompatActivity() {
                     if (garment != null) {
                         viewModel.addGarmentToOutfit(garment)
                         updateOutfitRowUI(category, garment)
-                        Toast.makeText(this@OutfitCreationActivity, "${garment.name} añadido", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@OutfitCreationActivity, "Error: Prenda no encontrada", Toast.LENGTH_SHORT).show()
                     }
@@ -58,24 +53,20 @@ class OutfitCreationActivity : AppCompatActivity() {
         binding = ActivityOutfitCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configuración de filas
-        setupOutfitRow(binding.rowTop, "Top", R.drawable.ic_placeholder_garment)
-        setupOutfitRow(binding.rowBottom, "Bottom", R.drawable.ic_placeholder_garment)
-        setupOutfitRow(binding.rowBodysuit, "Bodysuit", R.drawable.ic_placeholder_garment)
-        setupOutfitRow(binding.rowShoes, "Zapato", R.drawable.ic_placeholder_garment)
-        setupOutfitRow(binding.rowAccessory, "Accesorio", R.drawable.ic_placeholder_garment)
+        setupOutfitRow(binding.rowTop, "Top")
+        setupOutfitRow(binding.rowBottom, "Bottom")
+        setupOutfitRow(binding.rowBodysuit, "Bodysuit")
+        setupOutfitRow(binding.rowShoes, "Zapato")
+        setupOutfitRow(binding.rowAccessory, "Accesorio")
 
-        // Listeners de botones
         binding.btnBack.setOnClickListener { finish() }
         binding.btnUseOutfit.setOnClickListener { handleSaveOutfit() }
 
-        // Observador para el resultado del guardado
         setupSaveObserver()
     }
 
-    private fun setupOutfitRow(rowBinding: OutfitCreationRowBinding, category: String, placeholderResId: Int) {
+    private fun setupOutfitRow(rowBinding: OutfitCreationRowBinding, category: String) {
         rowBinding.tvGarmentCategory.text = category
-        rowBinding.ivGarmentPreview.setImageResource(placeholderResId)
         rowBinding.btnAddGarment.setOnClickListener {
             launchClothesSelection(category)
         }
