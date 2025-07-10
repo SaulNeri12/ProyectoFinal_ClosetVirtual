@@ -26,6 +26,8 @@ import equipo.closet.closetvirtual.databinding.ActivityClothingInformationBindin
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.factories.GarmentUsageTrackerFactory
+import equipo.closet.closetvirtual.repositories.interfaces.IGarmentUsageTracker
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteDialog
 import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteViewModel
@@ -49,6 +51,8 @@ class ClothingInformationActivity : AppCompatActivity() {
 
     //repository instance for persisting data
     private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
+
+    private val garmentUsageTracker: IGarmentUsageTracker = GarmentUsageTrackerFactory.create()
 
     private lateinit var cofirmDelateViewModel: ConfirmDeleteViewModel
 
@@ -241,7 +245,7 @@ class ClothingInformationActivity : AppCompatActivity() {
 
         for (i in 0 until chipGroup.childCount) {
             val chip = chipGroup.getChildAt(i) as? Chip
-            chip?.isChecked = tags.contains(chip.text.toString())
+            chip?.isChecked = tags.contains(chip?.text.toString())
         }
     }
 

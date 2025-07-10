@@ -1,5 +1,6 @@
 package equipo.closet.closetvirtual.ui.searchOutfit
 
+import OutfitsAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
