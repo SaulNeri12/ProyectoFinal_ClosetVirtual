@@ -43,7 +43,7 @@ class OutfitCreationFragment : Fragment() {
     }
 
     private fun useOutfit(){
-        binding.btnUseOutfit.setOnClickListener {
+        binding.btnSaveOutfit.setOnClickListener {
             if(validateFields()){
                 Toast.makeText(requireContext(), "Prenda seleccionada", Toast.LENGTH_SHORT).show()
             }
