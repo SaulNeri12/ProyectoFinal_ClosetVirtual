@@ -4,10 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
 
-/**
- * Fábrica para crear instancias de OutfitCreationViewModel.
- * Es necesaria porque nuestro ViewModel tiene un constructor con parámetros.
- */
 class OutfitCreationViewModelFactory(
     private val outfitRepository: FirebaseOutfitRepository
 ) : ViewModelProvider.Factory {

@@ -1,5 +1,3 @@
-package equipo.closet.closetvirtual.ui.outfitCreation
-
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -17,35 +15,53 @@ import equipo.closet.closetvirtual.entities.Outfit
 class OutfitsAdapter(
     context: Context,
     private val outfits: List<Outfit>,
-    private val allGarments: Map<String, Garment> // Un mapa para buscar prendas por ID rápidamente
+    private val allGarments: Map<String, Garment>
 ) : ArrayAdapter<Outfit>(context, 0, outfits) {
 
+    // ViewHolder para almacenar las vistas y evitar llamadas repetidas a findViewById
+    private class ViewHolder {
+        lateinit var tvOutfitName: TextView
+        lateinit var imagesContainer: LinearLayout
+    }
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.outfit_list_item, parent, false)
+        val view: View
+        val viewHolder: ViewHolder
 
-        val outfit = outfits[position]
+        if (convertView == null) {
+            // Si la vista es nueva, la inflamos y creamos el ViewHolder
+            view = LayoutInflater.from(context).inflate(R.layout.outfit_list_item, parent, false)
+            viewHolder = ViewHolder()
+            viewHolder.tvOutfitName = view.findViewById(R.id.tvOutfitName)
+            viewHolder.imagesContainer = view.findViewById(R.id.garment_images_container)
+            view.tag = viewHolder
+        } else {
+            // Si la vista se está reciclando, solo obtenemos el ViewHolder
+            view = convertView
+            viewHolder = convertView.tag as ViewHolder
+        }
 
-        val tvOutfitName = view.findViewById<TextView>(R.id.tvOutfitName)
-        val imagesContainer = view.findViewById<LinearLayout>(R.id.garment_images_container)
+        val outfit = getItem(position)
 
-        tvOutfitName.text = outfit.name
-        imagesContainer.removeAllViews()
+        if (outfit != null) {
+            viewHolder.tvOutfitName.text = outfit.name
+            viewHolder.imagesContainer.removeAllViews() // Limpiar vistas anteriores
 
-        // Cargar las imágenes de las prendas del outfit
-        outfit.clothesIds.forEach { garmentId ->
-            val garment = allGarments[garmentId]
-            if (garment != null) {
-                val imageView = ShapeableImageView(context).apply {
-                    layoutParams = LinearLayout.LayoutParams(120, 120) // Tamaño de la imagen
-                    setPadding(0, 0, 8, 0)
-                    scaleType = ImageView.ScaleType.CENTER_CROP
-                    // Aquí puedes definir la forma de la imagen si quieres
+            // Cargar las imágenes de las prendas del outfit
+            outfit.clothesIds.forEach { garmentId ->
+                val garment = allGarments[garmentId]
+                if (garment != null) {
+                    val imageView = ShapeableImageView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(120, 120)
+                        setPadding(0, 0, 8, 0)
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                    }
+                    Glide.with(context).load(garment.imageUri).into(imageView)
+                    viewHolder.imagesContainer.addView(imageView)
                 }
-                Glide.with(context).load(garment.imageUri).into(imageView)
-                imagesContainer.addView(imageView)
             }
         }
+
         return view
     }
 }

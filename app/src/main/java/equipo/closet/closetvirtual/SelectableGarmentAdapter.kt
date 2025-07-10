@@ -20,7 +20,6 @@ class SelectableGarmentAdapter(
                 .centerCrop()
                 .into(binding.ivGarmentImage)
 
-            // Configura el click listener para toda la tarjeta
             itemView.setOnClickListener {
                 onGarmentClick(garment)
             }
