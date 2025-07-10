@@ -1,5 +1,6 @@
-package equipo.closet.closetvirtual.ui.searchOutfit
+package equipo.closet.closetvirtual
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,9 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import equipo.closet.closetvirtual.R
-import equipo.closet.closetvirtual.ui.outfitCreation.OutfitsAdapter
 import equipo.closet.closetvirtual.databinding.FragmentSearchOutfitBinding
+import equipo.closet.closetvirtual.ui.outfitCreation.OutfitsAdapter
+import equipo.closet.closetvirtual.ui.searchOutfit.SearchOutfitViewModel
 
 class SearchOutfitFragment : Fragment() {
 
@@ -31,6 +31,28 @@ class SearchOutfitFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // CORRECTO: Los listeners para los botones se configuran aquí,
+        // una sola vez, cuando la vista del fragmento ya está creada.
+        setupListeners()
+
+        // CORRECTO: El observador de datos solo se encarga de actualizar la lista.
+        setupObservers()
+    }
+
+    private fun setupListeners() {
+        // Listener para la barra de búsqueda
+        binding.filteredGarmentSearchInput.addTextChangedListener { text ->
+            viewModel.search(text.toString())
+        }
+
+        // Listener para el botón de crear outfit (+)
+        binding.btnNewOutfit.setOnClickListener {
+            val intent = Intent(requireContext(), OutfitCreationActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setupObservers() {
         viewModel.filteredOutfits.observe(viewLifecycleOwner) { outfits ->
             val garmentsMap = viewModel.allGarmentsMap.value
             if (outfits != null && garmentsMap != null) {
@@ -38,17 +60,9 @@ class SearchOutfitFragment : Fragment() {
                 binding.outfitCardsListview.adapter = adapter
             }
         }
-
-
-        binding.filteredGarmentSearchInput.addTextChangedListener { text ->
-            viewModel.search(text.toString())
-        }
-
-        binding.btnNewOutfit.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_outfit_finder_to_outfit_creation_fragment)
-        }
     }
 
+    // CORRECTO: onDestroyView es un método de la clase, debe estar fuera de otros métodos.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

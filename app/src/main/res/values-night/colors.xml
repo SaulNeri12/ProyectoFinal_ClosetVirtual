@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Add these colors to your existing colors.xml file -->
+
+    <!-- Bottom Navigation Colors -->
+    <color name="bottom_nav_active_background">#6B73A3</color> <!-- Purple background for active item -->
+    <color name="bottom_nav_active_text">#FFFFFF</color> <!-- White text for active item -->
+    <color name="bottom_nav_inactive_text">#666666</color> <!-- Gray text for inactive items -->
+    <color name="bottom_nav_inactive_icon">#666666</color> <!-- Gray icons for inactive items -->
+
+    <!-- Main background colors -->
+    <color name="background_main">#1F2937</color> <!-- Darker background for night mode -->
+    <color name="background_dark">#374151</color> <!-- Darker gray for input fields -->
+
+    <!-- Basic colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Text colors -->
+    <color name="text_primary_white">#FFFFFF</color> <!-- White text primary -->
+    <color name="text_primary_dark">#FFFFFF</color> <!-- White text for dark mode -->
+    <color name="text_secondary">#9CA3AF</color> <!-- Lighter gray secondary text -->
+    <color name="text_hint">#6B7280</color> <!-- Darker hint text -->
+    <color name="text_hint_light">#999999</color> <!-- Hint más claro -->
+    <color name="text_register_link">#8A8A8A</color> <!-- Color del link de registro -->
+
+    <!-- Navigation colors -->
+    <color name="nav_selected">#FFFFFF</color> <!-- Color para elementos seleccionados -->
+    <color name="nav_unselected">#9CA3AF</color> <!-- Color para elementos no seleccionados -->
+
+    <!-- Button colors -->
+    <color name="button_primary">#3B82F6</color> <!-- Primary button (blue) -->
+    <color name="button_register">#4A5568</color> <!-- Register button -->
+    <color name="button_secondary">#E5E7EB</color> <!-- Secondary button -->
+
+    <!-- Surface colors -->
+    <color name="surface_white">#374151</color> <!-- Darker surface -->
+    <color name="surface_gray">#1F2937</color> <!-- Darker gray surface -->
+    <color name="card_background">#374151</color> <!-- Darker card background -->
+
+    <!-- Input field colors -->
+    <color name="input_background">#4A5568</color> <!-- Input background -->
+    <color name="input_text">#FFFFFF</color> <!-- Input text -->
+
+    <!-- Avatar/Circle colors -->
+    <color name="circle_background">#4A5568</color> <!-- Circle background -->
+    <color name="circle_white_background">#FFFFFF</color> <!-- White circle background -->
+
+    <!-- Shadow colors -->
+    <color name="shadow_light">#1A000000</color> <!-- Light shadow -->
+    <color name="shadow_medium">#26000000</color> <!-- Medium shadow -->
+    <color name="shadow_dark">#33000000</color> <!-- Dark shadow -->
+
+    <!-- Special colors -->
+    <color name="outfit_card_background">#374151</color> <!-- Outfit card background -->
+    <color name="search_background">#374151</color> <!-- Search background -->
+    <color name="icon_color">#FFFFFF</color> <!-- White icon color for dark mode -->
+
+    <color name="primary_blue">#3B82F6</color>
+    <color name="primary_dark">#374151</color>
+    <color name="gray_light">#F9FAFB</color>
+    <color name="gray_medium">#9CA3AF</color>
+    <color name="gray_dark">#374151</color>
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+
+    <!-- Colores para prendas - Selector gráfico -->
+    <color name="garment_red">#EF4444</color>
+    <color name="garment_blue">#3B82F6</color>
+    <color name="garment_green">#10B981</color>
+    <color name="garment_yellow">#F59E0B</color>
+    <color name="garment_orange">#F97316</color>
+    <color name="garment_purple">#8B5CF6</color>
+    <color name="garment_pink">#EC4899</color>
+    <color name="garment_brown">#92400E</color>
+    <color name="garment_gray">#6B7280</color>
+    <color name="garment_black">#111827</color>
+    <color name="garment_white">#FFFFFF</color>
+    <color name="garment_beige">#F5F5DC</color>
+    <color name="garment_navy">#1E3A8A</color>
+    <color name="garment_teal">#0D9488</color>
+    <color name="garment_lime">#84CC16</color>
+    <color name="garment_cyan">#06B6D4</color>
+    <color name="garment_indigo">#6366F1</color>
+    <color name="garment_amber">#D97706</color>
+    <color name="garment_deep_orange">#EA580C</color>
+    <color name="garment_light_blue">#0EA5E9</color>
+    <color name="garment_rose">#F43F5E</color>
+    <color name="garment_emerald">#059669</color>
+    <color name="garment_violet">#7C3AED</color>
+    <color name="garment_slate">#475569</color>
+    <color name="garment_stone">#78716C</color>
+
+    <color name="transparent">#00000000</color>
+
+</resources>

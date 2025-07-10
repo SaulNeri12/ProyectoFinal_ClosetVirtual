@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.databinding.FragmentClothesSelectionFilterBinding
+import equipo.closet.closetvirtual.utils.ChipGroupStyler
 
 class SearchOutfitFilterFragment : BottomSheetDialogFragment(){
 
@@ -40,17 +41,12 @@ class SearchOutfitFilterFragment : BottomSheetDialogFragment(){
     }
 
     private fun setChipGroupData() {
-
         val chipGroup = binding.chipGroupTags
 
         etiquetas.forEach { etiqueta ->
-            val chip = Chip(requireContext()).apply {
-                text = etiqueta
-                isCheckable = true
-                isClickable = true
-            }
-            chipGroup.addView(chip)
+            ChipGroupStyler.addStyledChip(requireContext(), chipGroup, etiqueta, ChipGroupStyler.ChipStyle.SOFT_GRAY, true)
         }
+        ChipGroupStyler.animateChipsStaggered(chipGroup)
     }
 
     private fun setSelectedChips(){
