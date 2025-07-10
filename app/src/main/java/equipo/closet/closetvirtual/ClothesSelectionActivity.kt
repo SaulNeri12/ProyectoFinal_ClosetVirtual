@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import equipo.closet.closetvirtual.databinding.ActivityClothesSelectionBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
-import equipo.closet.closetvirtual.ui.clothesSelectionFilter.ClothesSelectionViewModel
+// CAMBIO: Se importa tu fragmento de filtro
+import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterFragment
+import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterViewModel
 import equipo.closet.closetvirtual.ui.clothesselection.adapters.SelectableGarmentAdapter
 import kotlinx.coroutines.launch
 
 class ClothesSelectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityClothesSelectionBinding
-    private val viewModel: ClothesSelectionViewModel by viewModels()
+    private val viewModel: SearchOutfitFilterViewModel by viewModels()
     private lateinit var garmentAdapter: SelectableGarmentAdapter
     private var allGarments: List<Garment> = listOf()
 
@@ -32,13 +34,27 @@ class ClothesSelectionActivity : AppCompatActivity() {
 
         setupRecyclerView()
         setupListeners()
+        setupObservers()
         loadGarments(categoryFilter)
     }
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { finish() }
+
+        // CAMBIO: Ahora el botón de filtro abre tu SearchOutfitFilterFragment
+        binding.btnFilter.setOnClickListener {
+            SearchOutfitFilterFragment().show(supportFragmentManager, "FilterBottomSheet")
+        }
+
         binding.filteredGarmentSearchInput.addTextChangedListener { text ->
-            performFiltering(searchText = text.toString())
+            performFiltering(searchText = text.toString(), tags = viewModel.tags.value)
+        }
+    }
+
+    private fun setupObservers() {
+        // Este observador se activa cuando guardas los tags desde el filtro
+        viewModel.tags.observe(this) { tags ->
+            performFiltering(searchText = binding.filteredGarmentSearchInput.text.toString(), tags = tags)
         }
     }
 
@@ -61,25 +77,30 @@ class ClothesSelectionActivity : AppCompatActivity() {
     private fun loadGarments(initialCategory: String) {
         lifecycleScope.launch {
             try {
-                allGarments = FirebaseGarmentRepository.getAll()
-                performFiltering(category = initialCategory)
+                allGarments = if (initialCategory != "all") {
+                    FirebaseGarmentRepository.getByCategory(initialCategory)
+                } else {
+                    FirebaseGarmentRepository.getAll()
+                }
+                performFiltering() // Aplica filtros iniciales (ninguno al principio)
             } catch (e: Exception) {
                 Toast.makeText(this@ClothesSelectionActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun performFiltering(searchText: String? = null, category: String? = null) {
+    private fun performFiltering(searchText: String? = null, tags: List<String>? = null) {
         var filteredList = allGarments
-
-        if (category != null && category != "all") {
-            filteredList = filteredList.filter { it.category.equals(category, ignoreCase = true) }
-        }
 
         if (!searchText.isNullOrBlank()) {
             filteredList = filteredList.filter { it.name.contains(searchText, ignoreCase = true) }
         }
 
+        if (!tags.isNullOrEmpty()) {
+            filteredList = filteredList.filter { garment ->
+                garment.tags.any { tag -> tags.contains(tag) }
+            }
+        }
         garmentAdapter.updateData(filteredList)
     }
 }

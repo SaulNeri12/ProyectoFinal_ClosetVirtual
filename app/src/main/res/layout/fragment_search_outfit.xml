@@ -158,7 +158,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnFilter"
             android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_height="51dp"
             android:layout_margin="4dp"
             android:clickable="true"
             android:focusable="true"
