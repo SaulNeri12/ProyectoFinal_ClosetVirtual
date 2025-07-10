@@ -21,19 +21,30 @@ class OutfitCreationViewModel(
 
     fun addGarmentToOutfit(garment: Garment) {
         _currentOutfit.value?.let { outfit ->
+            // Primero, se quitan las prendas existentes de la misma categoría
+            outfit.removeGarmentByCategory(garment.category)
+
+            // LÓGICA DE VALIDACIÓN
+            if (garment.category == "Bodysuit") {
+                outfit.removeGarmentByCategory("Bottom") // Si es bodysuit, quita el pantalón
+            }
+            if (garment.category == "Bottom") {
+                outfit.removeGarmentByCategory("Bodysuit") // Si es pantalón, quita el bodysuit
+            }
+
+            // Finalmente, se añade la nueva prenda
             outfit.addGarment(garment)
+            _currentOutfit.postValue(outfit) // Notifica a la Activity que el outfit cambió
+        }
+    }
+
+    fun removeGarmentFromOutfit(category: String) {
+        _currentOutfit.value?.let { outfit ->
+            outfit.removeGarmentByCategory(category)
             _currentOutfit.postValue(outfit)
         }
     }
 
-    // FUNCIÓN AÑADIDA
-    fun removeGarmentFromOutfit(garmentId: String) {
-        _currentOutfit.value?.let { outfit ->
-            // Asume que tu clase Outfit tiene un método para remover por ID
-            outfit.removeGarmentById(garmentId)
-            _currentOutfit.postValue(outfit)
-        }
-    }
 
     fun saveOutfit(name: String, tags: List<String>) {
         _currentOutfit.value?.let { outfit ->
