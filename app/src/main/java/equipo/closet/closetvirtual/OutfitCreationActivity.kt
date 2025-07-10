@@ -17,6 +17,7 @@ import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
+import equipo.closet.closetvirtual.utils.ChipGroupStyler
 import kotlinx.coroutines.launch
 
 class OutfitCreationActivity : AppCompatActivity() {
@@ -52,12 +53,12 @@ class OutfitCreationActivity : AppCompatActivity() {
         setupListeners()
         setupObservers()
         setChipGroupData()
+        handleOnProfileButtonClicked()
+        handleOnBackButtonClicked()
     }
 
     private fun setupListeners() {
-        binding.btnBack.setOnClickListener { finish() }
         binding.btnSaveOutfit.setOnClickListener { handleSaveOutfit() }
-        binding.btnProfile.setOnClickListener { /* TODO */ }
 
         // Los listeners solo se preocupan de iniciar la selección para una categoría
         binding.rowTop.btnAddGarment.setOnClickListener { launchClothesSelection("Top") }
@@ -150,10 +151,30 @@ class OutfitCreationActivity : AppCompatActivity() {
     }
 
     private fun setChipGroupData() {
-        val etiquetas = listOf("Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta", "Trabajo", "Deportivo")
+        val etiquetas = listOf(
+            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
+            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista")
+
+        val chipGroup = binding.chipGroupTags
+
         etiquetas.forEach { etiqueta ->
-            val chip = Chip(this).apply { text = etiqueta; isCheckable = true }
-            binding.chipGroupTags.addView(chip)
+            ChipGroupStyler.addStyledChip(this, chipGroup, etiqueta, ChipGroupStyler.ChipStyle.SOFT_GRAY, true)
+        }
+        ChipGroupStyler.animateChipsStaggered(chipGroup)
+    }
+
+    private fun handleOnProfileButtonClicked() {
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
     }
+
+    private fun handleOnBackButtonClicked() {
+        binding.btnBack.setOnClickListener {
+            @Suppress("DEPRECATION")
+            this.onBackPressed()
+        }
+    }
+
 }

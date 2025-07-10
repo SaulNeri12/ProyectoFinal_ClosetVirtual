@@ -193,8 +193,7 @@ class ProfileActivity : AppCompatActivity() {
             return false
         }
         if (currentPassword.isNotEmpty()) {
-            return if (validatePasswordChange()) false else true
-        }
+            return if (validatePasswordChange()) false else true    }
         //default case
         return true
     }
@@ -239,12 +238,20 @@ class ProfileActivity : AppCompatActivity() {
             ).show()
             return false
         }
-        if (newPassword != confirmPassword) {
-            binding.etConfirmNewPassword.error = "Las contraseñas no coinciden"
-            Toast.makeText(
-                this, "Las contraseñas no coinciden",
-                Toast.LENGTH_SHORT
-            ).show()
+        if (binding.etNewPassword.text.toString().trim().length < 6) {
+            binding.etNewPassword.error = "La contraseña debe tener al menos 6 caracteres"
+            return false
+        }
+        //verify if password contains a numerical value
+        if (!binding.etNewPassword.text.toString().any { it.isDigit() }) {
+            binding.etNewPassword.error = "La  nueva contraseña debe contener al menos un número"
+            return false
+        }
+        if (binding.etNewPassword.text.toString().trim() !=
+            binding.etConfirmNewPassword.text.toString().trim()) {
+            binding.etNewPassword.error = "Las contraseñas no coinciden"
+
+           binding.etConfirmNewPassword.error = "Las contraseñas no coinciden"
             return false
         }
         //default case

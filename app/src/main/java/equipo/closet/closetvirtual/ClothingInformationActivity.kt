@@ -32,6 +32,7 @@ import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteDialog
 import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteViewModel
 import equipo.closet.closetvirtual.ui.dialogLogout.ConfirmLogoutDialog
+import equipo.closet.closetvirtual.utils.ChipGroupStyler
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -245,7 +246,7 @@ class ClothingInformationActivity : AppCompatActivity() {
 
         for (i in 0 until chipGroup.childCount) {
             val chip = chipGroup.getChildAt(i) as? Chip
-            chip?.isChecked = tags.contains(chip?.text.toString())
+            chip?.isChecked = tags.contains(chip.text.toString())
         }
     }
 
@@ -285,13 +286,9 @@ class ClothingInformationActivity : AppCompatActivity() {
         val chipGroup = binding.chipGroupTags
 
         etiquetas.forEach { etiqueta ->
-            val chip = Chip(this).apply {
-                text = etiqueta
-                isCheckable = true
-                isClickable = true
-            }
-            chipGroup.addView(chip)
+            ChipGroupStyler.addStyledChip(this, chipGroup, etiqueta, ChipGroupStyler.ChipStyle.SOFT_GRAY, true)
         }
+        ChipGroupStyler.animateChipsStaggered(chipGroup)
     }
 
     private fun handleGarmentEdit(){

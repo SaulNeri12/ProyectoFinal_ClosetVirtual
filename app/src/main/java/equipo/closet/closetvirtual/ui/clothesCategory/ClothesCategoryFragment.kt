@@ -55,8 +55,8 @@ class ClothesCategoryFragment : Fragment() {
         fetchAllGarments()
         showFiltersFragment()
         setRealTimeSearchByName()
-        setBackButtonClickListener()
-        setProfileButtonClickListener()
+        handleOnBackButtonClicked()
+        handleOnProfileButtonClicked()
         setTagsObserver()
         setSearchEventObserver()
     }
@@ -139,14 +139,14 @@ class ClothesCategoryFragment : Fragment() {
         binding.accessoriesClothesCounterLabel.text = formatCategoryClothesCount(accessoriesClothes.size)
     }
 
-    private fun setProfileButtonClickListener() {
+    private fun handleOnProfileButtonClicked() {
         binding.btnProfileCategoryCards.setOnClickListener {
             val intent = Intent(requireContext(), ProfileActivity::class.java)
             startActivity(intent)
         }
     }
 
-    private fun setBackButtonClickListener() {
+    private fun handleOnBackButtonClicked() {
         binding.btnBackCategoryCards.setOnClickListener {
             @Suppress("DEPRECATION")
             requireActivity().onBackPressed()
