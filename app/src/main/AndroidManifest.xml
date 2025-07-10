@@ -23,12 +23,22 @@
             android:exported="false"
             android:label="@string/app_name"/>
 
-        <activity android:name=".ClothingInformationActivity" />
+        <activity android:name=".ClothingInformationActivity"
+            android:exported="false"/>
 
         <activity android:name=".RegisterActivity"
             android:exported="false"/>
 
         <activity android:name=".ProfileActivity"
+            android:exported="false"/>
+
+        <activity android:name=".ClothesSelectionActivity"
+            android:exported="false"/>
+
+        <activity android:name=".OutfitCreationActivity"
+            android:exported="false"/>
+
+        <activity android:name=".ForgotPasswordActivity"
             android:exported="false"/>
 
         <activity

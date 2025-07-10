@@ -1,7 +1,12 @@
+@file:Suppress("DEPRECATION")
+
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -37,6 +42,13 @@ android {
 
     buildFeatures {
         viewBinding = true
+        dataBinding = true
+    }
+
+    // ← opcional si da error también por LICENSE.md
+    packagingOptions {
+        exclude("META-INF/NOTICE.md")
+        exclude("META-INF/LICENSE.md") // ← opcional
     }
 
 }
@@ -46,6 +58,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
     implementation ("com.google.android.material:material:1.9.0")
+    implementation ("com.google.android.material:material:1.11.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -61,4 +74,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(kotlin("test"))
 }

@@ -126,24 +126,56 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/rounded_button_light" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnCamera"
-                        style="@style/Widget.Material3.Button.IconButton"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="16dp"
-                        android:backgroundTint="@color/button_primary"
-                        android:elevation="6dp"
-                        android:insetLeft="0dp"
-                        android:insetTop="0dp"
-                        android:insetRight="0dp"
-                        android:insetBottom="0dp"
-                        app:cornerRadius="32dp"
-                        app:icon="@drawable/ic_camera"
-                        app:iconGravity="textStart"
-                        app:iconPadding="0dp"
-                        app:iconTint="@android:color/white" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCamera"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:elevation="6dp"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            android:layout_marginEnd="15dp"
+                            app:cornerRadius="32dp"
+                            app:icon="@drawable/ic_camera"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconTint="@android:color/white"
+                            app:iconSize="30dp"
+                            app:backgroundTint="@color/button_primary" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnUpload"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_gravity="center"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            android:elevation="6dp"
+                            android:insetLeft="0dp"
+                            android:insetTop="0dp"
+                            android:insetRight="0dp"
+                            android:insetBottom="0dp"
+                            app:cornerRadius="32dp"
+                            app:icon="@drawable/upload_icon"
+                            app:iconGravity="textStart"
+                            app:iconPadding="0dp"
+                            app:iconTint="@android:color/white"
+                            app:iconSize="30dp"
+                            app:backgroundTint="@color/button_primary" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -202,17 +234,15 @@
                 app:cardCornerRadius="25dp"
                 app:cardUseCompatPadding="false">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etGarmentTag"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroupTags"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@android:color/transparent"
-                    android:hint="Nombre completo"
-                    android:paddingHorizontal="20dp"
-                    android:textColor="@color/text_primary_dark"
-                    android:textColorHint="@color/gray_medium"
-                    android:textSize="17sp"
-                    android:theme="@style/InputStyle" />
+                    android:layout_height="wrap_content"
+                    app:singleSelection="false"
+                    app:selectionRequired="false"
+                    app:singleLine="false"
+                    android:padding="8dp" />
+
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Campo Categoría -->

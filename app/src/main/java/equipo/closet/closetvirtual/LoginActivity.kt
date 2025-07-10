@@ -21,16 +21,19 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
 
-    private val userRepository: UserRepository = UserRepositoryFactory.create()
+    private lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        userRepository = UserRepositoryFactory.create()
+
         //declare the function login
         login();
         register();
+        openForgotPasswordActivity()
 
     }
 
@@ -83,6 +86,13 @@ class LoginActivity : AppCompatActivity() {
 
         //Default case
         return true
+    }
+
+    private fun openForgotPasswordActivity() {
+        binding.tvForgotPassword.setOnClickListener {
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

@@ -1,24 +1,29 @@
 package equipo.closet.closetvirtual
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.auth.FirebaseAuth
 import equipo.closet.closetvirtual.databinding.ActivityProfileBinding
+import equipo.closet.closetvirtual.entities.User
+import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
+import equipo.closet.closetvirtual.ui.dialogLogout.ConfirmLogoutDialog
+import equipo.closet.closetvirtual.ui.dialogLogout.ConfirmLogoutViewModel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
+import java.util.Date
+import kotlin.String
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -26,13 +31,14 @@ class ProfileActivity : AppCompatActivity() {
 
     private val userRepository: UserRepository = UserRepositoryFactory.create()
 
+    private lateinit var confirmLogoutViewModel: ConfirmLogoutViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        confirmLogoutViewModel = ViewModelProvider(this)[ConfirmLogoutViewModel::class.java]
 
-        // Set the user information
-        setUserInformation()
         // Fill the gender spinner
         fillGenderSpinner()
         // Set the behavior of the birth date field
@@ -40,13 +46,17 @@ class ProfileActivity : AppCompatActivity() {
         // Switch light mode
         switchLightMode()
         // Logout
-        logout()
+        showLogoutDialog()
+        // Observe logout event
+        observeLogoutEvent()
         // Edit profile
         editProfileInformation()
         // Update password
         updatePassword()
         // Set the back button behavior
         setBackBehavior()
+        // Set the user information
+        setUserInformation()
 
     }
 
@@ -54,14 +64,29 @@ class ProfileActivity : AppCompatActivity() {
      * Set the user information in the fragment except the password fields
      */
     private fun setUserInformation(): Unit {
+        //instance of the current user
+        val currentUser = SessionManager.user
+
+        Toast.makeText(this, "User: ${currentUser.name}", Toast.LENGTH_SHORT).show()
+
         // Set the user email
-        binding.tvEmail.text = "example.com"
+        binding.tvEmail.text = currentUser.email
         // Set the user name
-        binding.etName.setText("John Doe")
+        binding.etName.setText(currentUser.name)
         // Set the user birth date
-        binding.etBirthDate.setText("01/01/2000")
+        binding.etBirthDate.setText(setDateObject(currentUser.birthdate))
+        // Set the user gender
+        for (i in 0 until binding.spGender.adapter.count) {
+            if (binding.spGender.getItemAtPosition(i).toString() == currentUser.gender) {
+                binding.spGender.setSelection(i)
+                break
+            }
+        }
     }
 
+    /**
+     * Closes the activity
+     */
     private fun setBackBehavior(): Unit {
         binding.btnBack.setOnClickListener {
             finish()
@@ -87,33 +112,24 @@ class ProfileActivity : AppCompatActivity() {
      * Set the behavior of the birth date field
      */
     private fun setBirthDateFieldBehavior(): Unit {
-        binding.etBirthDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
+        binding.birthDateContainer.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Selecciona tu fecha de nacimiento")
+                .build()
 
-            val datePickerDialog = DatePickerDialog(
-                this,
-                { _, year, monthOfYear, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, monthOfYear, dayOfMonth)
+            datePicker.show(supportFragmentManager, "birth_date_picker")
 
-                    // Get current date
-                    val currentDate = Calendar.getInstance()
+            datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = selectedDateMillis
 
-                    if (selectedDate.after(currentDate)) {
-                        Toast.makeText(
-                            this, "La fecha de nacimiento no puede ser posterior a la fecha actual",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        val dat = "$dayOfMonth-${monthOfYear + 1}-$year"
-                        binding.etBirthDate.setText(dat)
-                    }
-                }, year, month, day
-            )
-            datePickerDialog.show()
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val month = calendar.get(Calendar.MONTH) + 1
+                val year = calendar.get(Calendar.YEAR)
+
+                val dateString = "$day-$month-$year"
+                binding.etBirthDate.setText(dateString)
+            }
         }
     }
 
@@ -133,21 +149,20 @@ class ProfileActivity : AppCompatActivity() {
     /**
      * Set the behavior of the logout button
      */
-    private fun logout(): Unit {
+    private fun showLogoutDialog(): Unit {
         binding.layoutLogout.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Cerrar sesion")
-                .setMessage("¿Estás seguro de que quiere salir de la sesión?")
-                .setPositiveButton("Sí") { dialog, which ->
-                    // Go to the login activity
-                    val intent = Intent(this, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                }
-                .setNegativeButton("No") { dialog, which ->
-                    dialog.dismiss()
-                }
-                .show()
+            ConfirmLogoutDialog().show(supportFragmentManager, "confirmDialog")
+        }
+    }
+
+    private fun observeLogoutEvent() {
+        confirmLogoutViewModel.delete.observe(this) {
+            FirebaseAuth.getInstance().signOut()
+
+            // Go to the login activity
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 
@@ -242,23 +257,81 @@ class ProfileActivity : AppCompatActivity() {
     private fun editProfileInformation(): Unit {
         binding.btnUpdateProfileInfo.setOnClickListener {
             if (validateInputFields()) {
-                val name = binding.etName.text.toString()
-                val birthDate = binding.etBirthDate.text.toString()
-                val gender = binding.spGender.selectedItem.toString()
 
-                //persist the user new information
+                val currentUser = SessionManager.user
 
-                Toast.makeText(
-                    this, "Se actualizó la información del perfil",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val editedUser = User(
+                    uid = currentUser.uid,
+                    name = binding.etName.text.toString(),
+                    email = currentUser.email,
+                    gender = binding.spGender.selectedItem.toString(),
+                    birthdate = getDateObject(),
+                    password = currentUser.password,
+                    profileImgUrl = "",
+                    fireAuthUID = currentUser.fireAuthUID
+                )
 
+                Log.d("ProfileActivity", "Edited user: $editedUser")
+
+                lifecycleScope.launch {
+                    try {
+                        //change the user in the repository
+                        userRepository.update(editedUser)
+                        //update the user in the session manager
+                        SessionManager.user = editedUser
+                        //show a toast for success
+                        Toast.makeText(
+                            this@ProfileActivity,
+                            "Se actualizó la información del perfil",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    catch (exception: Exception){
+                        Toast.makeText(this@ProfileActivity,
+                            "Error al actualizar la información",
+                            Toast.LENGTH_LONG).show()
+                    }
+                }
+                Log.d("ProfileActivity", "Session user: $SessionManager.user")
             }
         }
     }
 
-    // Archivo: ProfileActivity.kt
+    /**
+     * From a date string returns a date object with the format d-M-yyyy
+     */
+    private fun getDateObject(): Date? {
+        val dateString = binding.etBirthDate.text.toString().trim()
+        val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
+        val birthDateObject = try {
+            dateFormat.parse(dateString)
+        } catch (e: Exception) {
+            null
+        }
 
+        if (birthDateObject == null) {
+            Toast.makeText(this, "Fecha inválida, use formato d-M-yyyy", Toast.LENGTH_LONG).show()
+            return null
+        }
+
+        return birthDateObject
+    }
+
+    /**
+     * From a date object returns a date string with the format d-M-yyyy
+     */
+    private fun setDateObject(date: Date?): String {
+        return if (date != null) {
+            val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
+            dateFormat.format(date)
+        } else {
+            ""
+        }
+    }
+
+    /**
+     * Logic to update the user password
+     */
     private fun updatePassword() {
         binding.btnUpdateProfilePassword.setOnClickListener {
             if (validatePasswordChange()) {
@@ -297,4 +370,5 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
+
 }

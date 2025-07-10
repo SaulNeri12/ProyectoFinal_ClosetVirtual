@@ -6,18 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.databinding.FragmentClothesSelectionFilterBinding
+import equipo.closet.closetvirtual.utils.ChipGroupStyler
 
 class SearchOutfitFilterFragment : BottomSheetDialogFragment(){
 
+    val etiquetas = listOf(
+        "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
+        "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
+    )
+
     private lateinit var binding: FragmentClothesSelectionFilterBinding
-    private lateinit var viewModel: SearchOutfitViewModel
+    private lateinit var viewModel: SearchOutfitFilterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel = ViewModelProvider(this)[SearchOutfitViewModel::class.java]
+        viewModel = ViewModelProvider(this)[SearchOutfitFilterViewModel::class.java]
         binding = FragmentClothesSelectionFilterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -26,20 +33,53 @@ class SearchOutfitFilterFragment : BottomSheetDialogFragment(){
         super.onViewCreated(view, savedInstanceState)
 
         val activity = requireActivity()
-        viewModel = ViewModelProvider(activity)[SearchOutfitViewModel::class.java]
+        viewModel = ViewModelProvider(activity)[SearchOutfitFilterViewModel::class.java]
 
-        setTag()
+        setChipGroupData()
+        setSelectedChips()
         setSaveButtonBehavior()
+    }
+
+    private fun setChipGroupData() {
+        val chipGroup = binding.chipGroupTags
+
+        etiquetas.forEach { etiqueta ->
+            ChipGroupStyler.addStyledChip(requireContext(), chipGroup, etiqueta, ChipGroupStyler.ChipStyle.SOFT_GRAY, true)
+        }
+        ChipGroupStyler.animateChipsStaggered(chipGroup)
+    }
+
+    private fun setSelectedChips(){
+        val selectedTags = viewModel.tags.value
+
+        //make a loop to get the selected tags
+        for (i in 0 until  binding.chipGroupTags.childCount) {
+            val chip =  binding.chipGroupTags.getChildAt(i) as Chip
+            //verify if the tag is in the selected tags
+            if (selectedTags?.contains(chip.text.toString()) == true) {
+                chip.isChecked = true
+            }
+        }
     }
 
     private fun setSaveButtonBehavior(){
         binding.btnSave.setOnClickListener {
-            viewModel.tag.value = binding.etTag.text?.toString() ?: ""
+
+            val selectedTags = mutableListOf<String>()
+
+            //make a loop to get the selected tags
+            for (i in 0 until  binding.chipGroupTags.childCount) {
+                val chip =  binding.chipGroupTags.getChildAt(i) as Chip
+                if (chip.isChecked) {
+                    selectedTags.add(chip.text.toString())
+                }
+            }
+
+            //save it on the view model
+            viewModel.setTags(selectedTags)
+            viewModel.triggerSearchEvent()
             dismiss()
         }
     }
 
-    private fun setTag(){
-        binding.etTag.setText(viewModel.tag.value ?: "")
-    }
 }

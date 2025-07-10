@@ -16,35 +16,47 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override suspend fun getAll(): List<Garment> {
-
         return getAll(emptyMap())
     }
-
 
     override suspend fun getAll(filters: Map<String, Any>): List<Garment> {
         val db = FirebaseFirestore.getInstance()
         return try {
             val userId = auth.currentUser?.uid ?: throw IllegalStateException("Usuario no autenticado")
 
-            // Inicia la consulta base, filtrando siempre por el usuario actual.
             var query: Query = db.collection(CLOTHES_COLLECTION_NAME).whereEqualTo("userId", userId)
 
-
+            /*
             filters.forEach { (key, value) ->
                 query = query.whereEqualTo(key, value)
+            }*/
+
+            val tagsFilter = filters["tags"]
+            if (tagsFilter is List<*>) {
+                val tagsList = tagsFilter.filterIsInstance<String>()
+                if (tagsList.isNotEmpty()) {
+                    query = query.whereArrayContainsAny("tags", tagsList)
+                }
             }
 
+            val nameFilter = filters["name"]
+            if (nameFilter is String && nameFilter.isNotBlank()) {
+                val capitalized = nameFilter.lowercase()
+                query = query
+                    .orderBy("nameLowerCase")
+                    .startAt(capitalized)
+                    .endAt(capitalized + '\uf8ff')
+            }
 
             val snapshot: QuerySnapshot = query.get().await()
 
-            // Convierte los documentos a objetos Garment.
             snapshot.documents.mapNotNull { doc ->
                 doc.toObject(Garment::class.java)?.apply {
                     id = doc.id
                 }
             }
         } catch (e: Exception) {
-            // Lanza una excepción personalizada en caso de error.
+            //throw e.message?.let { SearchException(it) }!!
             throw SearchException("Error al cargar resultados, inténtelo de nuevo más tarde.")
         }
     }
@@ -72,11 +84,22 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         val db = FirebaseFirestore.getInstance()
         val userId = auth.currentUser?.uid ?: throw IllegalStateException("Usuario no autenticado")
         val id = UUID.randomUUID().toString()
-        val garment = item.copy(id = id, userId = userId)
+        val garment = item.copy(id = id, userId = userId, nameLowerCase = item.name.lowercase())
         return try {
             db.collection(CLOTHES_COLLECTION_NAME)
                 .document(id)
-                .set(garment)
+                .set(
+                    mapOf(
+                        "name" to garment.name,
+                        "nameLowerCase" to garment.nameLowerCase,
+                        "color" to garment.color,
+                        "category" to garment.category,
+                        "tags" to garment.tags,
+                        "print" to garment.print,
+                        "imageUri" to garment.imageUri,
+                        "userId" to garment.userId
+                    )
+                )
                 .await()
             id
         } catch (e: Exception) {
@@ -91,11 +114,19 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         if (garmentId.isBlank()) {
             garmentId = UUID.randomUUID().toString()
         }
-        val updatedGarment = item.copy(userId = userId)
+        val updatedGarment = item.copy(userId = userId, nameLowerCase = item.name.lowercase())
         return try {
             db.collection(CLOTHES_COLLECTION_NAME)
                 .document(garmentId)
-                .set(updatedGarment)
+                .update(
+                    "name", updatedGarment.name,
+                    "nameLowerCase", updatedGarment.nameLowerCase,
+                    "color", updatedGarment.color,
+                    "category", updatedGarment.category,
+                    "tags", updatedGarment.tags,
+                    "print", updatedGarment.print,
+                    "imageUri", updatedGarment.imageUri
+                )
                 .await()
             garmentId
         } catch (e: Exception) {
@@ -115,6 +146,30 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
             throw Exception("No se pudo eliminar la prenda debido a un error, inténtelo de nuevo más tarde.")
         }
     }
+
+    suspend fun getByCategory(category: String): List<Garment> {
+        val db = FirebaseFirestore.getInstance()
+        return try {
+            val userId = auth.currentUser?.uid ?: throw IllegalStateException("Usuario no autenticado")
+
+          
+            val snapshot = db.collection(CLOTHES_COLLECTION_NAME)
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("category", category)
+                .get()
+                .await()
+
+            snapshot.documents.mapNotNull { doc ->
+                doc.toObject(Garment::class.java)?.apply {
+                    id = doc.id
+                }
+            }
+        } catch (e: Exception) {
+            throw SearchException("Error al cargar la categoría: $category")
+        }
+    }
+
+
 
     override suspend fun getById(id: String): Garment? {
         val db = FirebaseFirestore.getInstance()

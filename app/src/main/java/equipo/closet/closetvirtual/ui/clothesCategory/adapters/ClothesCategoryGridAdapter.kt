@@ -55,13 +55,8 @@ class ClothesCategoryGridAdapter(
         holder.previewImage.setOnClickListener {
             var intent: Intent = Intent(context, ClothingInformationActivity::class.java)
 
-            intent.putExtra("garment_id", garment.id)
-            intent.putExtra("garment_name", garment.name)
-            intent.putExtra("garment_color", garment.color)
-            intent.putExtra("garment_tag", garment.tag)
-            intent.putExtra("garment_category", garment.category)
-            intent.putExtra("garment_print", garment.print)
-            intent.putExtra("garment_image_uri", garment.imageUri)
+            //pass the garment object
+            intent.putExtra("garment", garment)
 
             context.startActivity(intent)
         }
