@@ -18,7 +18,7 @@ class SelectableGarmentAdapter(
             Glide.with(binding.root.context)
                 .load(garment.imageUri)
                 .centerCrop()
-                .into(binding.ivGarmentImage)
+                .into(binding.ivGarmentPreview)
 
             itemView.setOnClickListener {
                 onGarmentClick(garment)

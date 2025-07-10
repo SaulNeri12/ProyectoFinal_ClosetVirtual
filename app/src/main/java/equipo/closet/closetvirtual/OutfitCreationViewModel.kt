@@ -26,6 +26,15 @@ class OutfitCreationViewModel(
         }
     }
 
+    // FUNCIÓN AÑADIDA
+    fun removeGarmentFromOutfit(garmentId: String) {
+        _currentOutfit.value?.let { outfit ->
+            // Asume que tu clase Outfit tiene un método para remover por ID
+            outfit.removeGarmentById(garmentId)
+            _currentOutfit.postValue(outfit)
+        }
+    }
+
     fun saveOutfit(name: String, tags: List<String>) {
         _currentOutfit.value?.let { outfit ->
             if (outfit.getClothes().isEmpty()) {

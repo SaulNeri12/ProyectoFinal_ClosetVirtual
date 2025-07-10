@@ -4,44 +4,40 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import equipo.closet.closetvirtual.entities.Garment
-import equipo.closet.closetvirtual.entities.Outfit
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
+import equipo.closet.closetvirtual.repositories.GarmentUsageTracker
 import kotlinx.coroutines.launch
 
-class DailyOutfitViewModel(
-    private val outfitRepository: FirebaseOutfitRepository
-) : ViewModel() {
+class DailyOutfitViewModel(outfitRepository: FirebaseOutfitRepository) : ViewModel() {
 
-    // Guarda las prendas seleccionadas por categoría
+
     private val selectedGarments = mutableMapOf<String, Garment>()
-
-    // LiveData para notificar a la UI cuando el guardado termina
     val saveResult = MutableLiveData<Result<Unit>>()
 
-    fun addGarment(category: String, garment: Garment) {
-        selectedGarments[category] = garment
+    fun addGarment(viewId: String, garment: Garment) {
+        selectedGarments[viewId] = garment
     }
 
-    fun saveDailyOutfit(name: String, tags: List<String>) {
+    // FUNCIÓN AÑADIDA
+    fun removeGarment(viewId: String) {
+        selectedGarments.remove(viewId)
+    }
+
+    fun registerUsageOfSelectedGarments() {
         if (selectedGarments.isEmpty()) {
             saveResult.value = Result.failure(Exception("Debes seleccionar al menos una prenda."))
             return
         }
 
-        val dailyOutfit = Outfit(
-            name = name,
-            tags = tags.toMutableList(),
-            clothesIds = selectedGarments.values.map { it.id }.toMutableList()
-        )
-
         viewModelScope.launch {
             try {
-                outfitRepository.insert(dailyOutfit) // Reutilizamos el repositorio de Outfits
+                selectedGarments.values.forEach { garment ->
+                    GarmentUsageTracker.registerUsage(garment.id)
+                }
                 saveResult.value = Result.success(Unit)
             } catch (e: Exception) {
                 saveResult.value = Result.failure(e)
             }
         }
     }
-
 }

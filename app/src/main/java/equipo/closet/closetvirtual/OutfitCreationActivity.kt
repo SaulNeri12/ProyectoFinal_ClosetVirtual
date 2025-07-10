@@ -3,6 +3,7 @@ package equipo.closet.closetvirtual
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.databinding.ActivityOutfitCreationBinding
+import equipo.closet.closetvirtual.databinding.OutfitCreationRowDetailedBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
@@ -47,11 +49,13 @@ class OutfitCreationActivity : AppCompatActivity() {
         binding = ActivityOutfitCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupInitialState()
         setupListeners()
         setupSaveObserver()
         setChipGroupData()
+    }
 
-        // Inicializar los textos de las categorías
+    private fun setupInitialState() {
         updateUiForRow("Top", null)
         updateUiForRow("Bottom", null)
         updateUiForRow("Bodysuit", null)
@@ -61,11 +65,9 @@ class OutfitCreationActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { finish() }
+        binding.btnProfile.setOnClickListener { /* TODO */ }
         binding.btnSaveOutfit.setOnClickListener { handleSaveOutfit() }
-        binding.btnProfile.setOnClickListener { /* TODO: Implementar o eliminar */ }
 
-
-        // Asignar listeners a cada botón de 'añadir'
         binding.rowTop.btnAddGarment.setOnClickListener { launchClothesSelection("Top") }
         binding.rowBottom.btnAddGarment.setOnClickListener { launchClothesSelection("Bottom") }
         binding.rowBodysuit.btnAddGarment.setOnClickListener { launchClothesSelection("Bodysuit") }
@@ -81,7 +83,6 @@ class OutfitCreationActivity : AppCompatActivity() {
     }
 
     private fun updateUiForRow(category: String, garment: Garment?) {
-        // Usa el binding del layout principal para encontrar el binding de la fila incluida
         val rowBinding = when (category) {
             "Top" -> binding.rowTop
             "Bottom" -> binding.rowBottom
@@ -91,15 +92,24 @@ class OutfitCreationActivity : AppCompatActivity() {
             else -> null
         }
 
-        rowBinding?.let {
+        rowBinding?.let { binding ->
             if (garment != null) {
-                // Si hay una prenda, muestra su imagen y nombre
-                it.tvGarmentName.text = garment.name
-                Glide.with(this).load(garment.imageUri).centerCrop().into(it.ivGarmentPreview)
+                // Si hay una prenda: muestra su info y el botón de borrar
+                binding.tvGarmentName.text = garment.name
+                Glide.with(this).load(garment.imageUri).centerCrop().into(binding.ivGarmentPreview)
+                binding.btnAddGarment.visibility = View.GONE
+                binding.btnCleanGarment.visibility = View.VISIBLE
+
+                binding.btnCleanGarment.setOnClickListener {
+                    viewModel.removeGarmentFromOutfit(garment.id)
+                    updateUiForRow(category, null) // Resetea la UI de esta fila
+                }
             } else {
-                // Si no hay prenda, muestra el nombre de la categoría
-                it.tvGarmentName.text = category
-                it.ivGarmentPreview.setImageResource(R.drawable.ic_placeholder_garment)
+                // Si no hay prenda: muestra la categoría y el botón de añadir
+                binding.tvGarmentName.text = category
+                binding.ivGarmentPreview.setImageResource(R.drawable.ic_placeholder_garment)
+                binding.btnAddGarment.visibility = View.VISIBLE
+                binding.btnCleanGarment.visibility = View.GONE
             }
         }
     }
@@ -142,7 +152,6 @@ class OutfitCreationActivity : AppCompatActivity() {
             binding.etOutfitName.error = "El nombre no puede estar vacío"
             return false
         }
-        // Puedes añadir más validaciones aquí si es necesario
         return true
     }
 }
