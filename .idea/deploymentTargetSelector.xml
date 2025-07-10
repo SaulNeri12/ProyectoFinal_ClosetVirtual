@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetSelector">
     <selectionStates>
-      <SelectionState runConfigName="app">
+      <SelectionState runConfigName="ClosetVirtual.app">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2025-07-09T23:51:24.031173900Z">
           <Target type="DEFAULT_BOOT">

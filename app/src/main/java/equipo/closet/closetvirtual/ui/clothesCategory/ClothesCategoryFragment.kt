@@ -59,7 +59,6 @@ class ClothesCategoryFragment : Fragment() {
         setProfileButtonClickListener()
         setTagsObserver()
         setSearchEventObserver()
-        searchGarmentEvent()
     }
 
     /**
@@ -115,19 +114,6 @@ class ClothesCategoryFragment : Fragment() {
         })
     }
 
-
-    private fun filterGarmentsByName(searchText: String) {
-        val filteredList = if (searchText.isEmpty()) {
-            allGarments
-        } else {
-            allGarments.filter { garment ->
-                garment.name.contains(searchText, ignoreCase = true)
-            }
-        }
-        activity?.runOnUiThread {
-            updateGarmentViews(filteredList)
-        }
-    }
 
     private fun updateGarmentViews(garments: List<Garment>) {
         val categoryMap = garments.groupBy { it.category.lowercase() }
@@ -204,13 +190,6 @@ class ClothesCategoryFragment : Fragment() {
                     Log.e("Search", "Error: ${e.message}", e)
                 }
             }
-        }
-    }
-
-    private fun searchGarmentEvent() : Unit{
-        lifecycleScope.launch {
-            val searchText = binding.etSearch.toString().trim()
-            filterGarmentsByName(searchText) //Change this to the correct function
         }
     }
 
