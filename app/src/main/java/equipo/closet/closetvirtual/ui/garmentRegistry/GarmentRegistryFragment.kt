@@ -290,7 +290,7 @@ class GarmentRegistryFragment : Fragment() {
         val chipGroup = binding.chipGroupTags
 
         etiquetas.forEach { etiqueta ->
-            ChipGroupStyler.addStyledChip(requireContext(), chipGroup, etiqueta, ChipGroupStyler.ChipStyle.ELEGANT_PURPLE, true)
+            ChipGroupStyler.addStyledChip(requireContext(), chipGroup, etiqueta, ChipGroupStyler.ChipStyle.SOFT_GRAY, true)
         }
         ChipGroupStyler.animateChipsStaggered(chipGroup)
     }
