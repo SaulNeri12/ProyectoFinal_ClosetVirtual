@@ -109,5 +109,4 @@ class OutfitCreationFragment {
 //
 //        return selectedTags
 //    }
-
 }

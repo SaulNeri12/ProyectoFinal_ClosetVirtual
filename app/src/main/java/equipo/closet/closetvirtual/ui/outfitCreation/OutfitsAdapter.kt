@@ -1,3 +1,5 @@
+package equipo.closet.closetvirtual.ui.outfitCreation
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -14,14 +16,28 @@ import equipo.closet.closetvirtual.entities.Outfit
 
 class OutfitsAdapter(
     context: Context,
-    private val outfits: List<Outfit>,
-    private val allGarments: Map<String, Garment>
-) : ArrayAdapter<Outfit>(context, 0, outfits) {
+    // El mapa de prendas es necesario para buscar las imágenes
+    outfits: List<Outfit>,
+    private var allGarments: Map<String, Garment>
+) : ArrayAdapter<Outfit>(context, 0) { // El constructor ya no necesita la lista inicial
 
-    // ViewHolder para almacenar las vistas y evitar llamadas repetidas a findViewById
+    // ViewHolder para un rendimiento eficiente
     private class ViewHolder {
         lateinit var tvOutfitName: TextView
         lateinit var imagesContainer: LinearLayout
+    }
+
+    /**
+     * Esta función ahora es la forma correcta de actualizar los datos del adapter.
+     */
+    fun updateData(newOutfits: List<Outfit>, newGarmentsMap: Map<String, Garment>) {
+        this.allGarments = newGarmentsMap
+        // Se limpia la lista interna del adapter
+        clear()
+        // Se añaden los nuevos outfits a la lista interna del adapter
+        addAll(newOutfits)
+        // Se notifica a la vista que los datos han cambiado
+        notifyDataSetChanged()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -29,25 +45,23 @@ class OutfitsAdapter(
         val viewHolder: ViewHolder
 
         if (convertView == null) {
-            // Si la vista es nueva, la inflamos y creamos el ViewHolder
             view = LayoutInflater.from(context).inflate(R.layout.outfit_list_item, parent, false)
             viewHolder = ViewHolder()
             viewHolder.tvOutfitName = view.findViewById(R.id.tvOutfitName)
             viewHolder.imagesContainer = view.findViewById(R.id.garment_images_container)
             view.tag = viewHolder
         } else {
-            // Si la vista se está reciclando, solo obtenemos el ViewHolder
             view = convertView
             viewHolder = convertView.tag as ViewHolder
         }
 
+        // getItem(position) usa la lista interna del ArrayAdapter
         val outfit = getItem(position)
 
         if (outfit != null) {
             viewHolder.tvOutfitName.text = outfit.name
-            viewHolder.imagesContainer.removeAllViews() // Limpiar vistas anteriores
+            viewHolder.imagesContainer.removeAllViews() // Limpiar imágenes anteriores
 
-            // Cargar las imágenes de las prendas del outfit
             outfit.clothesIds.forEach { garmentId ->
                 val garment = allGarments[garmentId]
                 if (garment != null) {
@@ -61,7 +75,6 @@ class OutfitsAdapter(
                 }
             }
         }
-
         return view
     }
 }

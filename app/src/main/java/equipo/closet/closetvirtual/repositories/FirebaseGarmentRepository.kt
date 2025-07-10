@@ -147,6 +147,30 @@ object FirebaseGarmentRepository : Repository<Garment, String> {
         }
     }
 
+    suspend fun getByCategory(category: String): List<Garment> {
+        val db = FirebaseFirestore.getInstance()
+        return try {
+            val userId = auth.currentUser?.uid ?: throw IllegalStateException("Usuario no autenticado")
+
+          
+            val snapshot = db.collection(CLOTHES_COLLECTION_NAME)
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("category", category)
+                .get()
+                .await()
+
+            snapshot.documents.mapNotNull { doc ->
+                doc.toObject(Garment::class.java)?.apply {
+                    id = doc.id
+                }
+            }
+        } catch (e: Exception) {
+            throw SearchException("Error al cargar la categoría: $category")
+        }
+    }
+
+
+
     override suspend fun getById(id: String): Garment? {
         val db = FirebaseFirestore.getInstance()
         return try {
