@@ -25,11 +25,7 @@
         android:id="@+id/navigation_outfit_finder"
         android:name="equipo.closet.closetvirtual.ui.searchOutfit.SearchOutfitFragment"
         android:label="Buscador de Outfits"
-        tools:layout="@layout/fragment_search_outfit" >
-        <action
-            android:id="@+id/action_navigation_outfit_finder_to_outfit_creation_fragment"
-            app:destination="@id/outfit_creation_fragment" />
-    </fragment>
+        tools:layout="@layout/fragment_search_outfit" />
 
 
 <!--    <fragment-->
@@ -48,11 +44,5 @@
         android:name="equipo.closet.closetvirtual.ui.dailyOutfit.DailyOutfitFragment"
         android:label="Daily Outfit"
         tools:layout="@layout/fragment_daily_outfit" />
-
-    <fragment
-        android:id="@+id/outfit_creation_fragment"
-        android:name="equipo.closet.closetvirtual.ui.outfitCreation.OutfitCreationFragment"
-        android:label="Crear Outfit"
-        tools:layout="@layout/activity_outfit_creation" />
 
 </navigation>

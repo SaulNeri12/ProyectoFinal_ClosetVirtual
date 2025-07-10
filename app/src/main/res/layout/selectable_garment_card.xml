@@ -1,47 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="25dp"
     app:cardElevation="8dp"
-    app:cardUseCompatPadding="true"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?attr/selectableItemBackground">
+    app:cardCornerRadius="25dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:padding="5dp"
+
+        >
 
         <ImageView
-            android:id="@+id/iv_garment_image"
+            android:id="@+id/imageView"
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:scaleType="centerCrop"
+            android:src="@mipmap/garment_top_test2"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@mipmap/garment_top_test2" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/tv_garment_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
+            android:text="La Irreverente"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textSize="18dp"
+
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/sharp_arrow_forward_ios_24"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_garment_image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="La Irreverente" />
+            app:tint="@color/text_hint" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

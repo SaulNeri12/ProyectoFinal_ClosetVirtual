@@ -102,11 +102,11 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:gravity="end"
                     android:orientation="horizontal"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp">
+                    android:paddingVertical="10dp">
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="wrap_content"
@@ -199,6 +199,117 @@
                 android:orientation="vertical"
                 android:padding="20dp"
                 android:gravity="center_vertical">
+
+                <!-- Usage container-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Usos de la prenda"
+                    android:textColor="@color/text_primary_dark"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        app:cardBackgroundColor="@color/button_primary"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        android:layout_marginVertical="10dp">
+
+                        <!-- Encapsulamos todo el contenido en un LinearLayout horizontal -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="Totales"
+                                android:textColor="@color/text_primary_white"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+
+                            <Space
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:elevation="6dp"
+                                android:text="10"
+                                android:textSize="17sp"
+                                android:textColor="@color/text_primary_white"
+                                app:cardCornerRadius="25dp"/>
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        app:cardBackgroundColor="@color/button_primary"
+                        app:cardElevation="4dp"
+                        app:cardCornerRadius="25dp"
+                        android:layout_marginVertical="10dp">
+
+                        <!-- Encapsulamos todo el contenido en un LinearLayout horizontal -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:text="Este mes:"
+                                android:textColor="@color/text_primary_white"
+                                android:textSize="17sp"
+                                android:textStyle="bold" />
+
+                            <!-- Espacio flexible entre textos -->
+                            <Space
+                                android:layout_width="20dp"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvMonthTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:elevation="6dp"
+                                android:text="10"
+                                android:textSize="17sp"
+                                android:textColor="@color/text_primary_white"
+                                app:cardCornerRadius="25dp"/>
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
 
                 <!-- Campo Name-->
                 <TextView

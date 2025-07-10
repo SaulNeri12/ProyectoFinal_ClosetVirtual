@@ -21,14 +21,12 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
 
-    private lateinit var userRepository: UserRepository
+    private val userRepository: UserRepository = UserRepositoryFactory.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        userRepository = UserRepositoryFactory.create()
 
         //declare the function login
         login();

@@ -5,21 +5,21 @@
     <string name="title_home">Inicio</string>
     <string name="title_dashboard">Panel</string>
     <string name="title_notifications">Notificaciones</string>
-    <string name="button_use">USAR</string>
-    <string name="search_hint">Buscar...</string>
-    <string name="category_dropdown_text">Categoría</string>
-    <string name="new_clothes_nav">New Clothes</string>
-    <string name="calendar_nav">Calendario</string>
+    <string name="button_use" translatable="false">USAR</string>
+    <string name="search_hint" translatable="false">Buscar...</string>
+    <string name="category_dropdown_text" translatable="false">Categoría</string>
+    <string name="new_clothes_nav" translatable="false">New Clothes</string>
+    <string name="calendar_nav" translatable="false">Calendario</string>
 
     <string name="title_register">Registro</string>
-    <string name="name_field_title">Nombre</string>
-    <string name="email_field_title">Correo Electrónico</string>
-    <string name="date_field_title">Fecha de Nacimiento</string>
-    <string name="password_field_title">Contraseña</string>
-    <string name="confirm_password_field_title">Confirmar Contraseña</string>
+    <string name="name_field_title" translatable="false">Nombre</string>
+    <string name="email_field_title" translatable="false">Correo Electrónico</string>
+    <string name="date_field_title" translatable="false">Fecha de Nacimiento</string>
+    <string name="password_field_title" translatable="false">Contraseña</string>
+    <string name="confirm_password_field_title" translatable="false">Confirmar Contraseña</string>
     <string name="button_register">Registrar</string>
-    <string name="gender_field_title">Género</string>
-    <string name="select_gender">Seleccionar Género</string>
+    <string name="gender_field_title" translatable="false">Género</string>
+    <string name="select_gender" translatable="false">Seleccionar Género</string>
     <string-array name="gender_options">
         <item>Seleccionar Género</item>
         <item>Masculino</item>
@@ -31,27 +31,27 @@
     <string name="title_login">Inicio de Sesión</string>
     <string name="button_login">Iniciar Sesión</string>
     <string name="login_label"><u>¿No tienes una cuenta? Haz clic aquí</u></string>
-    <string name="password_field_hint_login">Escribe tu contraseña</string>
-    <string name="email_field_hint_login">ejemplo@dominio.com</string>
+    <string name="password_field_hint_login" translatable="false">Escribe tu contraseña</string>
+    <string name="email_field_hint_login" translatable="false">ejemplo@dominio.com</string>
 
-    <string name="old_password_field_title">Contraseña Actual</string>
-    <string name="new_password_field_title">Nueva Contraseña</string>
-    <string name="appearance_field_title">Apariencia</string>
+    <string name="old_password_field_title" translatable="false">Contraseña Actual</string>
+    <string name="new_password_field_title" translatable="false">Nueva Contraseña</string>
+    <string name="appearance_field_title" translatable="false">Apariencia</string>
     <string name="account_save_changes">Guardar</string>
     <string name="light_mode_card_txt">Modo Claro</string>
     <string name="logout_btn_txt">Cerrar Sesión</string>
 
-    <string name="garment_category_input_lbl">Categoria</string>
-    <string name="garment_tag_input_hint">Ropa Verano...</string>
-    <string name="garment_has_print_switch">Estampado</string>
-    <string name="garment_add_garment_btn">Agregar</string>
-    <string name="garment_color_input_txt">Color</string>
+    <string name="garment_category_input_lbl" translatable="false">Categoria</string>
+    <string name="garment_tag_input_hint" translatable="false">Ropa Verano...</string>
+    <string name="garment_has_print_switch" translatable="false">Estampado</string>
+    <string name="garment_add_garment_btn" translatable="false">Agregar</string>
+    <string name="garment_color_input_txt" translatable="false">Color</string>
 
-    <string name="garment_registry_placeholder">Registro de Prendas</string>
-    <string name="forgot_password"><u>¿Haz olvidado tu contraseña? Haz click aqui</u></string>
-    <string name="send_code_header">Ingresa el correo asociado a tu cuenta para enviar codigo de recuperacion</string>
-    <string name="confirm_delete_message">¿Está seguro que desea eliminar la prenda?, esta accion no puede ser desecha</string>
-    <string name="confirm_logout">¿Está seguro que desea cerrar sesión?</string>
+    <string name="garment_registry_placeholder" translatable="false">Registro de Prendas</string>
+    <string name="forgot_password" translatable="false"><u>¿Haz olvidado tu contraseña? Haz click aqui</u></string>
+    <string name="send_code_header" translatable="false">Ingresa el correo asociado a tu cuenta para enviar codigo de recuperacion</string>
+    <string name="confirm_delete_message" translatable="false">¿Está seguro que desea eliminar la prenda?, esta accion no puede ser desecha</string>
+    <string name="confirm_logout" translatable="false">¿Está seguro que desea cerrar sesión?</string>
 
     <string-array name="outfit_categories">
         <item>Casual</item>

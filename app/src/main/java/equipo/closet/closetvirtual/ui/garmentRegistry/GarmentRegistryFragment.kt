@@ -25,7 +25,6 @@ import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import equipo.closet.closetvirtual.adapters.ColorItem
 import equipo.closet.closetvirtual.adapters.ColorSpinnerAdapter
 import equipo.closet.closetvirtual.objects.SessionManager
-import equipo.closet.closetvirtual.utils.ChipGroupStyler
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -282,6 +281,7 @@ class GarmentRegistryFragment : Fragment() {
     }
 
     private fun setChipGroupData() {
+
         val etiquetas = listOf(
             "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
             "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
@@ -290,9 +290,13 @@ class GarmentRegistryFragment : Fragment() {
         val chipGroup = binding.chipGroupTags
 
         etiquetas.forEach { etiqueta ->
-            ChipGroupStyler.addStyledChip(requireContext(), chipGroup, etiqueta, ChipGroupStyler.ChipStyle.ELEGANT_PURPLE, true)
+            val chip = Chip(requireContext()).apply {
+                text = etiqueta
+                isCheckable = true
+                isClickable = true
+            }
+            chipGroup.addView(chip)
         }
-        ChipGroupStyler.animateChipsStaggered(chipGroup)
     }
 
     private fun getTags(): MutableList<String> {

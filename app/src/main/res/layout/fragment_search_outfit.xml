@@ -139,7 +139,8 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <EditText
-                    android:id="@+id/filtered_garment_search_input"  android:layout_width="match_parent"
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:hint="Nombre del outfit"
@@ -187,12 +188,12 @@
             app:cardBackgroundColor="@color/background_dark">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center"
-                android:contentDescription="Add outfit"
                 android:src="@drawable/ic_add"
-                app:tint="@android:color/white" />
+                app:tint="@android:color/white"
+                android:contentDescription="Add outfit" />
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>

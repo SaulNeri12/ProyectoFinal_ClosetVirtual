@@ -39,7 +39,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun register() {
         binding.btnRegister.setOnClickListener {
-            if (validateInputFields()) {
+            if (validateInputFields() && validatePassword()) {
 
                 val dateString = binding.etBirthDate.text.toString().trim()
                 val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
@@ -134,14 +134,24 @@ class RegisterActivity : AppCompatActivity() {
             binding.etBirthDate.error = "La fecha de nacimiento es requerida"
             return false
         }
+        return true
+    }
+
+    private fun validatePassword() : Boolean {
         if (binding.etPassword.text.toString().trim().length < 6) {
             binding.etPassword.error = "La contraseña debe tener al menos 6 caracteres"
+            return false
+        }
+        if (!binding.etPassword.text.toString().any { it.isDigit() }) {
+            binding.etPassword.error = "La contraseña debe contener al menos un número"
             return false
         }
         if (binding.etPassword.text.toString().trim() != binding.etConfirmPassword.text.toString().trim()) {
             binding.etConfirmPassword.error = "Las contraseñas no coinciden"
             return false
         }
+
         return true
     }
+
 }
