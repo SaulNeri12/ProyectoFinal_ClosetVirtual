@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
@@ -26,66 +27,89 @@ import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
-import equipo.closet.closetvirtual.utils.ChipGroupStyler
+import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteDialog
+import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteViewModel
+import equipo.closet.closetvirtual.ui.dialogLogout.ConfirmLogoutDialog
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID
 
-// Actividad para gestionar la información de una prenda (ver, editar, eliminar).
 class ClothingInformationActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityClothingInformationBinding
 
-    // Launchers para la cámara y la galería.
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+
     private lateinit var galeryLauncher: ActivityResultLauncher<String>
-    // Archivo y URI de la imagen de la prenda.
+
     private var imageFile: File? = null
+
     private var imageUri: Uri? = null
 
-    // Repositorio para operaciones de datos de prendas.
+    //repository instance for persisting data
     private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
+
+    private lateinit var cofirmDelateViewModel: ConfirmDeleteViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClothingInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        cofirmDelateViewModel = ViewModelProvider(this)[ConfirmDeleteViewModel::class.java]
 
-        // Inicializa los spinners, chips y la información de la prenda.
+        //fill the category spinner
         setCategorySpinner()
+        //fill the color spinner
         setColorSpinner()
+        //set the chip group data
         setChipGroupData()
+        //set the input fields information
         setGarmentInfo()
-
-        // Configura los botones y sus acciones.
+        //set the behavior of the edit button
         handleGarmentEdit()
+        //set the behavior of the camera button
         openCamera()
+        //set the behavior of the camera launcher
         setUpCamaraBehavior()
+        // set the behavior of the gallery launcher
         openGalery()
+        //set the behavior of the camera launcher
         setUpGaleryBehavior()
+        //set the behavior of the back button
         setBtnBackBehavior()
-        handleGarmentDelete()
+        //show the delete dialog
+        showDeleteDialog()
+        //observe the delete event
+        observeDeleteEvent()
+
     }
 
-    // Configura el comportamiento del botón de retroceso.
-    private fun setBtnBackBehavior() {
+    private fun setBtnBackBehavior() : Unit {
         binding.btnBack.setOnClickListener {
             finish()
         }
     }
 
-    // Configura el launcher para la captura de imágenes con la cámara.
-    private fun setUpCamaraBehavior() {
+    private fun setUpCamaraBehavior() : Unit {
         cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success && imageFile != null) {
+                // show img
                 binding.garmentImage.setImageURI(imageUri)
+
+                // pa guardar despues
+                val imagePath = imageFile!!.absolutePath
+
+                //para obtener la imagen
+//                val imagePath = garment.imagePath
+//                val imageFile = File(imagePath)
+//                binding.garmentFormImage.setImageURI(imageFile.toUri())
             }
         }
     }
 
-    // Configura el launcher para seleccionar imágenes de la galería.
-    private fun setUpGaleryBehavior() {
+    private fun setUpGaleryBehavior() : Unit {
         galeryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             if (uri != null) {
                 try {
@@ -98,9 +122,13 @@ class ClothingInformationActivity : AppCompatActivity() {
                             input.copyTo(output)
                         }
                     }
+
                     imageFile = copiedFile
                     imageUri = copiedFile.toUri()
+
                     binding.garmentImage.setImageURI(imageUri)
+
+                    // Ahora imageFile!!.absolutePath es usable como en cámara
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Toast.makeText(this, "Error al guardar imagen", Toast.LENGTH_SHORT).show()
@@ -109,8 +137,7 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
-    // Abre la aplicación de la cámara.
-    private fun openCamera() {
+    private fun openCamera() : Unit {
         binding.btnOpenCamera.setOnClickListener {
             imageFile = createImageFile()
             imageUri = FileProvider.getUriForFile(this,
@@ -120,37 +147,41 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
-    // Abre la galería de imágenes.
-    private fun openGalery() {
+    private fun openGalery() : Unit {
         binding.btnOpenGallery.setOnClickListener {
             galeryLauncher.launch("image/*")
         }
     }
 
-    // Crea un archivo de imagen temporal.
     private fun createImageFile(): File {
         val storageDir = File(this.filesDir, "images")
         if (!storageDir.exists()) storageDir.mkdirs()
+
         val name = "IMG_${System.currentTimeMillis()}"
         return File.createTempFile(name, ".jpg", storageDir)
     }
 
-    // Establece la información de la prenda en los campos de la interfaz.
     private fun setGarmentInfo(){
+
         val extras = intent.extras
+
         if (extras != null) {
+
             @Suppress("DEPRECATION")
             val garment = extras.getParcelable<Garment>("garment")
-            binding.garmentImage.setImageURI(garment!!.imageUri.toUri())
+
+            val id = garment!!.id.toString()
+            binding.garmentImage.setImageURI(garment.imageUri.toUri())
             binding.etGarmentName.setText(garment.name)
             binding.switchPrint.isChecked = garment.print
             setSelectedTags(garment.tags)
             binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, garment.color))
             binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, garment.category))
+
         }
+
     }
 
-    // Obtiene el índice de un elemento en un Spinner por su nombre.
     private fun getIndex(spinner: Spinner, myString: String): Int {
         for (i in 0 until spinner.count) {
             val item = spinner.getItemAtPosition(i)
@@ -161,8 +192,7 @@ class ClothingInformationActivity : AppCompatActivity() {
         return 0
     }
 
-    // Configura el spinner de selección de color.
-    private fun setColorSpinner() {
+    private fun setColorSpinner() : Unit {
         val colors = listOf(
             ColorItem("Seleccionar color", R.color.gray_light),
             ColorItem("Rojo", R.color.garment_red),
@@ -186,14 +216,14 @@ class ClothingInformationActivity : AppCompatActivity() {
             ColorItem("Naranja Intenso", R.color.garment_deep_orange),
             ColorItem("Azul Claro", R.color.garment_light_blue)
         )
+
         val adapter = ColorSpinnerAdapter(this, colors)
         binding.spGarmentColor.adapter = adapter
     }
 
-    // Obtiene el color seleccionado del spinner.
     private fun getSelectedColor(): String? {
         val selectedPosition = binding.spGarmentColor.selectedItemPosition
-        return if (selectedPosition > 0) {
+        return if (selectedPosition > 0) { // Excluir "Seleccionar color"
             val colorItem = binding.spGarmentColor.selectedItem as ColorItem
             colorItem.name
         } else {
@@ -201,18 +231,24 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
-    // Selecciona las etiquetas en el ChipGroup según una lista dada.
+    /**
+     * Set the selected tags in the chip group based on the list
+     * of tags given by the parameter. If a chip's text exists in
+     * the list, it gets selected.
+     */
     private fun setSelectedTags(tags: MutableList<String>) {
         val chipGroup = binding.chipGroupTags
+
         for (i in 0 until chipGroup.childCount) {
             val chip = chipGroup.getChildAt(i) as? Chip
-            chip?.isChecked = tags.contains(chip?.text.toString())
+            chip?.isChecked = tags.contains(chip.text.toString())
         }
     }
 
-    // Obtiene una lista de las etiquetas seleccionadas del ChipGroup.
     private fun getTags(): MutableList<String> {
         val selectedTags = mutableListOf<String>()
+
+        //make a loop to get the selected tags
         for (i in 0 until  binding.chipGroupTags.childCount) {
             val chip =  binding.chipGroupTags.getChildAt(i) as Chip
             if (chip.isChecked) {
@@ -222,29 +258,38 @@ class ClothingInformationActivity : AppCompatActivity() {
         return selectedTags
     }
 
-    // Configura el spinner de selección de categoría.
     private fun setCategorySpinner() {
+        // List of gender options
         val categoryOptions = listOf("Top", "Bottom", "Bodysuit", "Zapato", "Accesorio")
+        // Create an ArrayAdapter using the genderOptions list
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryOptions)
+        // Set the layout resource for the dropdown menu
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Set the adapter to the genderSpinner
         binding.spGarmentCategory.adapter = adapter
+        //set the default value
         binding.spGarmentCategory.setSelection(0)
     }
 
-    // Establece los datos para el ChipGroup de etiquetas.
     private fun setChipGroupData() {
+
         val etiquetas = listOf(
             "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
             "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
         )
+
         val chipGroup = binding.chipGroupTags
+
         etiquetas.forEach { etiqueta ->
-            ChipGroupStyler.addStyledChip(this, chipGroup, etiqueta, ChipGroupStyler.ChipStyle.MINIMALIST, true)
+            val chip = Chip(this).apply {
+                text = etiqueta
+                isCheckable = true
+                isClickable = true
+            }
+            chipGroup.addView(chip)
         }
-        ChipGroupStyler.animateChipsStaggered(chipGroup)
     }
 
-    // Maneja la edición de la información de la prenda.
     private fun handleGarmentEdit(){
         binding.btnEditGarment.setOnClickListener {
             if (validateInputFields()){
@@ -274,7 +319,9 @@ class ClothingInformationActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     try{
                         clothesRepository.update(editedGarment)
+                        //Succes mesagge
                         Toast.makeText(this@ClothingInformationActivity, "Prenda actualizada", Toast.LENGTH_SHORT).show()
+                        //close the activity
                         finish()
                     }
                     catch (e: Exception){
@@ -286,42 +333,46 @@ class ClothingInformationActivity : AppCompatActivity() {
         }
     }
 
-    // Maneja la eliminación de una prenda.
     private fun handleGarmentDelete(){
-        binding.btnDelete.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Cerrar sesion")
-                .setMessage("¿Estás seguro de que quiere eliminar la prenda?")
-                .setPositiveButton("Sí") { dialog, which ->
-                    lifecycleScope.launch {
-                        try{
-                            @Suppress("DEPRECATION")
-                            val id = intent.getParcelableExtra<Garment>("garment")?.id
-                            clothesRepository.delete(id.toString())
-                        }
-                        catch (e: Exception){
-                            Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
-                            return@launch
-                        }
-                    }
-                    Toast.makeText(this, "Prenda eliminada", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-                .setNegativeButton("No") { dialog, which ->
-                    dialog.dismiss()
-                }
-                .show()
+        lifecycleScope.launch {
+            try{
+                @Suppress("DEPRECATION")
+                val id = intent.getParcelableExtra<Garment>("garment")?.id
+                clothesRepository.delete(id.toString())
+
+                //Succes mesagge
+                Toast.makeText(this@ClothingInformationActivity, "Prenda eliminada", Toast.LENGTH_SHORT).show()
+                //Close the activity
+                finish()
+            }
+            catch (e: Exception){
+                Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
+                return@launch
+            }
         }
     }
 
-    // Valida los campos de entrada del formulario.
+    private fun observeDeleteEvent() {
+        cofirmDelateViewModel.delete.observe(this) {
+            handleGarmentDelete()
+        }
+    }
+
+    private fun showDeleteDialog() {
+        binding.btnDelete.setOnClickListener {
+            ConfirmDeleteDialog().show(supportFragmentManager, "deleteDialog")
+        }
+    }
+
     private fun validateInputFields() : Boolean {
+        //get the input fields
         val name = binding.etGarmentName.text.toString()
         val tags = binding.chipGroupTags.checkedChipIds
         val category = binding.spGarmentCategory.selectedItem.toString()
         val color = getSelectedColor()
         val image = imageUri.toString()
 
+        //validate empty fields
         if (name.isEmpty()) {
             binding.etGarmentName.error = "Ingrese un nombre"
             return false
@@ -349,6 +400,9 @@ class ClothingInformationActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT).show()
             return false
         }
+
+        //default case
         return true
     }
+
 }

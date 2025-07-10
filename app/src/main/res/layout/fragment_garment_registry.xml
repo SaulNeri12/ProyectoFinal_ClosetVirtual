@@ -130,6 +130,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_marginTop="20dp"
                         android:gravity="center">
 
                         <com.google.android.material.button.MaterialButton
@@ -137,31 +138,29 @@
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginEnd="10dp"
-                            android:backgroundTint="@color/button_primary"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
                             android:elevation="6dp"
                             android:insetLeft="0dp"
                             android:insetTop="0dp"
                             android:insetRight="0dp"
                             android:insetBottom="0dp"
+                            android:layout_marginEnd="15dp"
                             app:cornerRadius="32dp"
                             app:icon="@drawable/ic_camera"
                             app:iconGravity="textStart"
                             app:iconPadding="0dp"
                             app:iconTint="@android:color/white"
-                            app:iconSize="25dp"
-                            style="@style/Widget.Material3.Button.IconButton"/>
+                            app:iconSize="30dp"
+                            app:backgroundTint="@color/button_primary" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnUpload"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
                             android:layout_gravity="center"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="5dp"
-                            android:backgroundTint="@color/button_primary"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
                             android:elevation="6dp"
                             android:insetLeft="0dp"
                             android:insetTop="0dp"
@@ -173,7 +172,7 @@
                             app:iconPadding="0dp"
                             app:iconTint="@android:color/white"
                             app:iconSize="30dp"
-                            style="@style/Widget.Material3.Button.IconButton"/>
+                            app:backgroundTint="@color/button_primary" />
 
                     </LinearLayout>
 

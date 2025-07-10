@@ -50,6 +50,8 @@
     <string name="garment_registry_placeholder">Registro de Prendas</string>
     <string name="forgot_password"><u>¿Haz olvidado tu contraseña? Haz click aqui</u></string>
     <string name="send_code_header">Ingresa el correo asociado a tu cuenta para enviar codigo de recuperacion</string>
+    <string name="confirm_delete_message">¿Está seguro que desea eliminar la prenda?, esta accion no puede ser desecha</string>
+    <string name="confirm_logout">¿Está seguro que desea cerrar sesión?</string>
 
     <string-array name="outfit_categories">
         <item>Casual</item>
