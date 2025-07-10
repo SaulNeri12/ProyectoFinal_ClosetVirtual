@@ -67,8 +67,6 @@ class ProfileActivity : AppCompatActivity() {
         //instance of the current user
         val currentUser = SessionManager.user
 
-        Toast.makeText(this, "User: ${currentUser.name}", Toast.LENGTH_SHORT).show()
-
         // Set the user email
         binding.tvEmail.text = currentUser.email
         // Set the user name
