@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
@@ -26,6 +27,9 @@ import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteDialog
+import equipo.closet.closetvirtual.ui.deleteDialog.ConfirmDeleteViewModel
+import equipo.closet.closetvirtual.ui.dialogLogout.ConfirmLogoutDialog
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -36,19 +40,24 @@ class ClothingInformationActivity : AppCompatActivity() {
     private lateinit var binding : ActivityClothingInformationBinding
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+
     private lateinit var galeryLauncher: ActivityResultLauncher<String>
+
     private var imageFile: File? = null
+
     private var imageUri: Uri? = null
 
     //repository instance for persisting data
     private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
 
+    private lateinit var cofirmDelateViewModel: ConfirmDeleteViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityClothingInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val extras = intent.extras
+        cofirmDelateViewModel = ViewModelProvider(this)[ConfirmDeleteViewModel::class.java]
 
         //fill the category spinner
         setCategorySpinner()
@@ -70,8 +79,10 @@ class ClothingInformationActivity : AppCompatActivity() {
         setUpGaleryBehavior()
         //set the behavior of the back button
         setBtnBackBehavior()
-        //set the behavior of the delete button
-        handleGarmentDelete()
+        //show the delete dialog
+        showDeleteDialog()
+        //observe the delete event
+        observeDeleteEvent()
 
     }
 
@@ -323,32 +334,33 @@ class ClothingInformationActivity : AppCompatActivity() {
     }
 
     private fun handleGarmentDelete(){
+        lifecycleScope.launch {
+            try{
+                @Suppress("DEPRECATION")
+                val id = intent.getParcelableExtra<Garment>("garment")?.id
+                clothesRepository.delete(id.toString())
+
+                //Succes mesagge
+                Toast.makeText(this@ClothingInformationActivity, "Prenda eliminada", Toast.LENGTH_SHORT).show()
+                //Close the activity
+                finish()
+            }
+            catch (e: Exception){
+                Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+        }
+    }
+
+    private fun observeDeleteEvent() {
+        cofirmDelateViewModel.delete.observe(this) {
+            handleGarmentDelete()
+        }
+    }
+
+    private fun showDeleteDialog() {
         binding.btnDelete.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Cerrar sesion")
-                .setMessage("¿Estás seguro de que quiere eliminar la prenda?")
-                .setPositiveButton("Sí") { dialog, which ->
-                    // Delete confirmation
-                    lifecycleScope.launch {
-                        try{
-                            @Suppress("DEPRECATION")
-                            val id = intent.getParcelableExtra<Garment>("garment")?.id
-                            clothesRepository.delete(id.toString())
-                        }
-                        catch (e: Exception){
-                            Toast.makeText(this@ClothingInformationActivity, e.message, Toast.LENGTH_SHORT).show()
-                            return@launch
-                        }
-                    }
-                    //Succes mesagge
-                    Toast.makeText(this, "Prenda eliminada", Toast.LENGTH_SHORT).show()
-                    //Close the activity
-                    finish()
-                }
-                .setNegativeButton("No") { dialog, which ->
-                    dialog.dismiss()
-                }
-                .show()
+            ConfirmDeleteDialog().show(supportFragmentManager, "deleteDialog")
         }
     }
 

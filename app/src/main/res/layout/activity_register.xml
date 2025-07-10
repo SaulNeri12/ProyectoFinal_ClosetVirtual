@@ -135,7 +135,8 @@
             app:cardBackgroundColor="@android:color/white"
             app:cardElevation="4dp"
             app:cardCornerRadius="25dp"
-            app:cardUseCompatPadding="false">
+            app:cardUseCompatPadding="false"
+            android:theme="@style/InputStyle">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -143,17 +144,18 @@
                 android:paddingHorizontal="20dp"
                 android:gravity="center_vertical">
 
-                <EditText
+                <TextView
                     android:id="@+id/etBirthDate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_toStartOf="@id/ivCalendar"
                     android:background="@android:color/transparent"
+                    android:gravity="center_vertical"
                     android:hint="Fecha de nacimiento"
-                    android:focusable="false"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
-                    android:textSize="17sp"/>
+                    android:textSize="17sp"
+                    android:theme="@style/InputStyle"/>
 
                 <ImageView
                     android:id="@+id/ivCalendar"

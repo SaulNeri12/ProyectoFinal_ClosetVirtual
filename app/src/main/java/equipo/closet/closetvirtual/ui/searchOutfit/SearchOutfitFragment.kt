@@ -30,17 +30,24 @@ import kotlinx.coroutines.launch
 
 class SearchOutfitFragment : Fragment() {
 
+    //Binding for the fragment
     private lateinit var binding: FragmentSearchOutfitBinding
+
+    //ViewModel for the filter fragment
     private lateinit var viewModel: SearchOutfitFilterViewModel
 
+    //Instance of the repository to persist or get the data from the database
     private val outfitRepository: Repository<Outfit, String> = OutfitRepositoryFactory.create()
 
-    //this is where we save the tag gotten from the filter fragment
+    //This is where we save the tag gotten from the filter fragment
     private lateinit var tags: List<String>
 
     //Job for the search
     private var searchJob: Job? = null
 
+    /**
+     * onCreateView for the fragment
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,10 +58,13 @@ class SearchOutfitFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * onViewCreated for the fragment
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadOutfits(view)
+        loadOutfits()
         setBackBehavior()
         setProfileBehavior()
         showFilterFragment()
@@ -63,16 +73,65 @@ class SearchOutfitFragment : Fragment() {
         openNewOutfitActivity()
         setRealTimeSearchByOutfitName()
         setSearchEventObserver()
+        setRealTimeSearch()
 
     }
 
-    private fun loadOutfits(view: View): Unit {
+    /**
+     * onResume for the fragment to reload the outfits when the fragment is resumed
+     */
+    override fun onResume() {
+        super.onResume()
+        loadOutfits()
+    }
+
+    private fun loadOutfits(): Unit {
         lifecycleScope.launch {
             val outfits = outfitRepository.getAll()
-
-            val outfitList: ListView = view.findViewById(R.id.outfit_cards_listview)
-            outfitList.adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
+            updateOutfitCards(outfits)
         }
+    }
+
+    private fun setRealTimeSearch() {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                triggerSearch()
+            }
+        })
+    }
+
+    private fun triggerSearch(): Unit {
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            try {
+                delay(500L)
+
+                val searchText = binding.etSearch.toString().lowercase()
+
+                val filterMap = mutableMapOf<String, Any>()
+
+                if (searchText.isNotEmpty()) {
+                    filterMap["name"] = searchText
+                }
+                if (!tags.isEmpty()) {
+                    filterMap["tags"] = tags
+                }
+
+                val garments = outfitRepository.getAll(filterMap)
+                updateOutfitCards(garments)
+
+            } catch (e: Exception) {
+                Log.e("Search", "Error: ${e.message}", e)
+            }
+        }
+    }
+
+    private fun updateOutfitCards(outfits: List<Outfit>): Unit {
+        val outfitList: ListView = binding.outfitCardsListview
+        outfitList.adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
     }
 
     private fun showFilterFragment(): Unit {
@@ -134,16 +193,7 @@ class SearchOutfitFragment : Fragment() {
 
     private fun setSearchEventObserver(): Unit {
         viewModel.searchEvent.observe(viewLifecycleOwner) {
-            //Here we trigger the search
-            Log.d("ClothesCategoryFragment", "Search event triggered")
-            searchOutfitEvent()
-        }
-    }
-
-    private fun searchOutfitEvent() : Unit{
-        lifecycleScope.launch {
-            val searchText = binding.etSearch.toString().trim()
-            // Add the function when ready
+            triggerSearch()
         }
     }
 

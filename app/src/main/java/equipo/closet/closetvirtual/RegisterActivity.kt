@@ -1,15 +1,14 @@
 
 package equipo.closet.closetvirtual
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.datepicker.MaterialDatePicker
+import equipo.closet.closetvirtual.databinding.ActivityRegisterBinding
 import equipo.closet.closetvirtual.entities.User
 import equipo.closet.closetvirtual.repositories.exceptions.RegistrationException
 import equipo.closet.closetvirtual.repositories.factories.UserRepositoryFactory
@@ -22,30 +21,15 @@ import java.util.UUID
 
 class RegisterActivity : AppCompatActivity() {
 
-    private val userRepository: UserRepository = UserRepositoryFactory.create()
+    private lateinit var binding : ActivityRegisterBinding
 
-    private lateinit var btnRegister: android.widget.Button
-    private lateinit var ivBack: android.widget.ImageView
-    private lateinit var etName: EditText
-    private lateinit var etMail: EditText
-    private lateinit var etBirthDate: EditText
-    private lateinit var etGender: Spinner
-    private lateinit var etPassword: EditText
-    private lateinit var etConfirmPassword: EditText
+    private val userRepository: UserRepository = UserRepositoryFactory.create()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-
-        ivBack = findViewById<android.widget.ImageView>(R.id.ivBack)
-        etName = findViewById(R.id.etName)
-        etMail = findViewById(R.id.etMail)
-        etBirthDate = findViewById(R.id.etBirthDate)
-        etGender = findViewById(R.id.etGender)
-        etPassword = findViewById(R.id.etPassword)
-        etConfirmPassword = findViewById(R.id.etConfirmPassword)
-        btnRegister = findViewById(R.id.btnRegister)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         fillGenderSpinner()
         setBackButtonBehavior()
@@ -54,10 +38,10 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun register() {
-        btnRegister.setOnClickListener {
+        binding.btnRegister.setOnClickListener {
             if (validateInputFields()) {
 
-                val dateString = etBirthDate.text.toString().trim()
+                val dateString = binding.etBirthDate.text.toString().trim()
                 val dateFormat = SimpleDateFormat("d-M-yyyy", Locale.getDefault())
                 val birthDateObject = try {
                     dateFormat.parse(dateString)
@@ -72,15 +56,15 @@ class RegisterActivity : AppCompatActivity() {
 
                 val user = User(
                     uid = UUID.randomUUID().toString(),
-                    name = etName.text.toString().trim(),
-                    email = etMail.text.toString().trim(),
-                    gender = etGender.selectedItem.toString(),
+                    name = binding.etName.text.toString().trim(),
+                    email = binding.etMail.text.toString().trim(),
+                    gender = binding.etGender.selectedItem.toString(),
                     birthdate = birthDateObject,
-                    password = etPassword.text.toString()
+                    password = binding.etPassword.text.toString()
                 )
 
                 lifecycleScope.launch {
-                    btnRegister.isEnabled = false
+                    binding.btnRegister.isEnabled = false
                     try {
                         //Log.d("Register", "Intentando registrar usuario: ${user.email}")
                         userRepository.signUp(user)
@@ -95,7 +79,7 @@ class RegisterActivity : AppCompatActivity() {
                     } catch (e: Exception) {
                         Toast.makeText(this@RegisterActivity, "Ocurrió un error inesperado: ${e.message}", Toast.LENGTH_LONG).show()
                     } finally {
-                        btnRegister.isEnabled = true
+                        binding.btnRegister.isEnabled = true
                     }
                 }
             }
@@ -103,31 +87,29 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setBirthDateFieldBehavior() {
-        etBirthDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
+        binding.birthDateContainer.setOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Selecciona tu fecha de nacimiento")
+                .build()
 
-            val datePickerDialog = DatePickerDialog(this,
-                { _, year, monthOfYear, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, monthOfYear, dayOfMonth)
-                    val currentDate = Calendar.getInstance()
-                    if (selectedDate.after(currentDate)) {
-                        Toast.makeText(this, "La fecha de nacimiento no puede ser futura", Toast.LENGTH_SHORT).show()
-                    } else {
-                        // El formato aquí "d-M-yyyy"
-                        val dat = "$dayOfMonth-${monthOfYear + 1}-$year"
-                        etBirthDate.setText(dat)
-                    }
-                }, year, month, day)
-            datePickerDialog.show()
+            datePicker.show(supportFragmentManager, "birth_date_picker")
+
+            datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = selectedDateMillis
+
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val month = calendar.get(Calendar.MONTH) + 1
+                val year = calendar.get(Calendar.YEAR)
+
+                val dateString = "$day-$month-$year"
+                binding.etBirthDate.setText(dateString)
+            }
         }
     }
 
     private fun setBackButtonBehavior() {
-        ivBack.setOnClickListener{
+        binding.ivBack.setOnClickListener{
             finish()
         }
     }
@@ -136,28 +118,28 @@ class RegisterActivity : AppCompatActivity() {
         val genderOptions = listOf("Masculino", "Femenino", "Otro")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, genderOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        etGender.adapter = adapter
+        binding.etGender.adapter = adapter
     }
 
     private fun validateInputFields(): Boolean {
-        if (etName.text.toString().trim().isEmpty()) {
-            etName.error = "El nombre es requerido"
+        if (binding.etName.text.toString().trim().isEmpty()) {
+            binding.etName.error = "El nombre es requerido"
             return false
         }
-        if (etMail.text.toString().trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(etMail.text.toString().trim()).matches()) {
-            etMail.error = "Introduce un email válido"
+        if (binding.etMail.text.toString().trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(binding.etMail.text.toString().trim()).matches()) {
+            binding.etMail.error = "Introduce un email válido"
             return false
         }
-        if (etBirthDate.text.toString().trim().isEmpty()) {
-            etBirthDate.error = "La fecha de nacimiento es requerida"
+        if (binding.etBirthDate.text.toString().trim().isEmpty()) {
+            binding.etBirthDate.error = "La fecha de nacimiento es requerida"
             return false
         }
-        if (etPassword.text.toString().trim().length < 6) {
-            etPassword.error = "La contraseña debe tener al menos 6 caracteres"
+        if (binding.etPassword.text.toString().trim().length < 6) {
+            binding.etPassword.error = "La contraseña debe tener al menos 6 caracteres"
             return false
         }
-        if (etPassword.text.toString().trim() != etConfirmPassword.text.toString().trim()) {
-            etConfirmPassword.error = "Las contraseñas no coinciden"
+        if (binding.etPassword.text.toString().trim() != binding.etConfirmPassword.text.toString().trim()) {
+            binding.etConfirmPassword.error = "Las contraseñas no coinciden"
             return false
         }
         return true
