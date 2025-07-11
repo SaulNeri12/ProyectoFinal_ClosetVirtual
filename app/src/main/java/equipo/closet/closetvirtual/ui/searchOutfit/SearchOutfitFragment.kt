@@ -114,7 +114,6 @@ class SearchOutfitFragment : Fragment() {
             try {
                 val outfits = outfitRepository.getAll()
                 updateOutfitList(outfits)
-                Toast.makeText(requireContext(), "Loaded initial data", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error al cargar los outfits", Toast.LENGTH_SHORT).show()
             }
