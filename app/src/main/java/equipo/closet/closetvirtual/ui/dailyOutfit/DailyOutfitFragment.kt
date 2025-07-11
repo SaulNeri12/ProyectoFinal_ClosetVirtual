@@ -12,14 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.google.android.material.chip.Chip
-import equipo.closet.closetvirtual.ClothesSelectionActivity
+import equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionActivity
 import equipo.closet.closetvirtual.ProfileActivity
+import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentDailyOutfitBinding
+import equipo.closet.closetvirtual.databinding.OutfitCreationRowDetailedBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
-import equipo.closet.closetvirtual.utils.ChipGroupStyler
 import kotlinx.coroutines.launch
 
 class DailyOutfitFragment : Fragment() {
@@ -27,26 +27,23 @@ class DailyOutfitFragment : Fragment() {
     private var _binding: FragmentDailyOutfitBinding? = null
     private val binding get() = _binding!!
 
-    // Usamos el ViewModel y su Factory para el "Daily Outfit"
     private val viewModel: DailyOutfitViewModel by viewModels {
+        // La fábrica necesita el repositorio de outfits, que a su vez necesita el de prendas
         DailyOutfitViewModelFactory(FirebaseOutfitRepository(FirebaseGarmentRepository))
     }
+    private var onResultCallback: ((Garment) -> Unit)? = null
 
-    // Launcher para recibir la prenda seleccionada de ClothesSelectionActivity
     private val selectGarmentLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val garmentId = result.data?.getStringExtra("SELECTED_GARMENT_ID")
-            val category = result.data?.getStringExtra("CATEGORY_FILTER")
-
-            if (garmentId != null && category != null) {
-                // Buscamos la prenda completa en la base de datos
+            if (garmentId != null) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     val garment = FirebaseGarmentRepository.getById(garmentId)
                     if (garment != null) {
-                        viewModel.addGarment(category, garment)
-                        updateUiForRow(category, garment)
+                        onResultCallback?.invoke(garment)
+                        onResultCallback = null
                     }
                 }
             }
@@ -65,98 +62,86 @@ class DailyOutfitFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
         setupSaveObserver()
-        setChipGroupData()
+        handleOnProfileButtonClicked()
+        handleOnBackButtonClicked()
+
+        if (binding.garmentRowsContainer.childCount == 0) {
+            addNewGarmentRow()
+        }
     }
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
-        binding.btnProfile.setOnClickListener { startActivity(Intent(requireContext(), ProfileActivity::class.java)) }
+        binding.btnUseOutfit.setOnClickListener { viewModel.registerUsageOfSelectedGarments() }
 
-        // Listeners para cada botón de selección de ropa
-        binding.btnShirt.setOnClickListener { launchClothesSelection("Top") }
-        binding.btnPant.setOnClickListener { launchClothesSelection("Bottom") }
-        binding.btnBodySuit.setOnClickListener { launchClothesSelection("Bodysuit") }
-        binding.btnShoes.setOnClickListener { launchClothesSelection("Zapato") }
-        binding.btnAccesory.setOnClickListener { launchClothesSelection("Accesorio") }
 
-        binding.btnUseOutfit.setOnClickListener { useOutfit() }
+        binding.btnAddField.setOnClickListener {
+            if (binding.garmentRowsContainer.childCount < 10) {
+                addNewGarmentRow()
+            } else {
+                Toast.makeText(requireContext(), "No puedes añadir más de 10 prendas", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    private fun launchClothesSelection(category: String) {
+    private fun addNewGarmentRow() {
+        val rowBinding = OutfitCreationRowDetailedBinding.inflate(layoutInflater, binding.garmentRowsContainer, false)
+        val viewId = View.generateViewId()
+        rowBinding.root.id = viewId
+        rowBinding.tvGarmentName.text = "Seleccionar prenda"
+
+        rowBinding.btnCleanGarment.visibility = View.VISIBLE
+        rowBinding.btnAddGarment.visibility = View.VISIBLE
+
+        rowBinding.btnAddGarment.setOnClickListener {
+            launchClothesSelection { selectedGarment ->
+                rowBinding.tvGarmentName.text = selectedGarment.name
+                Glide.with(this).load(selectedGarment.imageUri).centerCrop().into(rowBinding.ivGarmentPreview)
+                viewModel.addGarment(viewId.toString(), selectedGarment)
+                it.visibility = View.GONE
+            }
+        }
+
+        rowBinding.btnCleanGarment.setOnClickListener {
+            viewModel.removeGarment(viewId.toString())
+            binding.garmentRowsContainer.removeView(rowBinding.root)
+        }
+
+        binding.garmentRowsContainer.addView(rowBinding.root)
+    }
+
+    private fun launchClothesSelection(onResult: (Garment) -> Unit) {
+        this.onResultCallback = onResult
         val intent = Intent(requireContext(), ClothesSelectionActivity::class.java).apply {
-            putExtra("CATEGORY_FILTER", category)
+            putExtra("CATEGORY_FILTER", "all")
         }
         selectGarmentLauncher.launch(intent)
-    }
-
-    private fun updateUiForRow(category: String, garment: Garment) {
-        val (imageView, textView) = when (category) {
-            "Top" -> binding.ivShirtPreview to binding.tvShirtName
-            "Bottom" -> binding.ivPantPreview to binding.tvPantName
-            "Bodysuit" -> binding.ivBodysuitPreview to binding.tvBodysuitName
-            "Zapato" -> binding.ivShoesPreview to binding.tvShoesName
-            "Accesorio" -> binding.ivAccesoryPreview to binding.tvAccesoryName
-            else -> null to null
-        }
-
-        imageView?.let {
-            Glide.with(this).load(garment.imageUri).centerCrop().into(it)
-        }
-        textView?.text = garment.name
-    }
-
-    private fun useOutfit() {
-        if (validateFields()) {
-            val name = binding.etOutfitName.text.toString().trim()
-            val tags = getSelectedTagsFromChipGroup()
-            viewModel.saveDailyOutfit(name, tags)
-        }
     }
 
     private fun setupSaveObserver() {
         viewModel.saveResult.observe(viewLifecycleOwner) { result ->
             result.onSuccess {
-                Toast.makeText(requireContext(), "Outfit del día guardado!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Uso de prendas registrado", Toast.LENGTH_SHORT).show()
+                binding.garmentRowsContainer.removeAllViews()
+                addNewGarmentRow()
             }.onFailure {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun getSelectedTagsFromChipGroup(): List<String> {
-        return binding.chipGroupTags.checkedChipIds.mapNotNull { chipId ->
-            view?.findViewById<Chip?>(chipId)?.text.toString()
+    private fun handleOnProfileButtonClicked() {
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
         }
     }
 
-    private fun setChipGroupData() {
-        val etiquetas = listOf(
-            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
-            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista"
-        )
-        etiquetas.forEach { etiqueta ->
-            ChipGroupStyler.addStyledChip(requireContext(), binding.chipGroupTags, etiqueta, ChipGroupStyler.ChipStyle.VIBRANT_COLORS, true)
+    private fun handleOnBackButtonClicked() {
+        binding.btnBack.setOnClickListener {
+            @Suppress("DEPRECATION")
+            requireActivity().onBackPressed()
         }
-        ChipGroupStyler.animateChipsStaggered(binding.chipGroupTags)
-    }
-
-    private fun validateFields(): Boolean {
-        val name = binding.etOutfitName.text.toString().trim()
-        val tags = binding.chipGroupTags.checkedChipIds
-
-        if(name.isEmpty()){
-            binding.etOutfitName.error = "El nombre no puede estar vacío"
-            return false
-        }
-        if(tags.isEmpty()){
-            Toast.makeText(requireContext(), "No has seleccionado ninguna etiqueta", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        if(tags.size > 5) {
-            Toast.makeText(requireContext(), "No puedes seleccionar más de 5 etiquetas", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        return true
     }
 
     override fun onDestroyView() {

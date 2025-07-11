@@ -19,7 +19,7 @@ class OutfitClothesGridAdapter (
 
     override fun getItem(position: Int): Garment = clothes[position]
 
-    override fun getItemId(position: Int): Long = clothes[position].id.toLong()
+    override fun getItemId(position: Int): Long = position.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -37,16 +37,14 @@ class OutfitClothesGridAdapter (
 
         val garment = getItem(position)
 
-        if (garment.imageUri.isEmpty() || garment.imageUri.isBlank()) {
-            holder.previewImage.setImageResource(R.mipmap.garment_bottom_test)
-        } else {
-            Glide.with(context)
+        Glide.with(context)
                 .load(garment.imageUri)
+                .error(R.drawable.ic_placeholder_garment)
                 .into(holder.previewImage)
-        }
 
         return view
     }
 
     private data class ViewHolder(val previewImage: ImageView)
+
 }

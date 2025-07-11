@@ -67,8 +67,6 @@ class ProfileActivity : AppCompatActivity() {
         //instance of the current user
         val currentUser = SessionManager.user
 
-        Toast.makeText(this, "User: ${currentUser.name}", Toast.LENGTH_SHORT).show()
-
         // Set the user email
         binding.tvEmail.text = currentUser.email
         // Set the user name
@@ -111,7 +109,7 @@ class ProfileActivity : AppCompatActivity() {
     /**
      * Set the behavior of the birth date field
      */
-    private fun setBirthDateFieldBehavior(): Unit {
+    private fun setBirthDateFieldBehavior() {
         binding.birthDateContainer.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Selecciona tu fecha de nacimiento")
@@ -120,6 +118,13 @@ class ProfileActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, "birth_date_picker")
 
             datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
+                val currentDateMillis = System.currentTimeMillis()
+
+                if (selectedDateMillis > currentDateMillis) {
+                    Toast.makeText(this, "No puedes seleccionar una fecha futura", Toast.LENGTH_LONG).show()
+                    return@addOnPositiveButtonClickListener
+                }
+
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = selectedDateMillis
 
@@ -193,8 +198,7 @@ class ProfileActivity : AppCompatActivity() {
             return false
         }
         if (currentPassword.isNotEmpty()) {
-            return if (validatePasswordChange()) false else true
-        }
+            return if (validatePasswordChange()) false else true    }
         //default case
         return true
     }
@@ -239,12 +243,20 @@ class ProfileActivity : AppCompatActivity() {
             ).show()
             return false
         }
-        if (newPassword != confirmPassword) {
-            binding.etConfirmNewPassword.error = "Las contraseñas no coinciden"
-            Toast.makeText(
-                this, "Las contraseñas no coinciden",
-                Toast.LENGTH_SHORT
-            ).show()
+        if (binding.etNewPassword.text.toString().trim().length < 6) {
+            binding.etNewPassword.error = "La contraseña debe tener al menos 6 caracteres"
+            return false
+        }
+        //verify if password contains a numerical value
+        if (!binding.etNewPassword.text.toString().any { it.isDigit() }) {
+            binding.etNewPassword.error = "La  nueva contraseña debe contener al menos un número"
+            return false
+        }
+        if (binding.etNewPassword.text.toString().trim() !=
+            binding.etConfirmNewPassword.text.toString().trim()) {
+            binding.etNewPassword.error = "Las contraseñas no coinciden"
+
+           binding.etConfirmNewPassword.error = "Las contraseñas no coinciden"
             return false
         }
         //default case

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/row_container"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:gravity="center_vertical"
@@ -33,14 +34,25 @@
         android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/btnAddGarment"
+        android:id="@+id/btnCleanGarment"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
-        android:padding="12dp"
+        android:padding="13dp"
         android:scaleType="center"
-        android:src="@drawable/ic_add"
-        app:tint="@color/icon_color" />
+        android:src="@drawable/ic_delete"
+        app:tint="@color/garment_red"
+        android:visibility="gone" /> <ImageView
+    android:id="@+id/btnAddGarment"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="12dp"
+    android:scaleType="center"
+    android:src="@drawable/ic_add"
+    app:tint="@color/icon_color" />
 </LinearLayout>

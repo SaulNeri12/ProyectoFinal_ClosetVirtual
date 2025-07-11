@@ -6,6 +6,7 @@ import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
 
 class DailyOutfitViewModelFactory(
     private val outfitRepository: FirebaseOutfitRepository
+
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

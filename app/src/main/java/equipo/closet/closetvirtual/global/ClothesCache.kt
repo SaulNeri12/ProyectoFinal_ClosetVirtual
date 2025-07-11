@@ -1,10 +1,10 @@
-package equipo.closet.closetvirtual.entities
+package equipo.closet.closetvirtual.global
 
-// Singleton para manejar el caché de prendas
-object GarmentCache {
+import equipo.closet.closetvirtual.entities.Garment
+
+object ClothesCache {
     private val garmentsMap = mutableMapOf<String, Garment>()
 
-    // Carga o actualiza el caché con una lista de prendas
     fun setGarments(garments: List<Garment>) {
         garmentsMap.clear()
         garments.forEach { garment ->
@@ -12,17 +12,14 @@ object GarmentCache {
         }
     }
 
-    // Obtiene una prenda por su ID desde el caché
     fun getGarmentById(id: String): Garment? {
         return garmentsMap[id]
     }
 
-    // Obtiene todas las prendas del caché
     fun getAllGarments(): List<Garment> {
         return garmentsMap.values.toList()
     }
 
-    // Métodos para actualizar/eliminar prendas individuales
     fun upsertGarment(garment: Garment) {
         garmentsMap[garment.id] = garment
     }
