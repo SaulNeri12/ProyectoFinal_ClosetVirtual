@@ -15,6 +15,7 @@ import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFacto
 import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
 import android.util.Log
+import android.widget.AbsListView
 
 class OutfitSearchListAdapter : BaseAdapter {
 
@@ -87,6 +88,16 @@ class OutfitSearchListAdapter : BaseAdapter {
 
         holder.clothesCardsGrid.adapter = OutfitClothesGridAdapter(view.context, clothes)
 
+        // Aplica margen inferior para separar las tarjetas
+        val layoutParams = view.layoutParams ?: AbsListView.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        if (layoutParams is ViewGroup.MarginLayoutParams) {
+            layoutParams.bottomMargin = 20.dpToPx(context)
+            view.layoutParams = layoutParams
+        }
+
         return view
     }
 
@@ -103,6 +114,10 @@ class OutfitSearchListAdapter : BaseAdapter {
             tagsString.append(", ")
         }
         return tagsString.toString().dropLast(2)
+    }
+
+    fun Int.dpToPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
     }
 
 }
