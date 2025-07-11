@@ -251,7 +251,9 @@ class ClothingInformationActivity : AppCompatActivity() {
 
         for (i in 0 until chipGroup.childCount) {
             val chip = chipGroup.getChildAt(i) as? Chip
-            chip?.isChecked = tags.contains(chip.text.toString())
+            if (chip != null) {
+                chip.isChecked = tags.contains(chip.text.toString())
+            }
         }
     }
 
