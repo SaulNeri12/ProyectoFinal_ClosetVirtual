@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import equipo.closet.closetvirtual.OutfitCreationActivity
+import equipo.closet.closetvirtual.ProfileActivity
+import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentSearchOutfitBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
@@ -24,11 +27,11 @@ import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterViewM
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 class SearchOutfitFragment : Fragment() {
 
-    private var _binding: FragmentSearchOutfitBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentSearchOutfitBinding
 
     private val viewModel: SearchOutfitFilterViewModel by activityViewModels()
 
@@ -36,15 +39,14 @@ class SearchOutfitFragment : Fragment() {
 
     private var tags: List<String> = emptyList()
 
-    private var adapter: OutfitSearchListAdapter? = null
-
     private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchOutfitBinding.inflate(inflater, container, false)
+        activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.VISIBLE
+        binding = FragmentSearchOutfitBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -65,7 +67,9 @@ class SearchOutfitFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
-        binding.btnProfile.setOnClickListener { /* TODO */ }
+        binding.btnProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+        }
 
         binding.btnNewOutfit.setOnClickListener {
             startActivity(Intent(requireContext(), OutfitCreationActivity::class.java))
@@ -75,7 +79,6 @@ class SearchOutfitFragment : Fragment() {
             SearchOutfitFilterFragment().show(childFragmentManager, "FilterFragment")
         }
 
-        // Un solo listener para la búsqueda en tiempo real
         binding.filteredGarmentSearchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -97,8 +100,9 @@ class SearchOutfitFragment : Fragment() {
             try {
                 val outfits = outfitRepository.getAll()
                 updateOutfitList(outfits)
+                Toast.makeText(requireContext(), "Loaded initial data", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error al cargar outfits", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error al cargar los outfits", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -108,7 +112,7 @@ class SearchOutfitFragment : Fragment() {
         searchJob = lifecycleScope.launch {
             try {
                 delay(500L)
-                val searchText = binding.filteredGarmentSearchInput.text.toString().trim()
+                val searchText = binding.filteredGarmentSearchInput.text.toString().lowercase()
 
                 val filterMap = mutableMapOf<String, Any>()
                 if (searchText.isNotEmpty()) {
@@ -119,21 +123,25 @@ class SearchOutfitFragment : Fragment() {
                 }
 
                 val outfits = outfitRepository.getAll(filterMap)
+
+                Log.w("#### SearchOutfitFragment", "Outfits: $outfits")
+                Log.w("#### SearchOutfitFragment", "search text: $searchText")
+
                 updateOutfitList(outfits)
 
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error al buscar outfits", Toast.LENGTH_SHORT).show()
+            } catch (e: CancellationException) {
+                // no hagas nada...
+            }
+            catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error al cargar los outfits", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun updateOutfitList(outfits: List<Outfit>) {
-        adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
+        val adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
         binding.outfitCardsListview.adapter = adapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

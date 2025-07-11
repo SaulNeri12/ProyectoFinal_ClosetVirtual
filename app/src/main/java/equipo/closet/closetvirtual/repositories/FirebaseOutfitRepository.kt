@@ -142,6 +142,7 @@ class FirebaseOutfitRepository: Repository<Outfit, String> {
                 .set(
                     mapOf(
                         "id" to id,
+                        "nameLowerCase" to item.name.lowercase(),
                         "name" to item.name,
                         "clothesIds" to item.clothesIds,
                         "tags" to item.tags,
