@@ -21,20 +21,22 @@ class OutfitCreationViewModel(
 
     fun addGarmentToOutfit(garment: Garment) {
         _currentOutfit.value?.let { outfit ->
-            // Primero, se quitan las prendas existentes de la misma categoría
+            // Primero, se quitan las prendas existentes de la misma categoría para reemplazarlas.
             outfit.removeGarmentByCategory(garment.category)
 
-            // LÓGICA DE VALIDACIÓN
-            if (garment.category == "Bodysuit") {
-                outfit.removeGarmentByCategory("Bottom") // Si es bodysuit, quita el pantalón
+            // VALIDACIÓN: Si se añade un Bodysuit, se quita el Bottom (pantalón).
+            if (garment.category.equals("Bodysuit", ignoreCase = true)) {
+                outfit.removeGarmentByCategory("Bottom")
             }
-            if (garment.category == "Bottom") {
-                outfit.removeGarmentByCategory("Bodysuit") // Si es pantalón, quita el bodysuit
+            // VALIDACIÓN: Si se añade un Bottom, se quita el Bodysuit.
+            if (garment.category.equals("Bottom", ignoreCase = true)) {
+                outfit.removeGarmentByCategory("Bodysuit")
             }
 
-            // Finalmente, se añade la nueva prenda
+            // Finalmente, se añade la nueva prenda.
             outfit.addGarment(garment)
-            _currentOutfit.postValue(outfit) // Notifica a la Activity que el outfit cambió
+            // Se notifica a la Activity que el outfit ha cambiado para que redibuje la UI.
+            _currentOutfit.postValue(outfit)
         }
     }
 
@@ -45,13 +47,14 @@ class OutfitCreationViewModel(
         }
     }
 
-
     fun saveOutfit(name: String, tags: List<String>) {
         _currentOutfit.value?.let { outfit ->
+            // VALIDACIÓN: Asegura que al menos una prenda ha sido seleccionada.
             if (outfit.getClothes().isEmpty()) {
                 _saveResult.value = Result.failure(Exception("Debes seleccionar al menos una prenda."))
                 return
             }
+
             outfit.name = name
             outfit.tags = tags.toMutableList()
 

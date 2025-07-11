@@ -18,7 +18,6 @@ import equipo.closet.closetvirtual.entities.Outfit
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
 import equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionActivity
-import equipo.closet.closetvirtual.utils.ChipGroupStyler
 import kotlinx.coroutines.launch
 
 class OutfitCreationActivity : AppCompatActivity() {
@@ -37,8 +36,6 @@ class OutfitCreationActivity : AppCompatActivity() {
                 lifecycleScope.launch {
                     val garment = FirebaseGarmentRepository.getById(garmentId)
                     if (garment != null) {
-                        // La Activity solo notifica al ViewModel la nueva prenda.
-                        // El ViewModel se encargará de la lógica y de actualizar el LiveData.
                         viewModel.addGarmentToOutfit(garment)
                     }
                 }
@@ -54,14 +51,13 @@ class OutfitCreationActivity : AppCompatActivity() {
         setupListeners()
         setupObservers()
         setChipGroupData()
-        handleOnProfileButtonClicked()
-        handleOnBackButtonClicked()
     }
 
     private fun setupListeners() {
+        binding.btnBack.setOnClickListener { finish() }
         binding.btnSaveOutfit.setOnClickListener { handleSaveOutfit() }
+        binding.btnProfile.setOnClickListener { /* TODO */ }
 
-        // Los listeners solo se preocupan de iniciar la selección para una categoría
         binding.rowTop.btnAddGarment.setOnClickListener { launchClothesSelection("Top") }
         binding.rowBottom.btnAddGarment.setOnClickListener { launchClothesSelection("Bottom") }
         binding.rowBodysuit.btnAddGarment.setOnClickListener { launchClothesSelection("Bodysuit") }
@@ -70,13 +66,10 @@ class OutfitCreationActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        // Observador principal: Se activa cada vez que el outfit en el ViewModel cambia.
         viewModel.currentOutfit.observe(this) { outfit ->
-            // Redibuja toda la UI para reflejar el estado actual del outfit.
             redrawAllRows(outfit)
         }
 
-        // Observador para el resultado del guardado.
         viewModel.saveResult.observe(this) { result ->
             result.onSuccess {
                 Toast.makeText(this, "¡Outfit guardado con éxito!", Toast.LENGTH_SHORT).show()
@@ -94,7 +87,6 @@ class OutfitCreationActivity : AppCompatActivity() {
         selectGarmentLauncher.launch(intent)
     }
 
-    // Redibuja el estado de todas las filas basado en el objeto Outfit actual.
     private fun redrawAllRows(outfit: Outfit) {
         val categories = listOf("Top", "Bottom", "Bodysuit", "Zapato", "Accesorio")
         categories.forEach { category ->
@@ -103,7 +95,6 @@ class OutfitCreationActivity : AppCompatActivity() {
         }
     }
 
-    // Actualiza una fila específica para mostrar una prenda o el estado por defecto.
     private fun updateUiForRow(category: String, garment: Garment?) {
         val rowBinding = when (category) {
             "Top" -> binding.rowTop
@@ -116,17 +107,14 @@ class OutfitCreationActivity : AppCompatActivity() {
 
         rowBinding?.let { binding ->
             if (garment != null) {
-                // Estado con prenda: Muestra nombre, imagen y botón de borrar.
                 binding.tvGarmentName.text = garment.name
                 Glide.with(this).load(garment.imageUri).centerCrop().into(binding.ivGarmentPreview)
                 binding.btnAddGarment.visibility = View.GONE
                 binding.btnCleanGarment.visibility = View.VISIBLE
-
                 binding.btnCleanGarment.setOnClickListener {
                     viewModel.removeGarmentFromOutfit(category)
                 }
             } else {
-                // Estado sin prenda: Muestra categoría, placeholder y botón de añadir.
                 binding.tvGarmentName.text = category
                 binding.ivGarmentPreview.setImageResource(R.drawable.ic_placeholder_garment)
                 binding.btnAddGarment.visibility = View.VISIBLE
@@ -136,13 +124,37 @@ class OutfitCreationActivity : AppCompatActivity() {
     }
 
     private fun handleSaveOutfit() {
-        val name = binding.etOutfitName.text.toString().trim()
-        if (name.isEmpty()) {
-            binding.etOutfitName.error = "El nombre no puede estar vacío"
-            return
+        // Se llama a la función de validación antes de guardar
+        if (validateForm()) {
+            val name = binding.etOutfitName.text.toString().trim()
+            val tags = getSelectedTagsFromChipGroup()
+            viewModel.saveOutfit(name, tags)
         }
-        val tags = getSelectedTagsFromChipGroup()
-        viewModel.saveOutfit(name, tags)
+    }
+
+    /**
+     * NUEVA FUNCIÓN: Valida los campos del formulario.
+     */
+    private fun validateForm(): Boolean {
+        // 1. Validar que el nombre no esté vacío
+        if (binding.etOutfitName.text.toString().trim().isEmpty()) {
+            binding.etOutfitName.error = "El nombre no puede estar vacío"
+            return false
+        }
+
+        // 2. Validar las etiquetas
+        val selectedTags = getSelectedTagsFromChipGroup()
+        if (selectedTags.isEmpty()) {
+            Toast.makeText(this, "Debes seleccionar al menos una etiqueta", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        if (selectedTags.size > 5) {
+            Toast.makeText(this, "No puedes seleccionar más de 5 etiquetas", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        // Si todas las validaciones pasan, devuelve true
+        return true
     }
 
     private fun getSelectedTagsFromChipGroup(): List<String> {
@@ -152,30 +164,10 @@ class OutfitCreationActivity : AppCompatActivity() {
     }
 
     private fun setChipGroupData() {
-        val etiquetas = listOf(
-            "Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta",
-            "Trabajo", "Deportivo", "Playa", "Noche", "Vintage", "Minimalista")
-
-        val chipGroup = binding.chipGroupTags
-
+        val etiquetas = listOf("Casual", "Formal", "Verano", "Invierno", "Elegante", "Fiesta", "Trabajo", "Deportivo")
         etiquetas.forEach { etiqueta ->
-            ChipGroupStyler.addStyledChip(this, chipGroup, etiqueta, ChipGroupStyler.ChipStyle.SOFT_GRAY, true)
-        }
-        ChipGroupStyler.animateChipsStaggered(chipGroup)
-    }
-
-    private fun handleOnProfileButtonClicked() {
-        binding.btnProfile.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+            val chip = Chip(this).apply { text = etiqueta; isCheckable = true }
+            binding.chipGroupTags.addView(chip)
         }
     }
-
-    private fun handleOnBackButtonClicked() {
-        binding.btnBack.setOnClickListener {
-            @Suppress("DEPRECATION")
-            this.onBackPressed()
-        }
-    }
-
 }
