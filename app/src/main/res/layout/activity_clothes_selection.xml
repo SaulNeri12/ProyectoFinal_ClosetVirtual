@@ -132,13 +132,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_garments"
         android:layout_width="0dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:paddingHorizontal="8dp"
         app:layout_constraintTop_toBottomOf="@id/filtered_search_input_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/selectable_garment_card" />
+        tools:listitem="@layout/search_outfit_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import equipo.closet.closetvirtual.databinding.HistoryGarmentItemBinding // Se genera a partir del nuevo XML
+import equipo.closet.closetvirtual.databinding.HistoryGarmentItemBinding
 import equipo.closet.closetvirtual.entities.Garment
 
 class UsageHistoryAdapter(

@@ -66,18 +66,19 @@ class UsageHistoryFragment : Fragment() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val datePickerDialog = DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
-            val selectedCalendar = Calendar.getInstance()
-            selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
-            val selectedDate = selectedCalendar.time
+        val datePickerDialog =
+            DatePickerDialog(requireContext(), { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedCalendar = Calendar.getInstance()
+                selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
+                val selectedDate = selectedCalendar.time
 
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            binding.tvSelectedDate.text = "Prendas usadas el: ${sdf.format(selectedDate)}"
-            binding.tvSelectedDate.isVisible = true
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                binding.tvSelectedDate.text = "Prendas usadas el: ${sdf.format(selectedDate)}"
+                binding.tvSelectedDate.isVisible = true
 
-            viewModel.fetchGarmentsForDate(selectedDate)
+                viewModel.fetchGarmentsForDate(selectedDate)
 
-        }, year, month, day)
+            }, year, month, day)
 
         datePickerDialog.show()
     }
