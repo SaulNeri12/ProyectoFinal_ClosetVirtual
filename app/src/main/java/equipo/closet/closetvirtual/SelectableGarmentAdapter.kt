@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import equipo.closet.closetvirtual.databinding.SelectableGarmentCardBinding
+import equipo.closet.closetvirtual.databinding.SelectableGarmentCardBinding // Se genera del XML anterior
 import equipo.closet.closetvirtual.entities.Garment
 
 class SelectableGarmentAdapter(
@@ -18,8 +18,9 @@ class SelectableGarmentAdapter(
             Glide.with(binding.root.context)
                 .load(garment.imageUri)
                 .centerCrop()
-                .into(binding.ivGarmentPreview)
+                .into(binding.ivGarmentImage)
 
+            // El listener de clic se aplica a toda la tarjeta
             itemView.setOnClickListener {
                 onGarmentClick(garment)
             }
@@ -42,7 +43,7 @@ class SelectableGarmentAdapter(
     override fun getItemCount(): Int = garments.size
 
     fun updateData(newGarments: List<Garment>) {
-        garments = newGarments
+        this.garments = newGarments
         notifyDataSetChanged()
     }
 }

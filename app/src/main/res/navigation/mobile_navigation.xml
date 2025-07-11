@@ -31,18 +31,6 @@
             app:destination="@id/outfit_creation_fragment" />
     </fragment>
 
-
-<!--    <fragment-->
-<!--        android:id="@+id/clothes_selection_fragment"-->
-<!--        android:name="equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionFragment"-->
-<!--        android:label="Seleccion de Prendas"-->
-<!--        tools:layout="@layout/activity_clothes_selection">-->
-
-<!--        <action-->
-<!--            android:id="@+id/action_clothes_selection_fragment_to_navigation_new_clothes"-->
-<!--            app:destination="@id/navigation_new_clothes" />-->
-<!--    </fragment>-->
-
     <fragment
         android:id="@+id/daily_outfit_fragment"
         android:name="equipo.closet.closetvirtual.ui.dailyOutfit.DailyOutfitFragment"
@@ -54,5 +42,12 @@
         android:name="equipo.closet.closetvirtual.ui.outfitCreation.OutfitCreationFragment"
         android:label="Crear Outfit"
         tools:layout="@layout/activity_outfit_creation" />
+
+    <!--  destino para la pantalla del historial -->
+    <fragment
+        android:id="@+id/navigation_usage_history"
+        android:name="equipo.closet.closetvirtual.ui.usageHistory.UsageHistoryFragment"
+        android:label="Historial de Uso"
+        tools:layout="@layout/fragment_usage_history" />
 
 </navigation>
