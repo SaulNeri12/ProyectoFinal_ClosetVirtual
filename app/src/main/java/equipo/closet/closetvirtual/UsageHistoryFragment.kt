@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import equipo.closet.closetvirtual.databinding.FragmentUsageHistoryBinding
-import equipo.closet.closetvirtual.ui.clothesselection.adapters.SelectableGarmentAdapter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -20,7 +19,7 @@ class UsageHistoryFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: UsageHistoryViewModel by viewModels()
-    private lateinit var garmentAdapter: SelectableGarmentAdapter
+    private lateinit var historyAdapter: UsageHistoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +38,8 @@ class UsageHistoryFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        garmentAdapter = SelectableGarmentAdapter(emptyList()) { /* Sin acción de clic */ }
-        binding.rvUsedGarments.adapter = garmentAdapter
+        historyAdapter = UsageHistoryAdapter(emptyList())
+        binding.rvUsedGarments.adapter = historyAdapter
     }
 
     private fun setupListeners() {
@@ -51,7 +50,13 @@ class UsageHistoryFragment : Fragment() {
 
     private fun setupObservers() {
         viewModel.usedGarments.observe(viewLifecycleOwner) { garments ->
-            garmentAdapter.updateData(garments)
+            val hasGarments = garments.isNotEmpty()
+            binding.rvUsedGarments.isVisible = hasGarments
+            binding.tvNoGarments.isVisible = !hasGarments
+
+            if (hasGarments) {
+                historyAdapter.updateData(garments)
+            }
         }
     }
 
@@ -66,12 +71,10 @@ class UsageHistoryFragment : Fragment() {
             selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
             val selectedDate = selectedCalendar.time
 
-            // Formatea la fecha para mostrarla en la UI
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             binding.tvSelectedDate.text = "Prendas usadas el: ${sdf.format(selectedDate)}"
             binding.tvSelectedDate.isVisible = true
 
-            // Pide al ViewModel que busque las prendas para esa fecha
             viewModel.fetchGarmentsForDate(selectedDate)
 
         }, year, month, day)
