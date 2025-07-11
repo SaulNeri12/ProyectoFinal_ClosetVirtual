@@ -1,6 +1,7 @@
 package equipo.closet.closetvirtual.repositories
 
 import android.annotation.SuppressLint
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.EmailAuthProvider
 import equipo.closet.closetvirtual.repositories.exceptions.RegistrationException
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
@@ -8,6 +9,10 @@ import equipo.closet.closetvirtual.repositories.exceptions.AuthException
 import com.google.firebase.firestore.FirebaseFirestore
 import equipo.closet.closetvirtual.entities.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.exceptions.SearchException
 import kotlinx.coroutines.tasks.await
@@ -58,9 +63,15 @@ object FirebaseUserRepository : UserRepository {
             return user
 
         } catch (e: Exception) {
-            throw AuthException(
-                e.message ?: "Error desconocido al registrar el usuario"
-            )
+            val errorMessage = when (e) {
+                is FirebaseAuthInvalidUserException -> "Este usuario no está registrado. Verifica tu correo electrónico."
+                is FirebaseAuthInvalidCredentialsException -> "El correo o la contraseña son incorrectos."
+                is FirebaseAuthUserCollisionException -> "Este usuario ya está registrado."
+                is FirebaseAuthWeakPasswordException -> "La contraseña es demasiado débil."
+                is FirebaseNetworkException -> "No se pudo conectar con el servidor. Verifica tu conexión a Internet."
+                else -> "Ocurrió un error inesperado al iniciar sesión. Intenta de nuevo."
+            }
+            throw AuthException(errorMessage)
         }
     }
 
@@ -91,9 +102,15 @@ object FirebaseUserRepository : UserRepository {
             user.uid = firebaseUser.uid
 
         } catch (e: Exception) {
-            throw RegistrationException(
-                e.message ?: "Error desconocido al registrar el usuario"
-            )
+            val errorMessage = when (e) {
+                is FirebaseAuthInvalidUserException -> "Este usuario no está registrado. Verifica tu correo electrónico."
+                is FirebaseAuthInvalidCredentialsException -> "El correo o la contraseña son incorrectos."
+                is FirebaseAuthUserCollisionException -> "Este usuario ya está registrado."
+                is FirebaseAuthWeakPasswordException -> "La contraseña es demasiado débil."
+                is FirebaseNetworkException -> "No se pudo conectar con el servidor. Verifica tu conexión a Internet."
+                else -> "Ocurrió un error inesperado al iniciar sesión. Intenta de nuevo."
+            }
+            throw RegistrationException(errorMessage)
         }
     }
     /**

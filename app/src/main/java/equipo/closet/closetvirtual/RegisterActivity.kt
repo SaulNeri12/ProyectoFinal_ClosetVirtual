@@ -75,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
                         startActivity(intent)
 
                     } catch (e: RegistrationException) {
-                        Toast.makeText(this@RegisterActivity, "Error en el registro: ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@RegisterActivity, "${e.message}", Toast.LENGTH_LONG).show()
                     } catch (e: Exception) {
                         Toast.makeText(this@RegisterActivity, "Ocurrió un error inesperado: ${e.message}", Toast.LENGTH_LONG).show()
                     } finally {
