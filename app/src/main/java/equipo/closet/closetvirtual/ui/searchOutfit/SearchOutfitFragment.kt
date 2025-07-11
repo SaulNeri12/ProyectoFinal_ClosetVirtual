@@ -112,7 +112,7 @@ class SearchOutfitFragment : Fragment() {
         searchJob = lifecycleScope.launch {
             try {
                 delay(500L)
-                val searchText = binding.filteredGarmentSearchInput.text.toString()
+                val searchText = binding.filteredGarmentSearchInput.text.toString().lowercase()
 
                 val filterMap = mutableMapOf<String, Any>()
                 if (searchText.isNotEmpty()) {
@@ -125,6 +125,7 @@ class SearchOutfitFragment : Fragment() {
                 val outfits = outfitRepository.getAll(filterMap)
 
                 Log.w("#### SearchOutfitFragment", "Outfits: $outfits")
+                Log.w("#### SearchOutfitFragment", "search text: $searchText")
 
                 updateOutfitList(outfits)
 
