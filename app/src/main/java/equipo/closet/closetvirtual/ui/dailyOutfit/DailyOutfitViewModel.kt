@@ -33,7 +33,7 @@ class DailyOutfitViewModel(outfitRepository: FirebaseOutfitRepository) : ViewMod
         viewModelScope.launch {
             try {
                 selectedGarments.values.forEach { garment ->
-                    GarmentUsageTracker.registerUsage(SessionManager.user.uid,garment.id)
+                    GarmentUsageTracker.registerUsage(garment.id)
                 }
                 saveResult.value = Result.success(Unit)
             } catch (e: Exception) {

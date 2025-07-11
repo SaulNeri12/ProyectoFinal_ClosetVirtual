@@ -117,7 +117,7 @@
                     android:layout_toStartOf="@id/ivCalendar"
                     android:background="@android:color/transparent"
                     android:gravity="center_vertical"
-                    android:hint="Fecha de nacimiento"
+                    android:hint="Seleccionar Fecha"
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
                     android:textSize="17sp"
