@@ -1,13 +1,17 @@
 package equipo.closet.closetvirtual.ui.usageHistory
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.datepicker.MaterialDatePicker
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.databinding.FragmentUsageHistoryBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -35,6 +39,8 @@ class UsageHistoryFragment : Fragment() {
         setupRecyclerView()
         setupListeners()
         setupObservers()
+        handleOnProfileButtonClicked()
+        handleOnBackButtonClicked()
     }
 
     private fun setupRecyclerView() {
@@ -80,6 +86,19 @@ class UsageHistoryFragment : Fragment() {
         }, year, month, day)
 
         datePickerDialog.show()
+    }
+
+    private fun handleOnProfileButtonClicked() {
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun handleOnBackButtonClicked() {
+        binding.btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     override fun onDestroyView() {

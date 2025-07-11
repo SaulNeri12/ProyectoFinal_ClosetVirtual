@@ -141,8 +141,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:paddingHorizontal="20dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:id="@+id/etBirthDate"
@@ -155,7 +155,7 @@
                     android:textColor="@color/text_primary_dark"
                     android:textColorHint="@color/gray_medium"
                     android:textSize="17sp"
-                    android:theme="@style/InputStyle"/>
+                    android:theme="@style/InputStyle" />
 
                 <ImageView
                     android:id="@+id/ivCalendar"
@@ -163,9 +163,9 @@
                     android:layout_height="24dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:contentDescription="Calendario"
                     android:src="@drawable/ic_calendar"
-                    app:tint="@color/icon_color"
-                    android:contentDescription="Calendario" />
+                    app:tint="@color/icon_color" />
 
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
