@@ -19,6 +19,6 @@ class App : Application() {
         config["cloud_name"] = CLOUD_NAME
         MediaManager.init(this, config)
 
-        Toast.makeText(this, "Se inicializo firebase", Toast.LENGTH_LONG).show()
+        //Toast.makeText(this, "Se inicializo firebase", Toast.LENGTH_LONG).show()
     }
 }
