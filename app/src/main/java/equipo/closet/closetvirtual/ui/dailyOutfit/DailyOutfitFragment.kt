@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import equipo.closet.closetvirtual.ClothesSelectionActivity
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentDailyOutfitBinding
 import equipo.closet.closetvirtual.databinding.OutfitCreationRowDetailedBinding
@@ -62,6 +63,8 @@ class DailyOutfitFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
         setupSaveObserver()
+        handleOnProfileButtonClicked()
+        handleOnBackButtonClicked()
 
         // Si la pantalla está vacía, añade la primera fila automáticamente
         if (binding.garmentRowsContainer.childCount == 0) {
@@ -127,6 +130,20 @@ class DailyOutfitFragment : Fragment() {
             }.onFailure {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun handleOnProfileButtonClicked() {
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun handleOnBackButtonClicked() {
+        binding.btnBack.setOnClickListener {
+            @Suppress("DEPRECATION")
+            requireActivity().onBackPressed()
         }
     }
 

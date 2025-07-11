@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,7 @@ import equipo.closet.closetvirtual.entities.Outfit
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
 import equipo.closet.closetvirtual.ui.outfitCreation.OutfitsAdapter
+import equipo.closet.closetvirtual.ui.searchOutfit.adapters.OutfitSearchListAdapter
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterFragment // Asumiendo el nombre del filtro
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterViewModel
 import kotlinx.coroutines.Job
@@ -28,16 +30,13 @@ class SearchOutfitFragment : Fragment() {
     private var _binding: FragmentSearchOutfitBinding? = null
     private val binding get() = _binding!!
 
-    // Usamos activityViewModels para compartir el estado del filtro con el diálogo
     private val viewModel: SearchOutfitFilterViewModel by activityViewModels()
 
     private val outfitRepository = FirebaseOutfitRepository(FirebaseGarmentRepository)
-    private val garmentRepository = FirebaseGarmentRepository
 
-    // CORRECCIÓN: Se inicializa la lista para evitar errores
     private var tags: List<String> = emptyList()
-    private var allGarmentsMap: Map<String, Garment> = emptyMap()
-    private var adapter: OutfitsAdapter? = null
+
+    private var adapter: OutfitSearchListAdapter? = null
 
     private var searchJob: Job? = null
 
@@ -52,22 +51,17 @@ class SearchOutfitFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Se inicializa el adaptador una sola vez
-        setupAdapter()
-
-        // Se configuran los listeners y observers
         setupListeners()
         setupObservers()
-
-        // Se cargan los datos iniciales
         loadInitialData()
+
     }
 
-    private fun setupAdapter() {
-        // Se crea el adaptador vacío. Se llenará cuando lleguen los datos.
-        adapter = OutfitsAdapter(requireContext(), emptyList(), allGarmentsMap)
-        binding.outfitCardsListview.adapter = adapter
+    override fun onResume() {
+        super.onResume()
+        triggerSearch()
     }
+
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
@@ -92,10 +86,8 @@ class SearchOutfitFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        // Observa los cambios de tags desde el diálogo de filtro
         viewModel.tags.observe(viewLifecycleOwner) { newTags ->
             this.tags = newTags
-            // Al cambiar los tags, se dispara una nueva búsqueda
             triggerSearch()
         }
     }
@@ -103,13 +95,10 @@ class SearchOutfitFragment : Fragment() {
     private fun loadInitialData() {
         lifecycleScope.launch {
             try {
-                // Carga todas las prendas una vez para tener sus datos (imágenes, etc.)
-                allGarmentsMap = garmentRepository.getAll().associateBy { it.id }
-                // Carga todos los outfits y los muestra
                 val outfits = outfitRepository.getAll()
                 updateOutfitList(outfits)
             } catch (e: Exception) {
-                // Manejar error
+                Toast.makeText(requireContext(), "Error al cargar outfits", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -118,12 +107,9 @@ class SearchOutfitFragment : Fragment() {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             try {
-                delay(500L) // Pequeña espera para no buscar con cada letra tecleada
-
-                // CORRECCIÓN: Se usa .text para obtener el contenido del EditText
+                delay(500L)
                 val searchText = binding.filteredGarmentSearchInput.text.toString().trim()
 
-                // Se construye el mapa de filtros dinámicamente
                 val filterMap = mutableMapOf<String, Any>()
                 if (searchText.isNotEmpty()) {
                     filterMap["name"] = searchText
@@ -132,19 +118,18 @@ class SearchOutfitFragment : Fragment() {
                     filterMap["tags"] = tags
                 }
 
-                // Se buscan los outfits con los filtros aplicados
                 val outfits = outfitRepository.getAll(filterMap)
                 updateOutfitList(outfits)
 
             } catch (e: Exception) {
-                // Manejar error
+                Toast.makeText(requireContext(), "Error al buscar outfits", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // CORRECCIÓN: Esta función actualiza los datos del adaptador existente, no crea uno nuevo
     private fun updateOutfitList(outfits: List<Outfit>) {
-        adapter?.updateData(outfits, allGarmentsMap)
+        adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
+        binding.outfitCardsListview.adapter = adapter
     }
 
     override fun onDestroyView() {

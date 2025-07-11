@@ -53,7 +53,7 @@ class OutfitSearchListAdapter : BaseAdapter {
         val outfit: Outfit = this.getItem(position)
 
         holder.outfitName.text = outfit.name
-        holder.outfitTag.text = "Tag Test"
+        holder.outfitTag.text = getTagsString(outfit.tags)
 
         // setting up clothes list adapters
         holder.clothesCardsGrid.adapter = OutfitClothesGridAdapter(view.context, outfit.getClothes().toMutableList())
@@ -66,4 +66,14 @@ class OutfitSearchListAdapter : BaseAdapter {
         val outfitTag: TextView,
         val clothesCardsGrid: GridView
     )
+
+    private fun getTagsString(tags : MutableList<String>) : String {
+        val tagsString = StringBuilder()
+        for (tag in tags) {
+            tagsString.append(tag)
+            tagsString.append(", ")
+        }
+        return tagsString.toString().dropLast(1)
+    }
+
 }
