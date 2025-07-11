@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
 import equipo.closet.closetvirtual.repositories.GarmentUsageTracker
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class DailyOutfitViewModel(outfitRepository: FirebaseOutfitRepository) : ViewMod
         viewModelScope.launch {
             try {
                 selectedGarments.values.forEach { garment ->
-                    GarmentUsageTracker.registerUsage(garment.id)
+                    GarmentUsageTracker.registerUsage(SessionManager.user.uid,garment.id)
                 }
                 saveResult.value = Result.success(Unit)
             } catch (e: Exception) {
