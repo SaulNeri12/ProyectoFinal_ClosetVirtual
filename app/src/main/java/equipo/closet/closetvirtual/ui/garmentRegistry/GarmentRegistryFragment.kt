@@ -3,6 +3,7 @@ package equipo.closet.closetvirtual.ui.garmentRegistry
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,9 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.cloudinary.android.MediaManager
+import com.cloudinary.android.callback.ErrorInfo
+import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.chip.Chip
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
@@ -246,6 +250,69 @@ class GarmentRegistryFragment : Fragment() {
 
     private fun registerGarment() : Unit {
         binding.btnAddGarment.setOnClickListener {
+            if (!validateInputFields()) return@setOnClickListener
+
+            val name = binding.etGarmentName.text.toString()
+            val color = getSelectedColor() ?: ""
+            val category = binding.spGarmentCategory.selectedItem.toString()
+            val print = binding.switchPrint.isChecked
+            val userId = SessionManager.user.uid
+            val tags = getTags()
+
+            if (imageUri == null) {
+                Toast.makeText(requireContext(), "Selecciona una imagen", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            MediaManager.get().upload(imageUri)
+                .unsigned("pokemon-preset")
+                .callback(object : UploadCallback {
+                    override fun onStart(requestId: String?) {
+                        Log.i("Cloudinary", "Inicio de carga $requestId")
+                    }
+
+                    override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
+                        Log.i("Cloudinary", "Cargando imagen: $bytes/$totalBytes")
+                    }
+
+                    override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
+                        val imageUrl = resultData?.get("secure_url") as? String
+                        if (imageUrl == null) {
+                            Toast.makeText(requireContext(), "Error al obtener la URL de imagen", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+
+                        val newGarment = Garment(
+                            id = UUID.randomUUID().toString(),
+                            name = name,
+                            color = color,
+                            category = category,
+                            print = print,
+                            imageUri = imageUrl,
+                            userId = userId,
+                            tags = tags
+                        )
+
+                        lifecycleScope.launch {
+                            clothesRepository.insert(newGarment)
+                            Toast.makeText(requireContext(), "Prenda registrada exitosamente", Toast.LENGTH_SHORT).show()
+                            findNavController().navigate(R.id.action_navigation_new_clothes_to_navigation_home)
+                        }
+                    }
+
+                    override fun onError(requestId: String?, error: ErrorInfo?) {
+                        Log.e("Cloudinary", "Error al subir imagen: ${error?.description}")
+                        Toast.makeText(requireContext(), "Error al subir imagen", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onReschedule(requestId: String?, error: ErrorInfo?) {
+                        Log.i("Cloudinary", "Subida reprogramada: ${error?.description}")
+                    }
+                })
+                .dispatch()
+        }
+        /*
+        binding.btnAddGarment.setOnClickListener {
             if (validateInputFields()) {
                 val name = binding.etGarmentName.text.toString()
                 val color = getSelectedColor() ?: ""
@@ -266,19 +333,68 @@ class GarmentRegistryFragment : Fragment() {
                     tags = tags,
                 )
 
-                lifecycleScope.launch {
-                    clothesRepository.insert(newGarment)
+                val requestId = MediaManager
+                    .get()
+                    .upload(imageUri)
+                    .unsigned("pokemon-preset")
+                    .callback(object : UploadCallback {
+                        override fun onStart(requestId: String?) {
+                            Log.i("Cloudinary", "Inicio de carga $requestId")
+                        }
 
-                    //succes mesagge
-                    Toast.makeText(
-                        requireContext(), "Prenda registrada exitosamente",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                        override fun onProgress(requestId: String?, bytes: Long, totalBytes: Long) {
+                            Log.i("Cloudinary", "Cargando imagen: $bytes/$totalBytes")
+                        }
+
+                        override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
+                            val imageUrl = resultData?.get("secure_url") as? String
+
+                            if (imageUrl == null) {
+                                Toast.makeText(requireContext(), "Error al obtener URL de imagen", Toast.LENGTH_SHORT).show()
+                                return
+                            }
+
+                            lifecycleScope.launch {
+                                val name = binding.etGarmentName.text.toString()
+                                val color = getSelectedColor() ?: ""
+                                val category = binding.spGarmentCategory.selectedItem.toString()
+                                val print = binding.switchPrint.isChecked
+                                val userId = SessionManager.user.uid
+                                val tags = getTags()
+
+                                val newGarment = Garment(
+                                    id = UUID.randomUUID().toString(),
+                                    name = name,
+                                    color = color,
+                                    category = category,
+                                    print = print,
+                                    imageUri = imageUrl, // Aquí va la URL de Cloudinary
+                                    userId = userId,
+                                    tags = tags
+                                )
+
+                                clothesRepository.insert(newGarment)
+
+                                Toast.makeText(requireContext(), "Prenda registrada exitosamente", Toast.LENGTH_SHORT).show()
+                                findNavController().navigate(R.id.action_navigation_new_clothes_to_navigation_home)
+                            }
+                        }
+
+                        override fun onError(requestId: String?, error: ErrorInfo?) {
+                            Log.e("Cloudinary", "Error al subir imagen: ${error?.description}")
+                            Toast.makeText(requireContext(), "Error al subir imagen", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onReschedule(requestId: String?, error: ErrorInfo?) {
+                            Log.i("Cloudinary", "Subida reprogramada: ${error?.description}")
+                        }
+                    })
+                    .dispatch()
+
                 // go to home fragment
                 findNavController().navigate(R.id.action_navigation_new_clothes_to_navigation_home)
             }
-        }
+        }*/
     }
 
     private fun setChipGroupData() {

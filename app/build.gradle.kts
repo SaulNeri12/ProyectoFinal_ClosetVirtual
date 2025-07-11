@@ -59,6 +59,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
     implementation ("com.google.android.material:material:1.9.0")
     implementation ("com.google.android.material:material:1.11.0")
+    implementation("com.cloudinary:cloudinary-android:3.0.2")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
