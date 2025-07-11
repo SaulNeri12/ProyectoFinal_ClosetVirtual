@@ -1,6 +1,5 @@
-package equipo.closet.closetvirtual
+package equipo.closet.closetvirtual.ui.clothesSelection
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -12,16 +11,16 @@ import androidx.recyclerview.widget.GridLayoutManager
 import equipo.closet.closetvirtual.databinding.ActivityClothesSelectionBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
+import equipo.closet.closetvirtual.ui.clothesselection.adapters.SelectableGarmentAdapter
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterFragment
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterViewModel
-import equipo.closet.closetvirtual.ui.clothesselection.adapters.SelectableGarmentAdapter
 import kotlinx.coroutines.launch
 
 class ClothesSelectionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityClothesSelectionBinding
     private val viewModel: SearchOutfitFilterViewModel by viewModels()
-    private lateinit var garmentAdapter: SelectableGarmentAdapter
+    private lateinit var garmentAdapter: ClothesSelectionAdapter
     private var allGarments: List<Garment> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +30,7 @@ class ClothesSelectionActivity : AppCompatActivity() {
 
         val categoryFilter = intent.getStringExtra("CATEGORY_FILTER") ?: "all"
 
-        setupRecyclerView()
+        setupListView()
         setupListeners()
         setupObservers()
         loadGarments(categoryFilter)
@@ -57,21 +56,19 @@ class ClothesSelectionActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecyclerView() {
-        garmentAdapter = SelectableGarmentAdapter(emptyList()) { selectedGarment ->
+    private fun setupListView() {
+        garmentAdapter = ClothesSelectionAdapter(this, emptyList()) { selectedGarment ->
             val resultIntent = Intent().apply {
                 putExtra("SELECTED_GARMENT_ID", selectedGarment.id)
                 putExtra("CATEGORY_FILTER", intent.getStringExtra("CATEGORY_FILTER"))
             }
-            setResult(Activity.RESULT_OK, resultIntent)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
 
-        binding.rvGarments.apply {
-            layoutManager = GridLayoutManager(this@ClothesSelectionActivity, 2)
-            adapter = garmentAdapter
-        }
+        binding.lvGarments.adapter = garmentAdapter
     }
+
 
     private fun loadGarments(initialCategory: String) {
         lifecycleScope.launch {
