@@ -95,6 +95,13 @@ class RegisterActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, "birth_date_picker")
 
             datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
+                val currentDateMillis = System.currentTimeMillis()
+
+                if (selectedDateMillis > currentDateMillis) {
+                    Toast.makeText(this, "No puedes seleccionar una fecha futura", Toast.LENGTH_LONG).show()
+                    return@addOnPositiveButtonClickListener
+                }
+
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = selectedDateMillis
 
@@ -107,6 +114,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun setBackButtonBehavior() {
         binding.ivBack.setOnClickListener{

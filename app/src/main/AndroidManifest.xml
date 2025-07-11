@@ -32,7 +32,7 @@
         <activity android:name=".ProfileActivity"
             android:exported="false"/>
 
-        <activity android:name=".ClothesSelectionActivity"
+        <activity android:name=".ui.clothesSelection.ClothesSelectionActivity"
             android:exported="false"/>
 
         <activity android:name=".OutfitCreationActivity"
