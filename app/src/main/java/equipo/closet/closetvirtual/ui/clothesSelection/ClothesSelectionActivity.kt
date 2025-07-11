@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.databinding.ActivityClothesSelectionBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
@@ -38,6 +39,11 @@ class ClothesSelectionActivity : AppCompatActivity() {
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { finish() }
+
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
 
         // CAMBIO: Ahora el botón de filtro abre tu SearchOutfitFilterFragment
         binding.btnFilter.setOnClickListener {

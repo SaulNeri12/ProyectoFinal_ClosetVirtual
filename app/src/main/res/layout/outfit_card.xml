@@ -8,44 +8,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="158dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp">
+                android:text="Nombre:"
+                android:textColor="@color/background_dark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre:"
-                    android:textColor="@color/background_dark"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent" />
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/outfit_name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Outfit Name"
+                android:textColor="@color/background_dark"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/outfit_name_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Outfit Name"
-                    android:textColor="@color/background_dark"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </LinearLayout>
-
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -60,14 +53,11 @@
                 android:text="Etiquetas:"
                 android:textColor="@color/background_dark"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textStyle="bold" />
 
             <Space
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/outfit_tag_label"
@@ -76,23 +66,27 @@
                 android:textColor="@color/background_dark"
                 android:layout_marginEnd="10dp"
                 android:text="Etiquetas"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="16sp" />
 
         </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"/>
 
         <GridView
             android:id="@+id/clothes_cards_list_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="5dp"
-            android:horizontalSpacing="10dp"
             android:numColumns="auto_fit"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp" />
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:columnWidth="96dp" />
 
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>
+
