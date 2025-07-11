@@ -10,9 +10,11 @@ import android.widget.TextView
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
+import equipo.closet.closetvirtual.global.ClothesCache
 import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
 import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import android.util.Log
 
 class OutfitSearchListAdapter : BaseAdapter {
 
@@ -73,7 +75,17 @@ class OutfitSearchListAdapter : BaseAdapter {
             }
         }*/
 
-        holder.clothesCardsGrid.adapter = OutfitClothesGridAdapter(view.context, outfit.getClothes().toMutableList())
+        Log.w("#### OutfitSearchListAdapter", "Clothes CACHE: ${ClothesCache.getAllGarments()}")
+
+        var clothes = mutableListOf<Garment>()
+
+        for (garmentId in outfit.clothesIds) {
+            ClothesCache.getGarmentById(garmentId)?.let { clothes.add(it) }
+        }
+
+        Log.w("#### OutfitSearchListAdapter", "Clothes FETCHED FROM CACHE: $clothes")
+
+        holder.clothesCardsGrid.adapter = OutfitClothesGridAdapter(view.context, clothes)
 
         return view
     }

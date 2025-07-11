@@ -18,8 +18,10 @@ import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentSearchOutfitBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
+import equipo.closet.closetvirtual.global.ClothesCache
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.ui.outfitCreation.OutfitsAdapter
 import equipo.closet.closetvirtual.ui.searchOutfit.adapters.OutfitSearchListAdapter
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterFragment // Asumiendo el nombre del filtro
@@ -35,7 +37,8 @@ class SearchOutfitFragment : Fragment() {
 
     private val viewModel: SearchOutfitFilterViewModel by activityViewModels()
 
-    private val outfitRepository = FirebaseOutfitRepository(FirebaseGarmentRepository)
+    private val clothesRepository = GarmentRepositoryFactory.create()
+    private val outfitRepository = FirebaseOutfitRepository(clothesRepository)
 
     private var tags: List<String> = emptyList()
 
@@ -53,11 +56,22 @@ class SearchOutfitFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadAllClothes()
+
         setupListeners()
         setupObservers()
         loadInitialData()
 
     }
+
+    private fun loadAllClothes() {
+        lifecycleScope.launch {
+            val clothes = clothesRepository.getAll()
+            Log.w("#### SearchOutfitFragment", "Clothes CACHED: $clothes")
+            ClothesCache.setGarments(clothes)
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()
