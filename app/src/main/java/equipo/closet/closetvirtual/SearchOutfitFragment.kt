@@ -63,6 +63,7 @@ class SearchOutfitFragment : Fragment() {
         }
     }
 
+    // CORRECTO: onDestroyView es un método de la clase, debe estar fuera de otros métodos.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

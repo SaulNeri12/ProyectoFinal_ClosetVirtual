@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import equipo.closet.closetvirtual.databinding.SelectableGarmentCardBinding // Se genera del XML anterior
+import equipo.closet.closetvirtual.databinding.SelectableGarmentCardBinding
 import equipo.closet.closetvirtual.entities.Garment
 
 class SelectableGarmentAdapter(
