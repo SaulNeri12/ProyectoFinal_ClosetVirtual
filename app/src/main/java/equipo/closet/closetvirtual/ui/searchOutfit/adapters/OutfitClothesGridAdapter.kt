@@ -37,13 +37,10 @@ class OutfitClothesGridAdapter (
 
         val garment = getItem(position)
 
-        if (garment.imageUri.isEmpty() || garment.imageUri.isBlank()) {
-            holder.previewImage.setImageResource(R.mipmap.garment_bottom_test)
-        } else {
-            Glide.with(context)
+        Glide.with(context)
                 .load(garment.imageUri)
+                .error(R.drawable.ic_placeholder_garment)
                 .into(holder.previewImage)
-        }
 
         return view
     }

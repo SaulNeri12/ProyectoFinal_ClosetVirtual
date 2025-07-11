@@ -8,12 +8,17 @@ import android.widget.BaseAdapter
 import android.widget.GridView
 import android.widget.TextView
 import equipo.closet.closetvirtual.R
+import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.Repository
 
 class OutfitSearchListAdapter : BaseAdapter {
 
     private lateinit var context: Context
     private lateinit var outfits: MutableList<Outfit>
+    private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
 
     constructor(context: Context, outfits: MutableList<Outfit>) {
         this.context = context
@@ -56,6 +61,18 @@ class OutfitSearchListAdapter : BaseAdapter {
         holder.outfitTag.text = getTagsString(outfit.tags)
 
         // setting up clothes list adapters
+
+        /*
+        // lifecycleSciope.launch porque getById es asincrono
+        var clothes = mutableListOf<Garment>()
+
+        for (garmentId in outfit.clothesIds) {
+            val garment = clothesRepository.getById(garmentId)
+            if (garment != null) {
+                clothes.add(garment)
+            }
+        }*/
+
         holder.clothesCardsGrid.adapter = OutfitClothesGridAdapter(view.context, outfit.getClothes().toMutableList())
 
         return view
