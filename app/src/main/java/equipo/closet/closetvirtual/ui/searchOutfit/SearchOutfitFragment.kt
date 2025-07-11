@@ -4,40 +4,43 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import equipo.closet.closetvirtual.OutfitCreationActivity
+import equipo.closet.closetvirtual.ProfileActivity
+import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentSearchOutfitBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
+import equipo.closet.closetvirtual.global.ClothesCache
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.FirebaseOutfitRepository
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
 import equipo.closet.closetvirtual.ui.outfitCreation.OutfitsAdapter
+import equipo.closet.closetvirtual.ui.searchOutfit.adapters.OutfitSearchListAdapter
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterFragment // Asumiendo el nombre del filtro
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 class SearchOutfitFragment : Fragment() {
 
-    private var _binding: FragmentSearchOutfitBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentSearchOutfitBinding
 
-    // Usamos activityViewModels para compartir el estado del filtro con el diálogo
     private val viewModel: SearchOutfitFilterViewModel by activityViewModels()
 
-    private val outfitRepository = FirebaseOutfitRepository(FirebaseGarmentRepository)
-    private val garmentRepository = FirebaseGarmentRepository
+    private val clothesRepository = GarmentRepositoryFactory.create()
+    private val outfitRepository = FirebaseOutfitRepository(clothesRepository)
 
-    // CORRECCIÓN: Se inicializa la lista para evitar errores
     private var tags: List<String> = emptyList()
-    private var allGarmentsMap: Map<String, Garment> = emptyMap()
-    private var adapter: OutfitsAdapter? = null
 
     private var searchJob: Job? = null
 
@@ -45,33 +48,42 @@ class SearchOutfitFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchOutfitBinding.inflate(inflater, container, false)
+        activity?.findViewById<View>(R.id.bottom_nav_card)?.visibility = View.VISIBLE
+        binding = FragmentSearchOutfitBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Se inicializa el adaptador una sola vez
-        setupAdapter()
+        loadAllClothes()
 
-        // Se configuran los listeners y observers
         setupListeners()
         setupObservers()
-
-        // Se cargan los datos iniciales
         loadInitialData()
+
     }
 
-    private fun setupAdapter() {
-        // Se crea el adaptador vacío. Se llenará cuando lleguen los datos.
-        adapter = OutfitsAdapter(requireContext(), emptyList(), allGarmentsMap)
-        binding.outfitCardsListview.adapter = adapter
+    private fun loadAllClothes() {
+        lifecycleScope.launch {
+            val clothes = clothesRepository.getAll()
+            Log.w("#### SearchOutfitFragment", "Clothes CACHED: $clothes")
+            ClothesCache.setGarments(clothes)
+        }
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        triggerSearch()
+    }
+
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
-        binding.btnProfile.setOnClickListener { /* TODO */ }
+        binding.btnProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+        }
 
         binding.btnNewOutfit.setOnClickListener {
             startActivity(Intent(requireContext(), OutfitCreationActivity::class.java))
@@ -81,7 +93,6 @@ class SearchOutfitFragment : Fragment() {
             SearchOutfitFilterFragment().show(childFragmentManager, "FilterFragment")
         }
 
-        // Un solo listener para la búsqueda en tiempo real
         binding.filteredGarmentSearchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -92,10 +103,8 @@ class SearchOutfitFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        // Observa los cambios de tags desde el diálogo de filtro
         viewModel.tags.observe(viewLifecycleOwner) { newTags ->
             this.tags = newTags
-            // Al cambiar los tags, se dispara una nueva búsqueda
             triggerSearch()
         }
     }
@@ -103,13 +112,11 @@ class SearchOutfitFragment : Fragment() {
     private fun loadInitialData() {
         lifecycleScope.launch {
             try {
-                // Carga todas las prendas una vez para tener sus datos (imágenes, etc.)
-                allGarmentsMap = garmentRepository.getAll().associateBy { it.id }
-                // Carga todos los outfits y los muestra
                 val outfits = outfitRepository.getAll()
                 updateOutfitList(outfits)
+                Toast.makeText(requireContext(), "Loaded initial data", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                // Manejar error
+                Toast.makeText(requireContext(), "Error al cargar los outfits", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -118,12 +125,9 @@ class SearchOutfitFragment : Fragment() {
         searchJob?.cancel()
         searchJob = lifecycleScope.launch {
             try {
-                delay(500L) // Pequeña espera para no buscar con cada letra tecleada
+                delay(500L)
+                val searchText = binding.filteredGarmentSearchInput.text.toString().lowercase()
 
-                // CORRECCIÓN: Se usa .text para obtener el contenido del EditText
-                val searchText = binding.filteredGarmentSearchInput.text.toString().trim()
-
-                // Se construye el mapa de filtros dinámicamente
                 val filterMap = mutableMapOf<String, Any>()
                 if (searchText.isNotEmpty()) {
                     filterMap["name"] = searchText
@@ -132,23 +136,26 @@ class SearchOutfitFragment : Fragment() {
                     filterMap["tags"] = tags
                 }
 
-                // Se buscan los outfits con los filtros aplicados
                 val outfits = outfitRepository.getAll(filterMap)
+
+                Log.w("#### SearchOutfitFragment", "Outfits: $outfits")
+                Log.w("#### SearchOutfitFragment", "search text: $searchText")
+
                 updateOutfitList(outfits)
 
-            } catch (e: Exception) {
-                // Manejar error
+            } catch (e: CancellationException) {
+                // no hagas nada...
+            }
+            catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error al cargar los outfits", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    // CORRECCIÓN: Esta función actualiza los datos del adaptador existente, no crea uno nuevo
     private fun updateOutfitList(outfits: List<Outfit>) {
-        adapter?.updateData(outfits, allGarmentsMap)
+        val adapter = OutfitSearchListAdapter(requireContext(), outfits.toMutableList())
+        binding.outfitCardsListview.adapter = adapter
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }

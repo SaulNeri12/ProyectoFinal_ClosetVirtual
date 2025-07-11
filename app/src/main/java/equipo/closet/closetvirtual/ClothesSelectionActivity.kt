@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import equipo.closet.closetvirtual.databinding.ActivityClothesSelectionBinding
 import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
-// CAMBIO: Se importa tu fragmento de filtro
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterFragment
 import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterViewModel
 import equipo.closet.closetvirtual.ui.clothesselection.adapters.SelectableGarmentAdapter

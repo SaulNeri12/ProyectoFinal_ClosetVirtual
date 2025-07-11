@@ -4,26 +4,28 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home"
-        android:title="" />
+        android:title="Inicio" />
 
     <item
         android:id="@+id/navigation_new_clothes"
         android:icon="@drawable/ic_add_ropa"
-        android:title="" />
+        android:title="Añadir" />
 
     <item
         android:id="@+id/navigation_outfit_finder"
         android:icon="@drawable/ic_gancho"
-        android:title="" />
+        android:title="Outfits" />
 
-<!--    <item-->
-<!--        android:id="@+id/clothes_selection_fragment"-->
-<!--        android:icon="@drawable/ic_ropa"-->
-<!--        android:title="" />-->
-
+    <!-- CAMBIO: Ahora usa el ícono de la camiseta -->
     <item
         android:id="@+id/daily_outfit_fragment"
+        android:icon="@drawable/ic_tshirt"
+        android:title="Outfit Diario" />
+
+    <!-- AÑADIDO: Nuevo botón para el historial -->
+    <item
+        android:id="@+id/navigation_usage_history"
         android:icon="@drawable/ic_calendar"
-        android:title="" />
+        android:title="Historial" />
 
 </menu>

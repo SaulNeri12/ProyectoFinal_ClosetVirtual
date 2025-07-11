@@ -1,7 +1,6 @@
 package equipo.closet.closetvirtual.repositories
 
 import android.annotation.SuppressLint
-import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.EmailAuthProvider
 import equipo.closet.closetvirtual.repositories.exceptions.RegistrationException
 import equipo.closet.closetvirtual.repositories.interfaces.UserRepository
@@ -9,10 +8,7 @@ import equipo.closet.closetvirtual.repositories.exceptions.AuthException
 import com.google.firebase.firestore.FirebaseFirestore
 import equipo.closet.closetvirtual.entities.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.FirebaseAuthException
 import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.exceptions.SearchException
 import kotlinx.coroutines.tasks.await
@@ -62,16 +58,24 @@ object FirebaseUserRepository : UserRepository {
 
             return user
 
-        } catch (e: Exception) {
-            val errorMessage = when (e) {
-                is FirebaseAuthInvalidUserException -> "Este usuario no está registrado. Verifica tu correo electrónico."
-                is FirebaseAuthInvalidCredentialsException -> "El correo o la contraseña son incorrectos."
-                is FirebaseAuthUserCollisionException -> "Este usuario ya está registrado."
-                is FirebaseAuthWeakPasswordException -> "La contraseña es demasiado débil."
-                is FirebaseNetworkException -> "No se pudo conectar con el servidor. Verifica tu conexión a Internet."
-                else -> "Ocurrió un error inesperado al iniciar sesión. Intenta de nuevo."
+        }
+        catch (e: FirebaseAuthException) {
+            val mensaje = when (e.errorCode) {
+                "ERROR_INVALID_EMAIL" -> "El correo electrónico no tiene un formato válido."
+                "ERROR_USER_NOT_FOUND" -> "No existe un usuario con este correo."
+                "ERROR_WRONG_PASSWORD" -> "La contraseña es incorrecta."
+                "ERROR_USER_DISABLED" -> "Esta cuenta ha sido deshabilitada."
+                "ERROR_TOO_MANY_REQUESTS" -> "Demasiados intentos fallidos. Intente más tarde."
+                "ERROR_OPERATION_NOT_ALLOWED" -> "Este tipo de inicio de sesión no está habilitado."
+                "ERROR_INVALID_CREDENTIAL" -> "Datos incorrectos. Verifique el correo y la contraseña."
+                else -> "Error de autenticación desconocido: ${e.errorCode}"
             }
-            throw AuthException(errorMessage)
+            throw AuthException(mensaje)
+
+        } catch (e: Exception) {
+            throw AuthException(
+                e.message ?: "Error desconocido al registrar el usuario"
+            )
         }
     }
 
@@ -101,16 +105,22 @@ object FirebaseUserRepository : UserRepository {
             //user.profileImgUrl = userData.profileImgUrl
             user.uid = firebaseUser.uid
 
-        } catch (e: Exception) {
-            val errorMessage = when (e) {
-                is FirebaseAuthInvalidUserException -> "Este usuario no está registrado. Verifica tu correo electrónico."
-                is FirebaseAuthInvalidCredentialsException -> "El correo o la contraseña son incorrectos."
-                is FirebaseAuthUserCollisionException -> "Este usuario ya está registrado."
-                is FirebaseAuthWeakPasswordException -> "La contraseña es demasiado débil."
-                is FirebaseNetworkException -> "No se pudo conectar con el servidor. Verifica tu conexión a Internet."
-                else -> "Ocurrió un error inesperado al iniciar sesión. Intenta de nuevo."
+        } catch (e: FirebaseAuthException) {
+            val mensaje = when (e.errorCode) {
+                "ERROR_EMAIL_ALREADY_IN_USE" -> "Ya existe una cuenta con este correo electrónico."
+                "ERROR_INVALID_EMAIL" -> "El correo electrónico ingresado no es válido."
+                "ERROR_WEAK_PASSWORD" -> "La contraseña es demasiado débil. Usa al menos 6 caracteres."
+                "ERROR_OPERATION_NOT_ALLOWED" -> "La creación de cuentas con correo y contraseña no está habilitada."
+                "ERROR_TOO_MANY_REQUESTS" -> "Demasiados intentos. Inténtalo de nuevo más tarde."
+                "ERROR_INVALID_CREDENTIAL" -> "Datos incorrectos. Verifique el correo y la contraseña."
+                else -> "Error de registro desconocido: ${e.errorCode}"
             }
-            throw RegistrationException(errorMessage)
+            throw RegistrationException(mensaje)
+
+        } catch (e: Exception) {
+            throw RegistrationException(
+                e.message ?: "Error desconocido al registrar el usuario"
+            )
         }
     }
     /**

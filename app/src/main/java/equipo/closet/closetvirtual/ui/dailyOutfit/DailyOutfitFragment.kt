@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import equipo.closet.closetvirtual.ClothesSelectionActivity
+import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentDailyOutfitBinding
 import equipo.closet.closetvirtual.databinding.OutfitCreationRowDetailedBinding
@@ -41,9 +42,8 @@ class DailyOutfitFragment : Fragment() {
                 viewLifecycleOwner.lifecycleScope.launch {
                     val garment = FirebaseGarmentRepository.getById(garmentId)
                     if (garment != null) {
-                        // Ejecuta el callback que guardamos para la fila correcta
                         onResultCallback?.invoke(garment)
-                        onResultCallback = null // Limpia el callback para el próximo uso
+                        onResultCallback = null
                     }
                 }
             }
@@ -62,8 +62,9 @@ class DailyOutfitFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
         setupSaveObserver()
+        handleOnProfileButtonClicked()
+        handleOnBackButtonClicked()
 
-        // Si la pantalla está vacía, añade la primera fila automáticamente
         if (binding.garmentRowsContainer.childCount == 0) {
             addNewGarmentRow()
         }
@@ -71,47 +72,47 @@ class DailyOutfitFragment : Fragment() {
 
     private fun setupListeners() {
         binding.btnBack.setOnClickListener { requireActivity().onBackPressedDispatcher.onBackPressed() }
-        binding.btnAddField.setOnClickListener { addNewGarmentRow() }
         binding.btnUseOutfit.setOnClickListener { viewModel.registerUsageOfSelectedGarments() }
+
+
+        binding.btnAddField.setOnClickListener {
+            if (binding.garmentRowsContainer.childCount < 10) {
+                addNewGarmentRow()
+            } else {
+                Toast.makeText(requireContext(), "No puedes añadir más de 10 prendas", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun addNewGarmentRow() {
-        // Infla una nueva vista de fila
         val rowBinding = OutfitCreationRowDetailedBinding.inflate(layoutInflater, binding.garmentRowsContainer, false)
         val viewId = View.generateViewId()
         rowBinding.root.id = viewId
-        rowBinding.tvGarmentName.text = "Prenda" // Texto inicial
+        rowBinding.tvGarmentName.text = "Seleccionar prenda"
 
-        // El botón de borrar siempre es visible, pero el de añadir no
         rowBinding.btnCleanGarment.visibility = View.VISIBLE
         rowBinding.btnAddGarment.visibility = View.VISIBLE
 
-        // Acción para el botón '+'
         rowBinding.btnAddGarment.setOnClickListener {
-            // Abre el selector de ropa y le pasa un callback
             launchClothesSelection { selectedGarment ->
-                // Este código se ejecuta cuando se selecciona una prenda
                 rowBinding.tvGarmentName.text = selectedGarment.name
                 Glide.with(this).load(selectedGarment.imageUri).centerCrop().into(rowBinding.ivGarmentPreview)
                 viewModel.addGarment(viewId.toString(), selectedGarment)
-                it.visibility = View.GONE // Oculta el '+'
+                it.visibility = View.GONE
             }
         }
 
-        // Acción para el botón de basura
         rowBinding.btnCleanGarment.setOnClickListener {
             viewModel.removeGarment(viewId.toString())
             binding.garmentRowsContainer.removeView(rowBinding.root)
         }
 
-        // Añade la nueva fila al contenedor
         binding.garmentRowsContainer.addView(rowBinding.root)
     }
 
     private fun launchClothesSelection(onResult: (Garment) -> Unit) {
         this.onResultCallback = onResult
         val intent = Intent(requireContext(), ClothesSelectionActivity::class.java).apply {
-            // Se abre permitiendo seleccionar cualquier categoría
             putExtra("CATEGORY_FILTER", "all")
         }
         selectGarmentLauncher.launch(intent)
@@ -121,12 +122,25 @@ class DailyOutfitFragment : Fragment() {
         viewModel.saveResult.observe(viewLifecycleOwner) { result ->
             result.onSuccess {
                 Toast.makeText(requireContext(), "Uso de prendas registrado", Toast.LENGTH_SHORT).show()
-                // Limpia la pantalla para un nuevo registro
                 binding.garmentRowsContainer.removeAllViews()
                 addNewGarmentRow()
             }.onFailure {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun handleOnProfileButtonClicked() {
+        binding.btnProfile.setOnClickListener {
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun handleOnBackButtonClicked() {
+        binding.btnBack.setOnClickListener {
+            @Suppress("DEPRECATION")
+            requireActivity().onBackPressed()
         }
     }
 

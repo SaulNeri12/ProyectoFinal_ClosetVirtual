@@ -8,12 +8,19 @@ import android.widget.BaseAdapter
 import android.widget.GridView
 import android.widget.TextView
 import equipo.closet.closetvirtual.R
+import equipo.closet.closetvirtual.entities.Garment
 import equipo.closet.closetvirtual.entities.Outfit
+import equipo.closet.closetvirtual.global.ClothesCache
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.factories.OutfitRepositoryFactory
+import equipo.closet.closetvirtual.repositories.interfaces.Repository
+import android.util.Log
 
 class OutfitSearchListAdapter : BaseAdapter {
 
     private lateinit var context: Context
     private lateinit var outfits: MutableList<Outfit>
+    private val clothesRepository: Repository<Garment, String> = GarmentRepositoryFactory.create()
 
     constructor(context: Context, outfits: MutableList<Outfit>) {
         this.context = context
@@ -53,10 +60,32 @@ class OutfitSearchListAdapter : BaseAdapter {
         val outfit: Outfit = this.getItem(position)
 
         holder.outfitName.text = outfit.name
-        holder.outfitTag.text = "Tag Test"
+        holder.outfitTag.text = getTagsString(outfit.tags)
 
         // setting up clothes list adapters
-        holder.clothesCardsGrid.adapter = OutfitClothesGridAdapter(view.context, outfit.getClothes().toMutableList())
+
+        /*
+        // lifecycleSciope.launch porque getById es asincrono
+        var clothes = mutableListOf<Garment>()
+
+        for (garmentId in outfit.clothesIds) {
+            val garment = clothesRepository.getById(garmentId)
+            if (garment != null) {
+                clothes.add(garment)
+            }
+        }*/
+
+        Log.w("#### OutfitSearchListAdapter", "Clothes CACHE: ${ClothesCache.getAllGarments()}")
+
+        var clothes = mutableListOf<Garment>()
+
+        for (garmentId in outfit.clothesIds) {
+            ClothesCache.getGarmentById(garmentId)?.let { clothes.add(it) }
+        }
+
+        Log.w("#### OutfitSearchListAdapter", "Clothes FETCHED FROM CACHE: $clothes")
+
+        holder.clothesCardsGrid.adapter = OutfitClothesGridAdapter(view.context, clothes)
 
         return view
     }
@@ -66,4 +95,14 @@ class OutfitSearchListAdapter : BaseAdapter {
         val outfitTag: TextView,
         val clothesCardsGrid: GridView
     )
+
+    private fun getTagsString(tags : MutableList<String>) : String {
+        val tagsString = StringBuilder()
+        for (tag in tags) {
+            tagsString.append(tag)
+            tagsString.append(", ")
+        }
+        return tagsString.toString().dropLast(1)
+    }
+
 }
