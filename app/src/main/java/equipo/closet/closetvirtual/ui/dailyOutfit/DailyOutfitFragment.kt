@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import equipo.closet.closetvirtual.ClothesSelectionActivity
+import equipo.closet.closetvirtual.ui.clothesSelection.ClothesSelectionActivity
 import equipo.closet.closetvirtual.ProfileActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.databinding.FragmentDailyOutfitBinding

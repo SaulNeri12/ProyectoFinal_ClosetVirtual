@@ -102,7 +102,7 @@ class OutfitSearchListAdapter : BaseAdapter {
             tagsString.append(tag)
             tagsString.append(", ")
         }
-        return tagsString.toString().dropLast(1)
+        return tagsString.toString().dropLast(2)
     }
 
 }

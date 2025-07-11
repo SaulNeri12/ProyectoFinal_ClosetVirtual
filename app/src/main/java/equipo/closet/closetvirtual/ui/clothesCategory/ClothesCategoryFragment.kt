@@ -140,14 +140,14 @@ class ClothesCategoryFragment : Fragment() {
     }
 
     private fun handleOnProfileButtonClicked() {
-        binding.btnProfileCategoryCards.setOnClickListener {
+        binding.btnProfile.setOnClickListener {
             val intent = Intent(requireContext(), ProfileActivity::class.java)
             startActivity(intent)
         }
     }
 
     private fun handleOnBackButtonClicked() {
-        binding.btnBackCategoryCards.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             @Suppress("DEPRECATION")
             requireActivity().onBackPressed()
         }

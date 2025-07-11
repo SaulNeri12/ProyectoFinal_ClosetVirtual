@@ -109,7 +109,7 @@ class ProfileActivity : AppCompatActivity() {
     /**
      * Set the behavior of the birth date field
      */
-    private fun setBirthDateFieldBehavior(): Unit {
+    private fun setBirthDateFieldBehavior() {
         binding.birthDateContainer.setOnClickListener {
             val datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Selecciona tu fecha de nacimiento")
@@ -118,6 +118,13 @@ class ProfileActivity : AppCompatActivity() {
             datePicker.show(supportFragmentManager, "birth_date_picker")
 
             datePicker.addOnPositiveButtonClickListener { selectedDateMillis ->
+                val currentDateMillis = System.currentTimeMillis()
+
+                if (selectedDateMillis > currentDateMillis) {
+                    Toast.makeText(this, "No puedes seleccionar una fecha futura", Toast.LENGTH_LONG).show()
+                    return@addOnPositiveButtonClickListener
+                }
+
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = selectedDateMillis
 

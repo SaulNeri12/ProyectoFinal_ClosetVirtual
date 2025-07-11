@@ -62,7 +62,7 @@
                             app:cardUseCompatPadding="false">
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnBackCategoryCards"
+                                android:id="@+id/btnBack"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:insetTop="0dp"
@@ -94,7 +94,7 @@
                             app:cardUseCompatPadding="false">
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnProfileCategoryCards"
+                                android:id="@+id/btnProfile"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:insetTop="0dp"
