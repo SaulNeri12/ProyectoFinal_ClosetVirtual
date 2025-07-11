@@ -2,6 +2,10 @@ package equipo.closet.closetvirtual.repositories
 
 import equipo.closet.closetvirtual.repositories.interfaces.IGarmentUsageTracker
 import com.google.firebase.firestore.FirebaseFirestore
+import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.entities.GarmentUsage
+import equipo.closet.closetvirtual.repositories.factories.GarmentRepositoryFactory
+import equipo.closet.closetvirtual.repositories.factories.GarmentUsageTrackerFactory
 import kotlinx.coroutines.tasks.await
 import java.util.Calendar
 import java.util.UUID
@@ -9,6 +13,39 @@ import java.util.UUID
 object GarmentUsageTracker : IGarmentUsageTracker {
 
     private val GARMENT_USAGE_COLLECTION_NAME = "garment_usage"
+
+    override suspend fun getUsedClothes(userId: String): List<GarmentUsage> {
+        val db = FirebaseFirestore.getInstance()
+
+        try {
+            val snapshot = db.collection(GARMENT_USAGE_COLLECTION_NAME)
+                .whereEqualTo("userId", userId)
+                .get()
+                .await()
+
+            val usedClothes = mutableListOf<GarmentUsage>()
+
+            for (document in snapshot.documents) {
+                val garmentId = document.getString("garmentId")
+                val date = document.getDate("date")
+                val id = document.getString("id")
+                val userId = document.getString("userId")
+
+                val usage = GarmentUsage(
+                    id = id.toString(),
+                    garmentId = garmentId.toString(),
+                    date = date!!,
+                    userId = userId.toString()
+                )
+
+                usedClothes.add(usage)
+            }
+
+            return usedClothes
+        } catch (e: Exception) {
+            throw Exception("No se pudo obtener la lista de prendas usadas. Inténtelo de nuevo más tarde.")
+        }
+    }
 
     override suspend fun countGarmentUsages(garmentId: String): Int {
         val db = FirebaseFirestore.getInstance()
@@ -62,7 +99,7 @@ object GarmentUsageTracker : IGarmentUsageTracker {
     }
 
 
-    override suspend fun registerUsage(garmentId: String): String {
+    override suspend fun registerUsage(userId: String, garmentId: String): String {
         val db = FirebaseFirestore.getInstance()
 
         try {
@@ -77,7 +114,8 @@ object GarmentUsageTracker : IGarmentUsageTracker {
                     mapOf(
                         "id" to id,
                         "date" to currentDate,
-                        "garmentId" to garmentId
+                        "garmentId" to garmentId,
+                        "userId" to userId,
                     )
                 ).await()
 
@@ -110,6 +148,7 @@ object GarmentUsageTracker : IGarmentUsageTracker {
     }
 
 
+    /*
 
     suspend fun getUsagesForDate(date: java.util.Date): List<String> {
         val db = FirebaseFirestore.getInstance()
@@ -142,6 +181,6 @@ object GarmentUsageTracker : IGarmentUsageTracker {
         } catch (e: Exception) {
             throw Exception("Error al obtener los usos para la fecha seleccionada.")
         }
-    }
+    }*/
 
 }

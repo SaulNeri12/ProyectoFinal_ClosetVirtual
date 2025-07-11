@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import equipo.closet.closetvirtual.entities.Garment
+import equipo.closet.closetvirtual.global.ClothesCache
+import equipo.closet.closetvirtual.objects.SessionManager
 import equipo.closet.closetvirtual.repositories.FirebaseGarmentRepository
 import equipo.closet.closetvirtual.repositories.GarmentUsageTracker
 import kotlinx.coroutines.launch
@@ -18,11 +20,29 @@ class UsageHistoryViewModel : ViewModel() {
     fun fetchGarmentsForDate(date: Date) {
         viewModelScope.launch {
             try {
-                val garmentIds = GarmentUsageTracker.getUsagesForDate(date)
-                val garments = garmentIds.mapNotNull { id ->
-                    FirebaseGarmentRepository.getById(id)
+                val usages = GarmentUsageTracker.getUsedClothes(SessionManager.user.uid)
+
+                val clothes = mutableListOf<Garment>()
+
+                for (usage in usages) {
+                    val garment = FirebaseGarmentRepository.getById(usage.garmentId)
+                    if (garment != null) {
+                        clothes.add(garment)
+                    }
                 }
-                _usedGarments.postValue(garments)
+
+                // SE GUARDO LA LISTA DE PRENDAS EN LA CACHE PARA QUE NO TENGAS
+                // QUE VOLVER A MANDAR A LLAMAR AL REPOSITORIO DE PRENDAS
+                ClothesCache.setGarments(clothes)
+
+                /**
+                 * DAMIAN: YA TU SABE QUE HACER AQUI PARA MOSTRAR LAS PRENDAS USADAS EL DIA SELECCIONADO
+                 *
+                 * RECUERDA QUE TE TRAE TODAS LAS PRENDAS QUE UN USUARIO TIENE, AHI TIENES QUE FILTRAR
+                 * TU POR EL DIA SELECCIONADO
+                 */
+
+                _usedGarments.postValue(clothes)
             } catch (e: Exception) {
                 // Manejar el error
                 _usedGarments.postValue(emptyList())
