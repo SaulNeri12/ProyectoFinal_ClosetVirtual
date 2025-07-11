@@ -1,14 +1,12 @@
 package equipo.closet.closetvirtual.ui.searchOutfit.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import equipo.closet.closetvirtual.ClothingInformationActivity
 import equipo.closet.closetvirtual.R
 import equipo.closet.closetvirtual.entities.Garment
 
@@ -21,7 +19,7 @@ class OutfitClothesGridAdapter (
 
     override fun getItem(position: Int): Garment = clothes[position]
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = clothes[position].id.toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
@@ -44,17 +42,7 @@ class OutfitClothesGridAdapter (
         } else {
             Glide.with(context)
                 .load(garment.imageUri)
-                .error(R.mipmap.garment_bottom_test)
                 .into(holder.previewImage)
-        }
-
-        holder.previewImage.setOnClickListener {
-            var intent: Intent = Intent(context, ClothingInformationActivity::class.java)
-
-            //pass the garment object
-            intent.putExtra("garment", garment)
-
-            context.startActivity(intent)
         }
 
         return view

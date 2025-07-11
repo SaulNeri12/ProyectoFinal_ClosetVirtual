@@ -183,11 +183,6 @@ class ClothingInformationActivity : AppCompatActivity() {
             binding.spGarmentColor.setSelection(getIndex(binding.spGarmentColor, garment.color))
             binding.spGarmentCategory.setSelection(getIndex(binding.spGarmentCategory, garment.category))
 
-            lifecycleScope.launch {
-                binding.tvTotal.text = garmentUsageTracker.countGarmentUsages(id).toString()
-                binding.tvMonthTotal.text = garmentUsageTracker.countGarmentUsageMonthly(id).toString()
-            }
-
         }
 
     }

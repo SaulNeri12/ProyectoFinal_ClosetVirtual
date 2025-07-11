@@ -45,7 +45,7 @@ class OutfitsAdapter(
         val viewHolder: ViewHolder
 
         if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.search_outfit_card, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.outfit_list_item, parent, false)
             viewHolder = ViewHolder()
             viewHolder.tvOutfitName = view.findViewById(R.id.tvOutfitName)
             viewHolder.imagesContainer = view.findViewById(R.id.garment_images_container)
