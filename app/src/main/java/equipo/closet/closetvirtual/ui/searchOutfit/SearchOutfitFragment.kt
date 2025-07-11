@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import equipo.closet.closetvirtual.ui.searchOutfitFilter.SearchOutfitFilterViewM
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 class SearchOutfitFragment : Fragment() {
 
@@ -110,7 +112,7 @@ class SearchOutfitFragment : Fragment() {
         searchJob = lifecycleScope.launch {
             try {
                 delay(500L)
-                val searchText = binding.filteredGarmentSearchInput.text.toString().trim()
+                val searchText = binding.filteredGarmentSearchInput.text.toString()
 
                 val filterMap = mutableMapOf<String, Any>()
                 if (searchText.isNotEmpty()) {
@@ -121,9 +123,15 @@ class SearchOutfitFragment : Fragment() {
                 }
 
                 val outfits = outfitRepository.getAll(filterMap)
+
+                Log.w("#### SearchOutfitFragment", "Outfits: $outfits")
+
                 updateOutfitList(outfits)
 
-            } catch (e: Exception) {
+            } catch (e: CancellationException) {
+                // no hagas nada...
+            }
+            catch (e: Exception) {
                 Toast.makeText(requireContext(), "Error al cargar los outfits", Toast.LENGTH_SHORT).show()
             }
         }
